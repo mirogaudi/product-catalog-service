@@ -1,3 +1,6 @@
+![JaCoCo](https://img.shields.io/github/languages/top/mirogaudi/product-catalog-service)
+![JaCoCo](https://img.shields.io/github/workflow/status/mirogaudi/product-catalog-service/Java%20CI%20with%20Maven)
+![JaCoCo](./.github/badges/jacoco.svg)
 ## Demo Product Catalog Service with REST API
 
 ### Used technologies
