@@ -30,7 +30,7 @@ jobs:
 
       - name: Commit JaCoCo Badge
           run: |
-            if [[ 'git status --porcelain' ]]; then
+            if [[ `git status --porcelain` ]]; then
               git config user.name "mirogaudi"
               git config user.email "mirogaudi@ya.ru"
               git add -A
