@@ -12,7 +12,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import static springfox.documentation.spi.DocumentationType.SWAGGER_2;
+import static springfox.documentation.spi.DocumentationType.OAS_30;
 
 @Configuration
 @EnableSwagger2
@@ -21,7 +21,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        return new Docket(SWAGGER_2)
+        return new Docket(OAS_30)
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
