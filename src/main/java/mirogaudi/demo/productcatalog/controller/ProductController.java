@@ -1,7 +1,8 @@
 package mirogaudi.demo.productcatalog.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import mirogaudi.demo.productcatalog.domain.Product;
 import mirogaudi.demo.productcatalog.service.ProductService;
@@ -30,9 +31,9 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/api/v1/products")
-@Api(value = "products")
-@RequiredArgsConstructor(onConstructor_ = {@Lazy})
+@Tag(name = "Products")
 @Validated
+@RequiredArgsConstructor(onConstructor_ = {@Lazy})
 public class ProductController {
 
     private final ProductService productService;
@@ -44,7 +45,9 @@ public class ProductController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Product> getProduct(
-            @ApiParam(value = "Product id", required = true) @PathVariable Long id) {
+            @Parameter(description = "Product ID")
+            @PathVariable Long id
+    ) {
         Product product = productService.find(id);
         if (product == null) {
             return ResponseEntity.notFound().build();
@@ -58,11 +61,21 @@ public class ProductController {
      */
     @PostMapping
     public ResponseEntity<Product> createProduct(
-            @ApiParam(value = "Product name", required = true) @Size(min = 3, max = 64) @RequestParam String name,
-            @ApiParam(value = "Product original price", required = true) @RequestParam BigDecimal originalPrice,
-            @ApiParam(value = "Product original currency ISO code", required = true, allowableValues = "EUR,USD,CNY,KRW,JPY") @RequestParam String originalCurrency,
-            @ApiParam(value = "Product category id", required = true) @RequestParam Long... categoryId) {
+            @Parameter(description = "Product name")
+            @Size(min = 3, max = 64)
+            @RequestParam String name,
 
+            @Parameter(description = "Product original price")
+            @RequestParam BigDecimal originalPrice,
+
+            @Parameter(description = "Product original currency ISO code", schema = @Schema(
+                    allowableValues = {"EUR", "USD", "CNY", "KRW", "JPY"}
+            ))
+            @RequestParam String originalCurrency,
+
+            @Parameter(description = "Product category ID")
+            @RequestParam Long... categoryId
+    ) {
         Product createdProduct = productService.create(
                 name,
                 originalPrice, Currency.getInstance(originalCurrency),
@@ -83,11 +96,23 @@ public class ProductController {
      */
     @PutMapping(value = "/{id}")
     public ResponseEntity<Product> updateProduct(
-            @ApiParam(value = "Product id", required = true) @PathVariable Long id,
-            @ApiParam(value = "Product name", required = true) @RequestParam String name,
-            @ApiParam(value = "Product original price", required = true) @RequestParam BigDecimal originalPrice,
-            @ApiParam(value = "Product original currency ISO code", required = true, allowableValues = "EUR,USD,CNY,KRW,JPY") @RequestParam String originalCurrency,
-            @ApiParam(value = "Product category id", required = true) @RequestParam Long... categoryId) {
+            @Parameter(description = "Product ID")
+            @PathVariable Long id,
+
+            @Parameter(description = "Product name")
+            @RequestParam String name,
+
+            @Parameter(description = "Product original price")
+            @RequestParam BigDecimal originalPrice,
+
+            @Parameter(description = "Product original currency ISO code", schema = @Schema(
+                    allowableValues = {"EUR", "USD", "CNY", "KRW", "JPY"}
+            ))
+            @RequestParam String originalCurrency,
+
+            @Parameter(description = "Product category ID")
+            @RequestParam Long... categoryId
+    ) {
         return ResponseEntity.ok(productService.update(
                 id, name,
                 originalPrice, Currency.getInstance(originalCurrency),
@@ -97,7 +122,9 @@ public class ProductController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteProduct(
-            @ApiParam(value = "Product id", required = true) @PathVariable Long id) {
+            @Parameter(description = "Product ID")
+            @PathVariable Long id
+    ) {
         productService.delete(id);
 
         return ResponseEntity.ok().build();

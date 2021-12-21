@@ -17,7 +17,7 @@
 - Flyway DB migration tool
 - H2 in-memory DB
 - Lombok
-- SpringFox Swagger UI
+- OpenAPI 3 & Swagger UI (springdoc-openapi)
 - JUnit Jupiter
 - Mockito
 
@@ -38,7 +38,7 @@
     - Or run `mirogaudi.demo.productcatalog.Application` in an IDE
 
 
-- Test application or check API with Swagger UI [http://localhost:8080/swagger-ui/](http://localhost:8080/swagger-ui/)
+- Test application or check API with Swagger UI [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ### Description
 
