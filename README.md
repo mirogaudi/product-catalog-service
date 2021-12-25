@@ -38,7 +38,9 @@
     - Or run `mirogaudi.demo.productcatalog.Application` in an IDE
 
 
-- Test application or check API with Swagger UI [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+- Test application or check API with:
+    - Swagger UI [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+    - OpenAPI [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 
 ### Description
 
@@ -101,16 +103,16 @@ For details see [application.properties](./src/main/resources/application.proper
   $ ./mvnw versions:display-parent-updates
 ```
 
-- Check for maven dependencies updates
-
-```shell
-  $ ./mvnw versions:display-dependency-updates
-```
-
 - Check for maven property-linked dependencies updates
 
 ```shell
   $ ./mvnw versions:display-property-updates
+```
+
+- Check for maven dependencies updates
+
+```shell
+  $ ./mvnw versions:display-dependency-updates
 ```
 
 ### Misc
