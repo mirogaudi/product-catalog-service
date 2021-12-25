@@ -1,6 +1,7 @@
 ![JaCoCo](https://img.shields.io/github/languages/top/mirogaudi/product-catalog-service)
 ![JaCoCo](https://img.shields.io/github/workflow/status/mirogaudi/product-catalog-service/Java%20CI%20with%20Maven)
 ![JaCoCo](./.github/badges/jacoco.svg)
+
 ## Demo Product Catalog Service with REST API
 
 ### Used technologies
@@ -16,7 +17,7 @@
 - Flyway DB migration tool
 - H2 in-memory DB
 - Lombok
-- SpringFox Swagger UI
+- OpenAPI 3 & Swagger UI (springdoc-openapi)
 - JUnit Jupiter
 - Mockito
 
@@ -37,7 +38,7 @@
     - Or run `mirogaudi.demo.productcatalog.Application` in an IDE
 
 
-- Test application or check API with Swagger UI [http://localhost:8080/swagger-ui/](http://localhost:8080/swagger-ui/)
+- Test application or check API with Swagger UI [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ### Description
 
@@ -82,7 +83,7 @@ For details see [application.properties](./src/main/resources/application.proper
 
 ### Maintenance
 
-- Check for maven wrapper update
+- Update maven wrapper
 
 ```shell
   $ mvn -N io.takari:maven:wrapper
@@ -94,10 +95,22 @@ For details see [application.properties](./src/main/resources/application.proper
   $ ./mvnw versions:display-plugin-updates
 ```
 
+- Check for maven parent updates
+
+```shell
+  $ ./mvnw versions:display-parent-updates
+```
+
 - Check for maven dependencies updates
 
 ```shell
   $ ./mvnw versions:display-dependency-updates
+```
+
+- Check for maven property-linked dependencies updates
+
+```shell
+  $ ./mvnw versions:display-property-updates
 ```
 
 ### Misc

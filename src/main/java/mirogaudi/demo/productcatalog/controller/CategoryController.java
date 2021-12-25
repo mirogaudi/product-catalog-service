@@ -1,7 +1,7 @@
 package mirogaudi.demo.productcatalog.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import mirogaudi.demo.productcatalog.domain.Category;
 import mirogaudi.demo.productcatalog.service.CategoryService;
@@ -27,9 +27,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/v1/categories")
-@Api(value = "categories")
-@RequiredArgsConstructor(onConstructor_ = {@Lazy})
+@Tag(name = "Categories")
 @Validated
+@RequiredArgsConstructor(onConstructor_ = {@Lazy})
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -41,7 +41,9 @@ public class CategoryController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Category> getCategory(
-            @ApiParam(value = "Category id", required = true) @PathVariable Long id) {
+            @Parameter(description = "Category ID")
+            @PathVariable Long id
+    ) {
         Category category = categoryService.find(id);
         if (category == null) {
             return ResponseEntity.notFound().build();
@@ -55,8 +57,13 @@ public class CategoryController {
      */
     @PostMapping
     public ResponseEntity<Category> createCategory(
-            @ApiParam(value = "Category name", required = true) @Size(min = 3, max = 64) @RequestParam String name,
-            @ApiParam(value = "Parent category id") @RequestParam(required = false) Long parentId) {
+            @Parameter(description = "Category name")
+            @Size(min = 3, max = 64)
+            @RequestParam String name,
+
+            @Parameter(description = "Parent category ID")
+            @RequestParam(required = false) Long parentId
+    ) {
         Category createdCategory = categoryService.create(name, parentId);
 
         URI location = ServletUriComponentsBuilder
@@ -73,15 +80,24 @@ public class CategoryController {
      */
     @PutMapping(value = "/{id}")
     public ResponseEntity<Category> updateCategory(
-            @ApiParam(value = "Category id", required = true) @PathVariable Long id,
-            @ApiParam(value = "Category name", required = true) @Size(min = 3, max = 64) @RequestParam String name,
-            @ApiParam(value = "Parent category id") @RequestParam(required = false) Long parentId) {
+            @Parameter(description = "Category ID")
+            @PathVariable Long id,
+
+            @Parameter(description = "Category name")
+            @Size(min = 3, max = 64)
+            @RequestParam String name,
+
+            @Parameter(description = "Parent category ID")
+            @RequestParam(required = false) Long parentId
+    ) {
         return ResponseEntity.ok(categoryService.update(id, name, parentId));
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteCategory(
-            @ApiParam(value = "Category id", required = true) @PathVariable Long id) {
+            @Parameter(description = "Category ID")
+            @PathVariable Long id
+    ) {
         categoryService.delete(id);
 
         return ResponseEntity.ok().build();
