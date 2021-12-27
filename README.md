@@ -80,7 +80,7 @@ For details see [application.properties](./src/main/resources/application.proper
   ```
 - Currency exchange service
   ```properties
-  currency.exchange.service.url=https://frankfurter.app
+  rates.service.url=https://frankfurter.app
   ```
 
 ### Maintenance

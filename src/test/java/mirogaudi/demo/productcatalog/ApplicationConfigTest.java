@@ -25,8 +25,10 @@ class ApplicationConfigTest {
     @Test
     void verifyContext() {
         assertNotNull(context.getBean("baseCurrency"));
-        assertNotNull(context.getBean("currencyExchangeServiceUri"));
+        assertNotNull(context.getBean("ratesServiceUri"));
         assertNotNull(context.getBean("restTemplate"));
+        assertNotNull(context.getBean("ratesServiceConnector"));
+        assertNotNull(context.getBean("currencyExchangeService"));
 
         assertNotNull(context.getBean("cacheManager"));
 

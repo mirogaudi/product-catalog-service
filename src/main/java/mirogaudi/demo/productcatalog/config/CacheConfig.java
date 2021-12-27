@@ -14,19 +14,19 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class CacheConfig {
 
-    public static final String CURRENCY_EXCHANGE_RATES = "currencyExchangeRates";
+    public static final String RATES_CACHE = "rates";
 
     @Bean
     public CacheManager cacheManager() {
-        return new CaffeineCacheManager(CURRENCY_EXCHANGE_RATES);
+        return new CaffeineCacheManager(RATES_CACHE);
     }
 
     @Scheduled(
-            cron = "${currency.exchange.rates.cache.evict.cron}",
-            zone = "${currency.exchange.rates.cache.evict.zone}"
+            cron = "${rates.cache.evict.cron}",
+            zone = "${rates.cache.evict.zone}"
     )
-    @CacheEvict(value = CURRENCY_EXCHANGE_RATES, allEntries = true)
-    public void evictCurrencyExchangeRatesCache() {
+    @CacheEvict(value = RATES_CACHE, allEntries = true)
+    public void evictRatesCache() {
         // do nothing
     }
 
