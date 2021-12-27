@@ -1,16 +1,22 @@
 package mirogaudi.demo.productcatalog;
 
 import mirogaudi.demo.productcatalog.config.ApplicationConfig;
+import mirogaudi.demo.productcatalog.config.CacheConfig;
+import mirogaudi.demo.productcatalog.config.CircuitBreakerConfig;
+import mirogaudi.demo.productcatalog.config.SwaggerConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Import;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
-@Import(ApplicationConfig.class)
+@SpringBootTest(classes = {
+        ApplicationConfig.class,
+        CacheConfig.class,
+        CircuitBreakerConfig.class,
+        SwaggerConfig.class
+})
 class ApplicationConfigTest {
 
     @Autowired
@@ -21,6 +27,13 @@ class ApplicationConfigTest {
         assertNotNull(context.getBean("baseCurrency"));
         assertNotNull(context.getBean("currencyExchangeServiceUri"));
         assertNotNull(context.getBean("restTemplate"));
+
+        assertNotNull(context.getBean("cacheManager"));
+
+        assertNotNull(context.getBean("defaultCustomizer"));
+        assertNotNull(context.getBean("specificCustomizer"));
+
+        assertNotNull(context.getBean("openAPI"));
     }
 
 }

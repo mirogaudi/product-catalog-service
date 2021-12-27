@@ -1,7 +1,10 @@
 package mirogaudi.demo.productcatalog.config;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,6 +15,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class CacheConfig {
 
     public static final String CURRENCY_EXCHANGE_RATES = "currencyExchangeRates";
+
+    @Bean
+    public CacheManager cacheManager() {
+        return new CaffeineCacheManager(CURRENCY_EXCHANGE_RATES);
+    }
 
     @Scheduled(
             cron = "${currency.exchange.rates.cache.evict.cron}",
