@@ -1,5 +1,6 @@
-package mirogaudi.demo.productcatalog.connector;
+package mirogaudi.demo.productcatalog.connector.impl;
 
+import mirogaudi.demo.productcatalog.connector.ConnectorRuntimeException;
 import mirogaudi.demo.productcatalog.connector.impl.FrankfurterRatesServiceConnectorImpl;
 import mirogaudi.demo.productcatalog.connector.impl.FrankfurterRatesServiceConnectorImpl.FrankfurterCurrencyExchangeRates;
 import org.assertj.core.util.Maps;

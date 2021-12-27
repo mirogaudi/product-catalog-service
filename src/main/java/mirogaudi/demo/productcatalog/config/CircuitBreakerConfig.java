@@ -1,6 +1,5 @@
 package mirogaudi.demo.productcatalog.config;
 
-import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
@@ -11,12 +10,12 @@ import org.springframework.context.annotation.Configuration;
 import java.time.Duration;
 
 @Configuration
-public class CircuitBreakerConfiguration {
+public class CircuitBreakerConfig {
 
     @Bean
     public Customizer<Resilience4JCircuitBreakerFactory> defaultCustomizer() {
         return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
-                .circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
+                .circuitBreakerConfig(io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.ofDefaults())
                 .timeLimiterConfig(TimeLimiterConfig.custom()
                         .timeoutDuration(Duration.ofSeconds(4))
                         .build())
@@ -26,7 +25,7 @@ public class CircuitBreakerConfiguration {
     @Bean
     public Customizer<Resilience4JCircuitBreakerFactory> specificCustomizer() {
         return factory -> factory.configure(builder -> builder
-                .circuitBreakerConfig(CircuitBreakerConfig.custom()
+                .circuitBreakerConfig(io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.custom()
                         .minimumNumberOfCalls(10)
                         .failureRateThreshold(50)
                         .waitDurationInOpenState(Duration.ofMillis(1500))
