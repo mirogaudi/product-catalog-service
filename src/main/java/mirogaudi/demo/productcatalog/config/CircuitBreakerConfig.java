@@ -9,13 +9,16 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 
+import static io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.custom;
+import static io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.ofDefaults;
+
 @Configuration
 public class CircuitBreakerConfig {
 
     @Bean
     public Customizer<Resilience4JCircuitBreakerFactory> defaultCustomizer() {
         return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
-                .circuitBreakerConfig(io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.ofDefaults())
+                .circuitBreakerConfig(ofDefaults())
                 .timeLimiterConfig(TimeLimiterConfig.custom()
                         .timeoutDuration(Duration.ofSeconds(4))
                         .build())
@@ -25,7 +28,7 @@ public class CircuitBreakerConfig {
     @Bean
     public Customizer<Resilience4JCircuitBreakerFactory> specificCustomizer() {
         return factory -> factory.configure(builder -> builder
-                .circuitBreakerConfig(io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.custom()
+                .circuitBreakerConfig(custom()
                         .minimumNumberOfCalls(10)
                         .failureRateThreshold(50)
                         .waitDurationInOpenState(Duration.ofMillis(1500))
