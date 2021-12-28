@@ -1,5 +1,6 @@
 package mirogaudi.demo.productcatalog;
 
+import io.swagger.v3.oas.models.OpenAPI;
 import mirogaudi.demo.productcatalog.config.ApplicationConfig;
 import mirogaudi.demo.productcatalog.config.CacheConfig;
 import mirogaudi.demo.productcatalog.config.CircuitBreakerConfig;
@@ -28,14 +29,13 @@ class ApplicationConfigTest {
         assertNotNull(context.getBean("ratesServiceUri"));
         assertNotNull(context.getBean("restTemplate"));
         assertNotNull(context.getBean("ratesServiceConnector"));
-        assertNotNull(context.getBean("currencyExchangeService"));
 
         assertNotNull(context.getBean("cacheManager"));
 
         assertNotNull(context.getBean("defaultCustomizer"));
         assertNotNull(context.getBean("specificCustomizer"));
 
-        assertNotNull(context.getBean("openAPI"));
+        assertNotNull(context.getBean(OpenAPI.class));
     }
 
 }

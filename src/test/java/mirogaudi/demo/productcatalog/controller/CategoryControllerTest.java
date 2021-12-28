@@ -42,7 +42,7 @@ class CategoryControllerTest {
         given(categoryService.findAll()).willReturn(Collections.singletonList(subCategory));
 
         mockMvc.perform(get(API_CATEGORIES)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id").value(subCategory.getId()))
@@ -57,7 +57,7 @@ class CategoryControllerTest {
         given(categoryService.find(category.getId())).willReturn(category);
 
         mockMvc.perform(get(API_CATEGORIES + "/" + category.getId())
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(category.getId()))
                 .andExpect(jsonPath("$.name", is(category.getName())))
@@ -71,7 +71,7 @@ class CategoryControllerTest {
         given(categoryService.find(category.getId())).willReturn(null);
 
         mockMvc.perform(get(API_CATEGORIES + "/" + category.getId())
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
@@ -82,8 +82,8 @@ class CategoryControllerTest {
         given(categoryService.create(category.getName(), null)).willReturn(category);
 
         mockMvc.perform(post(API_CATEGORIES)
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("name", category.getName()))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("name", category.getName()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(category.getId()))
                 .andExpect(jsonPath("$.name", is(category.getName())))
@@ -100,8 +100,8 @@ class CategoryControllerTest {
         given(categoryService.update(category.getId(), category.getName(), null)).willReturn(category);
 
         mockMvc.perform(put(API_CATEGORIES + "/" + category.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("name", category.getName()))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("name", category.getName()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(category.getId()))
                 .andExpect(jsonPath("$.name", is(category.getName())))
@@ -116,7 +116,7 @@ class CategoryControllerTest {
         Category category = category(1L, "category", null);
 
         mockMvc.perform(delete(API_CATEGORIES + "/" + category.getId())
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(categoryService).delete(category.getId());
 

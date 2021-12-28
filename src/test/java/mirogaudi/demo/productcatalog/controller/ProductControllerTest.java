@@ -17,6 +17,7 @@ import java.util.Set;
 
 import static java.math.BigDecimal.TEN;
 import static mirogaudi.demo.productcatalog.controller.CategoryControllerTest.category;
+import static mirogaudi.demo.productcatalog.testhelper.Currencies.EUR;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
@@ -35,7 +36,6 @@ class ProductControllerTest {
     private static final Long CATEGORY_ID = 1L;
     private static final Category CATEGORY = category(CATEGORY_ID, "category", null);
     private static final String API_PRODUCTS = "/api/v1/products";
-    private static final Currency EUR = Currency.getInstance("EUR");
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,7 +50,7 @@ class ProductControllerTest {
         given(productService.findAll()).willReturn(Collections.singletonList(product));
 
         mockMvc.perform(get(API_PRODUCTS + "/")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id").value(product.getId()))
@@ -66,7 +66,7 @@ class ProductControllerTest {
         given(productService.find(product.getId())).willReturn(product);
 
         mockMvc.perform(get(API_PRODUCTS + "/" + product.getId())
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(product.getId()))
                 .andExpect(jsonPath("$.name", is(product.getName())))
@@ -81,7 +81,7 @@ class ProductControllerTest {
         given(productService.find(product.getId())).willReturn(null);
 
         mockMvc.perform(get(API_PRODUCTS + "/" + product.getId())
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
@@ -98,11 +98,11 @@ class ProductControllerTest {
         )).willReturn(product);
 
         mockMvc.perform(post(API_PRODUCTS)
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("name", product.getName())
-                .param("originalPrice", product.getOriginalPrice().toString())
-                .param("originalCurrency", product.getOriginalCurrency())
-                .param("categoryId", CATEGORY_ID.toString()))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("name", product.getName())
+                        .param("originalPrice", product.getOriginalPrice().toString())
+                        .param("originalCurrency", product.getOriginalCurrency())
+                        .param("categoryId", CATEGORY_ID.toString()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(product.getId()))
                 .andExpect(jsonPath("$.name", is(product.getName())))
@@ -133,11 +133,11 @@ class ProductControllerTest {
         )).willReturn(product);
 
         mockMvc.perform(put(API_PRODUCTS + "/" + product.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("name", product.getName())
-                .param("originalPrice", product.getOriginalPrice().toString())
-                .param("originalCurrency", product.getOriginalCurrency())
-                .param("categoryId", CATEGORY_ID.toString()))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("name", product.getName())
+                        .param("originalPrice", product.getOriginalPrice().toString())
+                        .param("originalCurrency", product.getOriginalCurrency())
+                        .param("categoryId", CATEGORY_ID.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(product.getId()))
                 .andExpect(jsonPath("$.name", is(product.getName())))
@@ -160,7 +160,7 @@ class ProductControllerTest {
         Product product = product(1L, "product", CATEGORY);
 
         mockMvc.perform(delete(API_PRODUCTS + "/" + product.getId())
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(productService).delete(product.getId());
 
