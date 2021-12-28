@@ -58,7 +58,7 @@
         - Rates are cached with Caffeine during a period of their validity
         - Cache eviction is scheduled to `16:01 CET MON-FRI`  
           *(Since Frankfurter refresh rates around 16:00 CET every working day)*
-        - Frankfurter REST API calls are decorated with circuit breaker (Resilience4j) and use Spring RestTemplate
+        - Frankfurter REST API call is decorated with circuit breaker (Resilience4j) and uses Spring RestTemplate
 
 
 - Application uses an in-memory H2 DB
@@ -78,7 +78,7 @@ For details see [application.properties](./src/main/resources/application.proper
   ```properties
   base.currency.code=EUR
   ```
-- Currency exchange service
+- Currency exchange rates service
   ```properties
   rates.service.url=https://frankfurter.app
   ```
@@ -120,7 +120,8 @@ For details see [application.properties](./src/main/resources/application.proper
 - ASCII-Art for SpringBoot banner.txt was generated with [patorjk.com](http://patorjk.com/software/taag) (font Calvin S)
 
 ### TODOs:
-
-- use Reactor in CurrencyExchangeRatesServiceConnector
-- use spring-cloud-starter-circuitbreaker-reactor-resilience4j
+- use Java 17
+- use Spring WebFlux
+- check Project Reactor usage
+- check/test Circuit Breaker
 - use Docker

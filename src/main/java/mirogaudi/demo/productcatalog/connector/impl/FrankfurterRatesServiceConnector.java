@@ -6,9 +6,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import mirogaudi.demo.productcatalog.config.CacheConfig;
 import mirogaudi.demo.productcatalog.connector.ConnectorRuntimeException;
-import mirogaudi.demo.productcatalog.connector.CurrencyExchangeRatesServiceConnector;
+import mirogaudi.demo.productcatalog.connector.RatesServiceConnector;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -23,37 +22,33 @@ import java.util.Currency;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import static mirogaudi.demo.productcatalog.config.CacheConfig.RATES_CACHE_NAME;
+
 /**
- * Connector for the Frankfurter currency data API (https://www.frankfurter.app)
+ * Connector for the Frankfurter currency exchange rates service (https://www.frankfurter.app)
  */
 @Component
 @RequiredArgsConstructor(onConstructor_ = {@Lazy})
 @Slf4j
-public class FrankfurterRatesServiceConnectorImpl implements CurrencyExchangeRatesServiceConnector {
+public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
 
-    private final Supplier<URI> currencyExchangeServiceUri;
+    private final Supplier<URI> serviceUri;
     private final RestTemplate restTemplate;
 
-    @Cacheable(cacheNames = CacheConfig.CURRENCY_EXCHANGE_RATES)
-    @Override
-    public BigDecimal getCachedCurrencyExchangeRate(@NonNull Currency fromCurrency,
-                                                    @NonNull Currency toCurrency) {
-        return getCurrencyExchangeRate(fromCurrency, toCurrency);
-    }
-
     @CircuitBreaker(name = "frankfurterRatesService", fallbackMethod = "fallbackConvert")
+    @Cacheable(value = RATES_CACHE_NAME)
     @Override
     public BigDecimal getCurrencyExchangeRate(@NonNull Currency fromCurrency,
                                               @NonNull Currency toCurrency) {
         try {
             // see "https://www.frankfurter.app/docs/#latest"
-            String url = UriComponentsBuilder.fromUri(currencyExchangeServiceUri.get())
+            String url = UriComponentsBuilder.fromUri(serviceUri.get())
                     .path("latest")
                     .queryParam("from", fromCurrency.getCurrencyCode())
                     .queryParam("to", toCurrency.getCurrencyCode())
                     .toUriString();
 
-            FrankfurterCurrencyExchangeRates response = restTemplate.getForObject(url, FrankfurterCurrencyExchangeRates.class);
+            RatesWrapper response = restTemplate.getForObject(url, RatesWrapper.class);
             Assert.state(response != null, String.format(
                     "No API response obtained from URL: %s", url));
 
@@ -84,7 +79,7 @@ public class FrankfurterRatesServiceConnectorImpl implements CurrencyExchangeRat
 
     @Value
     @Builder
-    public static class FrankfurterCurrencyExchangeRates {
+    public static class RatesWrapper {
         Map<Currency, Double> rates;
     }
 

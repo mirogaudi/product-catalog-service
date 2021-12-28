@@ -14,18 +14,18 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class CacheConfig {
 
-    public static final String RATES_CACHE = "rates";
+    public static final String RATES_CACHE_NAME = "rates";
 
     @Bean
     public CacheManager cacheManager() {
-        return new CaffeineCacheManager(RATES_CACHE);
+        return new CaffeineCacheManager(RATES_CACHE_NAME);
     }
 
     @Scheduled(
             cron = "${rates.cache.evict.cron}",
             zone = "${rates.cache.evict.zone}"
     )
-    @CacheEvict(value = RATES_CACHE, allEntries = true)
+    @CacheEvict(value = RATES_CACHE_NAME, allEntries = true)
     public void evictRatesCache() {
         // do nothing
     }

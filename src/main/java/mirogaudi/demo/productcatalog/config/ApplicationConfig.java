@@ -2,8 +2,6 @@ package mirogaudi.demo.productcatalog.config;
 
 import mirogaudi.demo.productcatalog.connector.RatesServiceConnector;
 import mirogaudi.demo.productcatalog.connector.impl.FrankfurterRatesServiceConnector;
-import mirogaudi.demo.productcatalog.service.CurrencyExchangeService;
-import mirogaudi.demo.productcatalog.service.impl.CurrencyExchangeServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,11 +39,6 @@ public class ApplicationConfig {
     public RatesServiceConnector ratesServiceConnector(Supplier<URI> ratesServiceUri,
                                                        RestTemplate restTemplate) {
         return new FrankfurterRatesServiceConnector(ratesServiceUri, restTemplate);
-    }
-
-    @Bean
-    public CurrencyExchangeService currencyExchangeService(RatesServiceConnector ratesServiceConnector) {
-        return new CurrencyExchangeServiceImpl(ratesServiceConnector);
     }
 
 }
