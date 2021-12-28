@@ -39,8 +39,8 @@
 
 
 - Test application or check API with:
-    - Swagger UI [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-    - OpenAPI [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+    - Swagger UI [http://localhost:8080/pcs/swagger-ui/index.html](http://localhost:8080/pcs/swagger-ui/index.html)
+    - OpenAPI [http://localhost:8080/pcs/v3/api-docs](http://localhost:8080/pcs/v3/api-docs)
 
 ### Description
 
@@ -65,7 +65,7 @@
     - DB is initialized with Flyway
         - DB schema [V1__init_schema.sql](./src/main/resources/db/migration/V1__init_schema.sql)
         - Initial data [V2__insert_data.sql](./src/main/resources/db/migration/V2__insert_data.sql)
-    - H2 console [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
+    - H2 console [http://localhost:8080/pcs/h2-console](http://localhost:8080/pcs/h2-console)
         - JDBC URL: `jdbc:h2:mem:test`
         - User Name: `test`
         - Password: `test`
@@ -76,11 +76,11 @@ For details see [application.properties](./src/main/resources/application.proper
 
 - Base currency
   ```properties
-  base.currency.code=EUR
+  pcs.base.currency.code=EUR
   ```
 - Currency exchange rates service
   ```properties
-  rates.service.url=https://frankfurter.app
+  pcs.rates.service.url=https://frankfurter.app
   ```
 
 ### Maintenance
@@ -120,8 +120,8 @@ For details see [application.properties](./src/main/resources/application.proper
 - ASCII-Art for SpringBoot banner.txt was generated with [patorjk.com](http://patorjk.com/software/taag) (font Calvin S)
 
 ### TODOs:
+- use application.yml
 - use Java 17
 - use Spring WebFlux
-- check Project Reactor usage
 - check/test Circuit Breaker
 - use Docker
