@@ -1,7 +1,7 @@
 package mirogaudi.demo.productcatalog.service.impl;
 
 import mirogaudi.demo.productcatalog.connector.ConnectorRuntimeException;
-import mirogaudi.demo.productcatalog.connector.CurrencyExchangeRatesServiceConnector;
+import mirogaudi.demo.productcatalog.connector.RatesServiceConnector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,9 +15,10 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 import static java.math.BigDecimal.ONE;
+import static mirogaudi.demo.productcatalog.testhelper.Currencies.EUR;
+import static mirogaudi.demo.productcatalog.testhelper.Currencies.USD;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -25,12 +26,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CurrencyExchangeServiceImplTest {
 
-    private static final Currency EUR = Currency.getInstance("EUR");
-    private static final Currency USD = Currency.getInstance("USD");
-    private static final Currency CNY = Currency.getInstance("CNY");
-
     @Mock
-    private CurrencyExchangeRatesServiceConnector currencyExchangeRatesServiceConnector;
+    private RatesServiceConnector ratesServiceConnector;
 
     @InjectMocks
     private CurrencyExchangeServiceImpl sut;
@@ -39,21 +36,21 @@ class CurrencyExchangeServiceImplTest {
     @NullSource
     void convert_null_amount(BigDecimal amount) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.convert(amount, EUR, USD));
+                () -> sut.convert(amount, USD, EUR));
     }
 
     @ParameterizedTest
     @NullSource
     void convert_null_fromCurrency(Currency fromCurrency) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.convert(ONE, fromCurrency, USD));
+                () -> sut.convert(ONE, fromCurrency, EUR));
     }
 
     @ParameterizedTest
     @NullSource
     void convert_null_toCurrency(Currency toCurrency) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.convert(ONE, EUR, toCurrency));
+                () -> sut.convert(ONE, USD, toCurrency));
     }
 
     @Test
@@ -66,33 +63,34 @@ class CurrencyExchangeServiceImplTest {
                 .expectNextMatches(convertedAmount -> amount.compareTo(convertedAmount) == 0)
                 .verifyComplete();
 
-        verifyNoInteractions(currencyExchangeRatesServiceConnector);
+        verifyNoInteractions(ratesServiceConnector);
     }
 
     @Test
     void convert_ok() {
-        when(currencyExchangeRatesServiceConnector.getCachedCurrencyExchangeRate(USD, EUR))
-                .thenReturn(BigDecimal.valueOf(0.83382));
+        BigDecimal amount = BigDecimal.valueOf(100.00);
+        BigDecimal rate = BigDecimal.valueOf(0.83382);
+        BigDecimal expectedConvertedAmount = BigDecimal.valueOf(83.382);
 
-        StepVerifier.create(sut.convert(BigDecimal.valueOf(100.00), USD, EUR))
+        when(ratesServiceConnector.getCurrencyExchangeRate(USD, EUR)).thenReturn(rate);
+
+        StepVerifier.create(sut.convert(amount, USD, EUR))
                 .expectSubscription()
-                .expectNextMatches(convertedAmount -> BigDecimal.valueOf(83.382).compareTo(convertedAmount) == 0)
+                .expectNextMatches(convertedAmount -> expectedConvertedAmount.compareTo(convertedAmount) == 0)
                 .verifyComplete();
 
-        verify(currencyExchangeRatesServiceConnector).getCachedCurrencyExchangeRate(USD, EUR);
-        verify(currencyExchangeRatesServiceConnector, never()).getCurrencyExchangeRate(any(Currency.class), any(Currency.class));
+        verify(ratesServiceConnector).getCurrencyExchangeRate(USD, EUR);
     }
 
     @Test
     void convert_not_ok() {
-        when(currencyExchangeRatesServiceConnector.getCachedCurrencyExchangeRate(any(Currency.class), any(Currency.class)))
+        when(ratesServiceConnector.getCurrencyExchangeRate(any(Currency.class), any(Currency.class)))
                 .thenThrow(new ConnectorRuntimeException("ConnectorRuntimeException", new Exception()));
 
-        StepVerifier.create(sut.convert(ONE, CNY, EUR))
+        StepVerifier.create(sut.convert(ONE, USD, EUR))
                 .verifyError(ConnectorRuntimeException.class);
 
-        verify(currencyExchangeRatesServiceConnector).getCachedCurrencyExchangeRate(CNY, EUR);
-        verify(currencyExchangeRatesServiceConnector, never()).getCurrencyExchangeRate(any(Currency.class), any(Currency.class));
+        verify(ratesServiceConnector).getCurrencyExchangeRate(USD, EUR);
     }
 
 }

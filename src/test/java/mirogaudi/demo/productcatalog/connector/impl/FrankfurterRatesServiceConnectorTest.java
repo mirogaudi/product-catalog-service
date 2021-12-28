@@ -1,7 +1,7 @@
-package mirogaudi.demo.productcatalog.connector;
+package mirogaudi.demo.productcatalog.connector.impl;
 
-import mirogaudi.demo.productcatalog.connector.impl.FrankfurterRatesServiceConnectorImpl;
-import mirogaudi.demo.productcatalog.connector.impl.FrankfurterRatesServiceConnectorImpl.FrankfurterCurrencyExchangeRates;
+import mirogaudi.demo.productcatalog.connector.ConnectorRuntimeException;
+import mirogaudi.demo.productcatalog.connector.impl.FrankfurterRatesServiceConnector.RatesWrapper;
 import org.assertj.core.util.Maps;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +18,8 @@ import java.net.URI;
 import java.util.Currency;
 import java.util.function.Supplier;
 
+import static mirogaudi.demo.productcatalog.testhelper.Currencies.EUR;
+import static mirogaudi.demo.productcatalog.testhelper.Currencies.USD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,13 +30,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class FrankfurterRatesServiceConnectorImplTest {
+class FrankfurterRatesServiceConnectorTest {
 
     private static final String SERVICE_URL = "https://service";
     private static final String SERVICE_PATH = SERVICE_URL + "/latest";
-
-    private static final Currency USD = Currency.getInstance("USD");
-    private static final Currency EUR = Currency.getInstance("EUR");
 
     @Mock
     private Supplier<URI> serviceUri;
@@ -42,7 +41,7 @@ class FrankfurterRatesServiceConnectorImplTest {
     private RestTemplate restTemplate;
 
     @InjectMocks
-    private FrankfurterRatesServiceConnectorImpl sut;
+    private FrankfurterRatesServiceConnector sut;
 
     @ParameterizedTest
     @NullSource
@@ -64,7 +63,7 @@ class FrankfurterRatesServiceConnectorImplTest {
 
         double expectedRate = Double.parseDouble("0.89952");
         when(restTemplate.getForObject(anyString(), any()))
-                .thenReturn(FrankfurterCurrencyExchangeRates.builder()
+                .thenReturn(RatesWrapper.builder()
                         .rates(Maps.newHashMap(EUR, expectedRate))
                         .build()
                 );
@@ -72,7 +71,7 @@ class FrankfurterRatesServiceConnectorImplTest {
         BigDecimal actualRate = sut.getCurrencyExchangeRate(USD, EUR);
         assertEquals(expectedRate, actualRate.doubleValue());
 
-        verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(FrankfurterCurrencyExchangeRates.class));
+        verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(RatesWrapper.class));
         verify(serviceUri).get();
     }
 
@@ -87,7 +86,7 @@ class FrankfurterRatesServiceConnectorImplTest {
                 sut.getCurrencyExchangeRate(USD, EUR)
         );
 
-        verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(FrankfurterCurrencyExchangeRates.class));
+        verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(RatesWrapper.class));
         verify(serviceUri).get();
     }
 

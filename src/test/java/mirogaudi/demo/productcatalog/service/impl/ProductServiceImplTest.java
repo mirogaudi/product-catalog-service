@@ -24,6 +24,8 @@ import java.util.function.Supplier;
 
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.TEN;
+import static mirogaudi.demo.productcatalog.testhelper.Currencies.EUR;
+import static mirogaudi.demo.productcatalog.testhelper.Currencies.USD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,9 +35,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
-
-    private static final Currency USD = Currency.getInstance("USD");
-    private static final Currency EUR = Currency.getInstance("EUR");
 
     @Mock
     private Supplier<Currency> baseCurrency;
@@ -84,7 +83,7 @@ class ProductServiceImplTest {
         when(categoryService.find(categoryId)).thenReturn(new Category());
 
         BigDecimal originalPrice = TEN;
-        when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(Mono.just(ONE));
+        when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(Mono.fromCallable(() -> ONE));
 
         Product expectedProduct = new Product();
         when(productRepository.save(any())).thenReturn(expectedProduct);
@@ -151,7 +150,7 @@ class ProductServiceImplTest {
         when(categoryService.find(categoryId)).thenReturn(new Category());
 
         BigDecimal originalPrice = TEN;
-        when(currencyExchangeService.convert(originalPrice, EUR, EUR)).thenReturn(Mono.just(ONE));
+        when(currencyExchangeService.convert(originalPrice, EUR, EUR)).thenReturn(Mono.fromCallable(() -> TEN));
 
         Product expectedProduct = new Product();
         when(productRepository.save(any())).thenReturn(expectedProduct);

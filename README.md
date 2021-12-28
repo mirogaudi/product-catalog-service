@@ -38,7 +38,9 @@
     - Or run `mirogaudi.demo.productcatalog.Application` in an IDE
 
 
-- Test application or check API with Swagger UI [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+- Test application or check API with:
+    - Swagger UI [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+    - OpenAPI [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 
 ### Description
 
@@ -56,7 +58,7 @@
         - Rates are cached with Caffeine during a period of their validity
         - Cache eviction is scheduled to `16:01 CET MON-FRI`  
           *(Since Frankfurter refresh rates around 16:00 CET every working day)*
-        - Frankfurter REST API calls are decorated with circuit breaker (Resilience4j) and use Spring RestTemplate
+        - Frankfurter REST API call is decorated with circuit breaker (Resilience4j) and uses Spring RestTemplate
 
 
 - Application uses an in-memory H2 DB
@@ -76,9 +78,9 @@ For details see [application.properties](./src/main/resources/application.proper
   ```properties
   base.currency.code=EUR
   ```
-- Currency exchange service
+- Currency exchange rates service
   ```properties
-  currency.exchange.service.url=https://frankfurter.app
+  rates.service.url=https://frankfurter.app
   ```
 
 ### Maintenance
@@ -101,16 +103,16 @@ For details see [application.properties](./src/main/resources/application.proper
   $ ./mvnw versions:display-parent-updates
 ```
 
-- Check for maven dependencies updates
-
-```shell
-  $ ./mvnw versions:display-dependency-updates
-```
-
 - Check for maven property-linked dependencies updates
 
 ```shell
   $ ./mvnw versions:display-property-updates
+```
+
+- Check for maven dependencies updates
+
+```shell
+  $ ./mvnw versions:display-dependency-updates
 ```
 
 ### Misc
@@ -118,7 +120,8 @@ For details see [application.properties](./src/main/resources/application.proper
 - ASCII-Art for SpringBoot banner.txt was generated with [patorjk.com](http://patorjk.com/software/taag) (font Calvin S)
 
 ### TODOs:
-
-- use Reactor in CurrencyExchangeRatesServiceConnector
-- use spring-cloud-starter-circuitbreaker-reactor-resilience4j
+- use Java 17
+- use Spring WebFlux
+- check Project Reactor usage
+- check/test Circuit Breaker
 - use Docker

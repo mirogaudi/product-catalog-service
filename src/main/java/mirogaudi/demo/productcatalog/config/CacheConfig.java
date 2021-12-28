@@ -1,7 +1,10 @@
 package mirogaudi.demo.productcatalog.config;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,14 +14,19 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class CacheConfig {
 
-    public static final String CURRENCY_EXCHANGE_RATES = "currencyExchangeRates";
+    public static final String RATES_CACHE_NAME = "rates";
+
+    @Bean
+    public CacheManager cacheManager() {
+        return new CaffeineCacheManager(RATES_CACHE_NAME);
+    }
 
     @Scheduled(
-            cron = "${currency.exchange.rates.cache.evict.cron}",
-            zone = "${currency.exchange.rates.cache.evict.zone}"
+            cron = "${rates.cache.evict.cron}",
+            zone = "${rates.cache.evict.zone}"
     )
-    @CacheEvict(value = CURRENCY_EXCHANGE_RATES, allEntries = true)
-    public void evictCurrencyExchangeRatesCache() {
+    @CacheEvict(value = RATES_CACHE_NAME, allEntries = true)
+    public void evictRatesCache() {
         // do nothing
     }
 
