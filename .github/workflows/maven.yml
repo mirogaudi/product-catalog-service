@@ -22,7 +22,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: maven
 
       - name: Build with Maven Wrapper
         run: ./mvnw -B package -Pcode-coverage-report

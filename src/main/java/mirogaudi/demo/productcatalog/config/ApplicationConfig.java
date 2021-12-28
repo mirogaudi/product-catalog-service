@@ -1,7 +1,5 @@
 package mirogaudi.demo.productcatalog.config;
 
-import mirogaudi.demo.productcatalog.connector.RatesServiceConnector;
-import mirogaudi.demo.productcatalog.connector.impl.FrankfurterRatesServiceConnector;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +12,10 @@ import java.util.function.Supplier;
 @Configuration
 public class ApplicationConfig {
 
-    @Value("${base.currency.code:EUR}")
+    @Value("${pcs.base.currency.code:EUR}")
     private String baseCurrencyCode;
 
-    @Value("${rates.service.url}")
+    @Value("${pcs.rates.service.url}")
     private String ratesServiceUrl;
 
     @Bean
@@ -33,12 +31,6 @@ public class ApplicationConfig {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
-    }
-
-    @Bean
-    public RatesServiceConnector ratesServiceConnector(Supplier<URI> ratesServiceUri,
-                                                       RestTemplate restTemplate) {
-        return new FrankfurterRatesServiceConnector(ratesServiceUri, restTemplate);
     }
 
 }

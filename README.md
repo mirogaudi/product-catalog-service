@@ -10,12 +10,12 @@
 - Maven Wrapper
 - Spring Boot
 - Spring Web MVC
-- Project Reactor
-- Spring Cloud Circuit Breaker (Resilience4j)
 - Spring Cache (Caffeine)
 - Spring Data JPA
 - Flyway DB migration tool
 - H2 in-memory DB
+- Project Reactor
+- Resilience4j
 - Lombok
 - OpenAPI 3 & Swagger UI (springdoc-openapi)
 - JUnit Jupiter

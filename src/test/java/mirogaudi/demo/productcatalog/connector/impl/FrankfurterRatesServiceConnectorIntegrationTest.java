@@ -1,8 +1,6 @@
 package mirogaudi.demo.productcatalog.connector.impl;
 
-import mirogaudi.demo.productcatalog.config.ApplicationConfig;
-import mirogaudi.demo.productcatalog.config.CacheConfig;
-import mirogaudi.demo.productcatalog.connector.RatesServiceConnector;
+import mirogaudi.demo.productcatalog.Application;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +21,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = {
-        ApplicationConfig.class,
-        CacheConfig.class
-})
-class RatesServiceConnectorIntegrationTest {
+@SpringBootTest(classes = {Application.class})
+class FrankfurterRatesServiceConnectorIntegrationTest {
 
     @Autowired
-    private RatesServiceConnector ratesServiceConnector;
+    private FrankfurterRatesServiceConnector ratesServiceConnector;
     @Autowired
     private CacheManager cacheManager;
 
@@ -40,7 +35,7 @@ class RatesServiceConnectorIntegrationTest {
     }
 
     @Test
-    void getCurrencyExchangeRate() {
+    void getCurrencyExchangeRate_Cacheable() {
         SimpleKey key = new SimpleKey(USD, EUR);
 
         assertTrue(getCache().isPresent());

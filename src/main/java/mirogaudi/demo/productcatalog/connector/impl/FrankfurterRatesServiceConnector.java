@@ -12,7 +12,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -35,7 +34,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
     private final Supplier<URI> serviceUri;
     private final RestTemplate restTemplate;
 
-    @CircuitBreaker(name = "frankfurterRatesService", fallbackMethod = "fallbackConvert")
+    @CircuitBreaker(name = "ratesService", fallbackMethod = "fallbackGetCurrencyExchangeRate")
     @Cacheable(value = RATES_CACHE_NAME)
     @Override
     public BigDecimal getCurrencyExchangeRate(@NonNull Currency fromCurrency,
@@ -57,7 +56,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
                     "No currency exchange rate obtained converting from %s to %s", fromCurrency, toCurrency));
 
             return BigDecimal.valueOf(rate);
-        } catch (RestClientException e) {
+        } catch (Exception e) {
             throw new ConnectorRuntimeException(String.format(
                     "Failed to obtain currency exchange rate from '%s' to '%s'.",
                     fromCurrency, toCurrency
@@ -65,9 +64,9 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
         }
     }
 
-    private BigDecimal fallbackConvert(Currency fromCurrency,
-                                       Currency toCurrency,
-                                       Throwable throwable) {
+    private BigDecimal fallbackGetCurrencyExchangeRate(Currency fromCurrency,
+                                                       Currency toCurrency,
+                                                       Throwable throwable) {
         var message = String.format(
                 "CircuitBreaker fallback called attempting to get currency exchange rate from '%s' to '%s'.",
                 fromCurrency, toCurrency
