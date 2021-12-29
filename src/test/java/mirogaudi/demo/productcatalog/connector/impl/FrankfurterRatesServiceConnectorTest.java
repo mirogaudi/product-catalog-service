@@ -1,7 +1,7 @@
 package mirogaudi.demo.productcatalog.connector.impl;
 
 import mirogaudi.demo.productcatalog.connector.ConnectorRuntimeException;
-import mirogaudi.demo.productcatalog.connector.impl.FrankfurterRatesServiceConnector.RatesWrapper;
+import mirogaudi.demo.productcatalog.connector.impl.FrankfurterRatesServiceConnector.FrankfurterRates;
 import org.assertj.core.util.Maps;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,7 +63,7 @@ class FrankfurterRatesServiceConnectorTest {
 
         double expectedRate = Double.parseDouble("0.89952");
         when(restTemplate.getForObject(anyString(), any()))
-                .thenReturn(RatesWrapper.builder()
+                .thenReturn(FrankfurterRates.builder()
                         .rates(Maps.newHashMap(EUR, expectedRate))
                         .build()
                 );
@@ -71,7 +71,7 @@ class FrankfurterRatesServiceConnectorTest {
         BigDecimal actualRate = sut.getCurrencyExchangeRate(USD, EUR);
         assertEquals(expectedRate, actualRate.doubleValue());
 
-        verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(RatesWrapper.class));
+        verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(FrankfurterRates.class));
         verify(serviceUri).get();
     }
 
@@ -82,11 +82,11 @@ class FrankfurterRatesServiceConnectorTest {
         when(restTemplate.getForObject(anyString(), any()))
                 .thenThrow(new RestClientException("error"));
 
-        assertThrows(ConnectorRuntimeException.class, () ->
-                sut.getCurrencyExchangeRate(USD, EUR)
+        assertThrows(ConnectorRuntimeException.class,
+                () -> sut.getCurrencyExchangeRate(USD, EUR)
         );
 
-        verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(RatesWrapper.class));
+        verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(FrankfurterRates.class));
         verify(serviceUri).get();
     }
 

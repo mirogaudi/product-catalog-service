@@ -120,8 +120,8 @@ For details see [application.properties](./src/main/resources/application.proper
 - ASCII-Art for SpringBoot banner.txt was generated with [patorjk.com](http://patorjk.com/software/taag) (font Calvin S)
 
 ### TODOs:
+
 - use application.yml
 - use Java 17
 - use Spring WebFlux
-- check/test Circuit Breaker
 - use Docker

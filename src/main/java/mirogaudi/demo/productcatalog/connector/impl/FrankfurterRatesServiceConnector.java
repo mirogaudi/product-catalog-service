@@ -34,7 +34,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
     private final Supplier<URI> serviceUri;
     private final RestTemplate restTemplate;
 
-    @CircuitBreaker(name = "ratesService", fallbackMethod = "fallbackGetCurrencyExchangeRate")
+    @CircuitBreaker(name = "backendFrankfurter", fallbackMethod = "fallbackGetCurrencyExchangeRate")
     @Cacheable(value = RATES_CACHE_NAME)
     @Override
     public BigDecimal getCurrencyExchangeRate(@NonNull Currency fromCurrency,
@@ -47,18 +47,19 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
                     .queryParam("to", toCurrency.getCurrencyCode())
                     .toUriString();
 
-            RatesWrapper response = restTemplate.getForObject(url, RatesWrapper.class);
+            FrankfurterRates response = restTemplate.getForObject(url, FrankfurterRates.class);
             Assert.state(response != null, String.format(
-                    "No API response obtained from URL: %s", url));
+                    "No response obtained calling Frankfurter rates service API: %s", url));
 
             Double rate = response.getRates().get(toCurrency);
             Assert.state(rate != null, String.format(
-                    "No currency exchange rate obtained converting from %s to %s", fromCurrency, toCurrency));
+                    "No %s to %s rate obtained calling Frankfurter rates service API.",
+                    fromCurrency, toCurrency));
 
             return BigDecimal.valueOf(rate);
         } catch (Exception e) {
             throw new ConnectorRuntimeException(String.format(
-                    "Failed to obtain currency exchange rate from '%s' to '%s'.",
+                    "Failed to obtain %s to %s rate from Frankfurter rates service.",
                     fromCurrency, toCurrency
             ), e);
         }
@@ -67,18 +68,16 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
     private BigDecimal fallbackGetCurrencyExchangeRate(Currency fromCurrency,
                                                        Currency toCurrency,
                                                        Throwable throwable) {
-        var message = String.format(
-                "CircuitBreaker fallback called attempting to get currency exchange rate from '%s' to '%s'.",
+        throw new ConnectorRuntimeException(String.format(
+                "Circuit breaker fallback called trying to obtain %s to %s rate from Frankfurter rates service.",
                 fromCurrency, toCurrency
-        );
-
-        LOG.error(message);
-        throw new ConnectorRuntimeException(message, throwable);
+        ), throwable);
     }
 
     @Value
     @Builder
-    public static class RatesWrapper {
+    public static class FrankfurterRates {
+        Currency base;
         Map<Currency, Double> rates;
     }
 

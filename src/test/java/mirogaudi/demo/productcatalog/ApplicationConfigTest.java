@@ -1,5 +1,6 @@
 package mirogaudi.demo.productcatalog;
 
+import io.github.resilience4j.common.circuitbreaker.configuration.CircuitBreakerConfigCustomizer;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ class ApplicationConfigTest {
         assertNotNull(context.getBean("restTemplate"));
 
         assertNotNull(context.getBean(CacheManager.class));
-
+        assertNotNull(context.getBean(CircuitBreakerConfigCustomizer.class));
         assertNotNull(context.getBean(OpenAPI.class));
     }
 
