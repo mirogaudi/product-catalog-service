@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 @Configuration
 public class ApplicationConfig {
 
-    @Value("${pcs.base.currency.code:EUR}")
+    @Value("${pcs.base-currency-code:EUR}")
     private String baseCurrencyCode;
 
     @Value("${pcs.rates.service.url}")

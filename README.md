@@ -33,7 +33,7 @@
   ```
 - Start application
   ```shell
-  $ java -jar target/product-catalog-service-0.0.1-SNAPSHOT.jar
+  $ java -jar target/product-catalog-service-1.0.0.jar
   ```
     - Or run `mirogaudi.demo.productcatalog.Application` in an IDE
 
@@ -72,11 +72,11 @@
 
 ### Configuration
 
-For details see [application.properties](./src/main/resources/application.properties)
+For details see [application.yml](./src/main/resources/application.yml)
 
 - Base currency
   ```properties
-  pcs.base.currency.code=EUR
+  pcs.base-currency-code=EUR
   ```
 - Currency exchange rates service
   ```properties
