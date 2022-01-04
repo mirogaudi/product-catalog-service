@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>mirogaudi.demo</groupId>
+    <groupId>mirogaudi</groupId>
     <artifactId>product-catalog-service</artifactId>
     <version>1.0.0</version>
 
@@ -166,10 +166,10 @@
                 <executions>
                     <execution>
                         <id>enforce</id>
-                        <phase>validate</phase>
                         <goals>
                             <goal>enforce</goal>
                         </goals>
+                        <phase>validate</phase>
                     </execution>
                 </executions>
                 <configuration combine.children="append">
@@ -212,9 +212,6 @@
     <profiles>
         <profile>
             <id>code-coverage-report</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <reporting>
                 <plugins>
                     <plugin>

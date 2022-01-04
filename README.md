@@ -1,6 +1,7 @@
 ![JaCoCo](https://img.shields.io/github/languages/top/mirogaudi/product-catalog-service)
 ![JaCoCo](https://img.shields.io/github/workflow/status/mirogaudi/product-catalog-service/Java%20CI%20with%20Maven)
 ![JaCoCo](./.github/badges/jacoco.svg)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Demo Product Catalog Service with REST API
 
@@ -20,15 +21,16 @@
 - OpenAPI 3 & Swagger UI (springdoc-openapi)
 - JUnit Jupiter
 - Mockito
+- JaCoCo
 
 ### Getting started
 
-- Build with Maven
-  ```shell
-  $ ./mvnw clean package
-  ```
-- Build profiles
-    - `code-coverage-report` generates code coverage report (activated by default)
+#### Maven build
+
+```shell
+# Build with Maven wrapper
+$ ./mvnw clean package
+```
 
 - Start application
   ```shell
@@ -36,42 +38,49 @@
   ```
     - Or run `mirogaudi.demo.productcatalog.Application` in an IDE
 
+- Or just run `Application` in an IDE
 
-- Test application or check API with:
-    - Swagger UI [http://localhost:8080/pcs/swagger-ui/index.html](http://localhost:8080/pcs/swagger-ui/index.html)
-    - OpenAPI [http://localhost:8080/pcs/v3/api-docs](http://localhost:8080/pcs/v3/api-docs)
+#### Test / check application API
+
+- Swagger UI [http://localhost:8080/pcs/swagger-ui/index.html](http://localhost:8080/pcs/swagger-ui/index.html)
+- OpenAPI [http://localhost:8080/pcs/v3/api-docs](http://localhost:8080/pcs/v3/api-docs)
 
 ### Description
 
-- Application is a demo of a categorized product catalog with simplified logic and DB schema
-    - Categories are multilevel *(i.e. Computers <- Notebooks <- Tablets)*
-    - Product can relate to multiple categories *(i.e. MacBook relates to Notebooks and Apple)*
-    - Product prices are stored in original and base currency *(i.e. original price in USD and calculated price in EUR)*
+Application is a demo of a product catalog with a simplified logic.
+
+#### Database
+
+- Application DB stores categorized products
+    - Categories are multilevel *(i.e. `Computers` <-- `Notebooks` <-- `Tablets`)*
+    - Products can relate to multiple categories *(i.e. `MacBook` relates to `Notebook` and to `Apple`)*
+    - Product prices are stored in original and base currency *(i.e. original price in `USD` and calculated price
+      in `EUR`)*
 
 
-- Application functionality:
-    - CRUD operations for Categories
-    - CRUD operations for Products
-    - Category and Product services are @Transactional to avoid race condition
-    - Application gets currency exchange rates from Frankfurter [https://frankfurter.app](https://frankfurter.app)
-        - Rates are cached with Caffeine during a period of their validity
-        - Cache eviction is scheduled to `16:01 CET MON-FRI`  
-          *(Since Frankfurter refresh rates around 16:00 CET every working day)*
-        - Frankfurter REST API call is decorated with circuit breaker (Resilience4j) and uses Spring RestTemplate
+- DB is initialized with Flyway
+    - [V1__init_schema.sql](./src/main/resources/db/migration/V1__init_schema.sql) (DB schema)
+    - [V2__insert_data.sql](./src/main/resources/db/migration/V2__insert_data.sql) (initial data)
 
 
-- Application uses an in-memory H2 DB
-    - DB is initialized with Flyway
-        - [V1__init_schema.sql](./src/main/resources/db/migration/V1__init_schema.sql) (DB schema)
-        - [V2__insert_data.sql](./src/main/resources/db/migration/V2__insert_data.sql) (initial data)
+- Application uses H2 in-memory DB
     - H2 console [http://localhost:8080/pcs/h2-console](http://localhost:8080/pcs/h2-console)
         - JDBC URL: `jdbc:h2:mem:test`
         - User Name: `test`
         - Password: `test`
 
+#### Functionality
+
+- Application implements CRUD operations for Categories and Products
+- Category and Product services are @Transactional to avoid race condition
+- Application gets currency exchange rates from Frankfurter [https://frankfurter.app](https://frankfurter.app)
+    - Frankfurter REST API is called via Spring `RestTemplate` and decorated with Resilience4j `CircuitBreaker`
+- Rates are cached with `Caffeine` during a period of their validity
+    - Cache eviction is scheduled to `16:01 CET MON-FRI`
+
 ### Configuration
 
-- See configuration in [application.yml](./src/main/resources/application.yml):
+See configuration in [application.yml](./src/main/resources/application.yml):
 
 ```yaml
 # Product-catalog-service (pcs)
@@ -87,41 +96,37 @@ pcs:
       zone: CET
 ```
 
+### Code quality
+
+Build with Maven wrapper generating JaCoCo code coverage [report](./target/site/jacoco/index.html):
+
+```shell
+$ ./mvnw clean package -Pcode-coverage-report
+```
+
 ### Maintenance
 
-- Update maven wrapper
-
 ```shell
-  $ mvn -N io.takari:maven:wrapper
-```
+# Update Maven wrapper
+$ ./mvnw -N io.takari:maven:wrapper
 
-- Check for maven plugins updates
+# Check for Maven plugins updates
+$ ./mvnw versions:display-plugin-updates
 
-```shell
-  $ ./mvnw versions:display-plugin-updates
-```
+# Check for Maven parent updates
+$ ./mvnw versions:display-parent-updates
 
-- Check for maven parent updates
+# Check for Maven property-linked dependencies updates
+$ ./mvnw versions:display-property-updates
 
-```shell
-  $ ./mvnw versions:display-parent-updates
-```
-
-- Check for maven property-linked dependencies updates
-
-```shell
-  $ ./mvnw versions:display-property-updates
-```
-
-- Check for maven dependencies updates
-
-```shell
-  $ ./mvnw versions:display-dependency-updates
+# Check for Maven dependencies updates
+$ ./mvnw versions:display-dependency-updates
 ```
 
 ### Misc
 
-- ASCII-Art for SpringBoot banner.txt was generated with [patorjk.com](http://patorjk.com/software/taag) (font Calvin S)
+- Repository is licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
+- ASCII-Art for SpringBoot banner.txt is generated with [patorjk.com](http://patorjk.com/software/taag) (font Calvin S)
 
 ### TODO:
 
