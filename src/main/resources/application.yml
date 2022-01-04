@@ -32,10 +32,12 @@ springdoc.swagger-ui:
   tags-sorter: alpha
   operations-sorter: alpha
 
-# App settings
+# Product catalog service (pcs)
 pcs:
+  # Base currency
   base-currency-code: EUR
 
+  # Rates service
   rates:
     service.url: https://frankfurter.app
     cache.evict:

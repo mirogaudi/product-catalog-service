@@ -23,14 +23,13 @@
 
 ### Getting started
 
-- Build with Maven Wrapper
+- Build with Maven
   ```shell
   $ ./mvnw clean package
   ```
-- Generate code coverage report
-  ```shell
-  $ ./mvnw clean package -Pcode-coverage-report
-  ```
+- Build profiles
+    - `code-coverage-report` generates code coverage report (activated by default)
+
 - Start application
   ```shell
   $ java -jar target/product-catalog-service-1.0.0.jar
@@ -45,8 +44,8 @@
 ### Description
 
 - Application is a demo of a categorized product catalog with simplified logic and DB schema
-    - Categories are multilevel *(i.e Computers <- Notebooks <- Tablets)*
-    - Product can relate to multiple categories *(i.e MacBook relates to Notebooks and Apple)*
+    - Categories are multilevel *(i.e. Computers <- Notebooks <- Tablets)*
+    - Product can relate to multiple categories *(i.e. MacBook relates to Notebooks and Apple)*
     - Product prices are stored in original and base currency *(i.e. original price in USD and calculated price in EUR)*
 
 
@@ -63,8 +62,8 @@
 
 - Application uses an in-memory H2 DB
     - DB is initialized with Flyway
-        - DB schema [V1__init_schema.sql](./src/main/resources/db/migration/V1__init_schema.sql)
-        - Initial data [V2__insert_data.sql](./src/main/resources/db/migration/V2__insert_data.sql)
+        - [V1__init_schema.sql](./src/main/resources/db/migration/V1__init_schema.sql) (DB schema)
+        - [V2__insert_data.sql](./src/main/resources/db/migration/V2__insert_data.sql) (initial data)
     - H2 console [http://localhost:8080/pcs/h2-console](http://localhost:8080/pcs/h2-console)
         - JDBC URL: `jdbc:h2:mem:test`
         - User Name: `test`
@@ -72,16 +71,21 @@
 
 ### Configuration
 
-For details see [application.yml](./src/main/resources/application.yml)
+- See configuration in [application.yml](./src/main/resources/application.yml):
 
-- Base currency
-  ```properties
-  pcs.base-currency-code=EUR
-  ```
-- Currency exchange rates service
-  ```properties
-  pcs.rates.service.url=https://frankfurter.app
-  ```
+```yaml
+# Product-catalog-service (pcs)
+pcs:
+  # Base currency
+  base-currency-code: EUR
+
+  # Rates service
+  rates:
+    service.url: https://frankfurter.app
+    cache.evict:
+      cron: 0 1 16 * * MON-FRI
+      zone: CET
+```
 
 ### Maintenance
 
@@ -119,9 +123,10 @@ For details see [application.yml](./src/main/resources/application.yml)
 
 - ASCII-Art for SpringBoot banner.txt was generated with [patorjk.com](http://patorjk.com/software/taag) (font Calvin S)
 
-### TODOs:
+### TODO:
 
-- use application.yml
 - use Java 17
-- use Spring WebFlux
 - use Docker
+- use Micrometer
+- use Gradle
+- use Spring WebFlux
