@@ -9,6 +9,7 @@
 
 - Java 17
 - Maven Wrapper
+- Docker
 - Spring Boot
 - Spring Web MVC
 - Spring Cache (Caffeine)
@@ -32,11 +33,26 @@
 $ ./mvnw clean package
 ```
 
-- Start application
-  ```shell
-  $ java -jar target/product-catalog-service-1.0.0.jar
-  ```
-    - Or run `mirogaudi.demo.productcatalog.Application` in an IDE
+#### Docker build
+
+```shell
+# Build docker image with Maven wrapper
+$ ./mvnw clean deploy -Pdocker
+
+# Build and tag docker image with Docker
+$ docker build -t mirogaudi/product-catalog-service:1.0.0 .
+$ docker tag mirogaudi/product-catalog-service:1.0.0 mirogaudi/product-catalog-service:latest
+```
+
+#### Run application
+
+```shell
+# Run with Java
+$ java -jar target/product-catalog-service-1.0.0.jar
+  
+# Run with Docker
+$ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/product-catalog-service:latest
+```
 
 - Or just run `Application` in an IDE
 
@@ -130,7 +146,6 @@ $ ./mvnw versions:display-dependency-updates
 
 ### TODO:
 
-- use Docker
 - use Micrometer
 - use Gradle
 - use Spring WebFlux

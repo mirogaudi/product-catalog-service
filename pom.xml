@@ -33,6 +33,7 @@
 
         <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
         <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
+        <docker-plugin.version>0.38.1</docker-plugin.version>
 
     </properties>
 
@@ -255,6 +256,47 @@
                             <groupId>org.jacoco</groupId>
                             <artifactId>jacoco-maven-plugin</artifactId>
                             <version>${jacoco-plugin.version}</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>${project.groupId}/${project.artifactId}</name>
+                                    <build>
+                                        <dockerFile>${project.basedir}/Dockerfile</dockerFile>
+                                        <tags>${project.version},latest</tags>
+                                        <cleanup>remove</cleanup>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>build</id>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>io.fabric8</groupId>
+                            <artifactId>docker-maven-plugin</artifactId>
+                            <version>${docker-plugin.version}</version>
                         </plugin>
                     </plugins>
                 </pluginManagement>
