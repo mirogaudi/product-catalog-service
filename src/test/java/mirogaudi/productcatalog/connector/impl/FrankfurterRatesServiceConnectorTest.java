@@ -63,10 +63,7 @@ class FrankfurterRatesServiceConnectorTest {
 
         double expectedRate = Double.parseDouble("0.89952");
         when(restTemplate.getForObject(anyString(), any()))
-                .thenReturn(FrankfurterRates.builder()
-                        .rates(Maps.newHashMap(EUR, expectedRate))
-                        .build()
-                );
+                .thenReturn(new FrankfurterRates(USD, Maps.newHashMap(EUR, expectedRate)));
 
         BigDecimal actualRate = sut.getCurrencyExchangeRate(USD, EUR);
         assertEquals(expectedRate, actualRate.doubleValue());

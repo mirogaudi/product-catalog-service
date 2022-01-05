@@ -1,10 +1,8 @@
 package mirogaudi.productcatalog.connector.impl;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import mirogaudi.productcatalog.connector.ConnectorRuntimeException;
 import mirogaudi.productcatalog.connector.RatesServiceConnector;
@@ -51,7 +49,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
             Assert.state(response != null, String.format(
                     "No response obtained calling Frankfurter rates service API: %s", url));
 
-            Double rate = response.getRates().get(toCurrency);
+            Double rate = response.rates().get(toCurrency);
             Assert.state(rate != null, String.format(
                     "No %s to %s rate obtained calling Frankfurter rates service API.",
                     fromCurrency, toCurrency));
@@ -74,11 +72,8 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
         ), throwable);
     }
 
-    @Value
-    @Builder
-    public static class FrankfurterRates {
-        Currency base;
-        Map<Currency, Double> rates;
+    protected record FrankfurterRates(Currency base,
+                                    Map<Currency, Double> rates) {
     }
 
 }

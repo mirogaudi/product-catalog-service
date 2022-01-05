@@ -1,7 +1,5 @@
 package mirogaudi.productcatalog.controller;
 
-import lombok.Builder;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import mirogaudi.productcatalog.connector.ConnectorRuntimeException;
 import org.springframework.core.NestedExceptionUtils;
@@ -74,23 +72,20 @@ public class RestControllerErrorHandler {
     }
 
     private Error error(Exception e) {
-        Error error = Error.builder()
-                .message(e.toString())
-                .cause(NestedExceptionUtils.getMostSpecificCause(e).toString())
-                .timeStamp(LocalDateTime.now())
-                .build();
+        Error error = new Error(
+                e.toString(),
+                NestedExceptionUtils.getMostSpecificCause(e).toString(),
+                LocalDateTime.now()
+        );
 
-        LOG.error("Error occurred: {}", error.toString());
+        LOG.error("Error occurred: {}", error);
 
         return error;
     }
 
-    @Value
-    @Builder
-    private static class Error {
-        String message;
-        String cause;
-        LocalDateTime timeStamp;
+    private record Error(String message,
+                         String cause,
+                         LocalDateTime timeStamp) {
     }
 
 }

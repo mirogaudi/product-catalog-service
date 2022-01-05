@@ -114,7 +114,7 @@ pcs:
 
 ### Code quality
 
-Build with Maven wrapper generating JaCoCo code coverage [report](./target/site/jacoco/index.html):
+Build with Maven wrapper generating JaCoCo code coverage report (`target/site/jacoco/index.html`)
 
 ```shell
 $ ./mvnw clean package -Pcode-coverage-report
