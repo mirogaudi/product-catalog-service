@@ -20,9 +20,9 @@ spring:
     open-in-view: false
 
   datasource:
-    url: jdbc:h2:mem:test
-    username: test
-    password: test
+    url: jdbc:h2:mem:pcs
+    username: sa
+    password:
 
   h2.console:
     enabled: true

@@ -1,9 +1,13 @@
-![JaCoCo](https://img.shields.io/github/languages/top/mirogaudi/product-catalog-service)
-![JaCoCo](https://img.shields.io/github/workflow/status/mirogaudi/product-catalog-service/Java%20CI%20with%20Maven)
-![JaCoCo](./.github/badges/jacoco.svg)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+![languages](https://img.shields.io/github/languages/top/mirogaudi/product-catalog-service)
+![status](https://img.shields.io/github/workflow/status/mirogaudi/product-catalog-service/Java%20CI%20with%20Maven)
+![coverage](./.github/badges/jacoco.svg)
+[![license](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Demo Product Catalog Service with REST API
+# Product Catalog Service with REST API
+
+## Description
+
+Application is a demo of a product catalog having simplified logic
 
 ### Used technologies
 
@@ -24,48 +28,23 @@
 - Mockito
 - JaCoCo
 
-### Getting started
+#### Misc
 
-#### Maven build
+- Readme budges are generated using [shields.io](https://shields.io/)
+- ASCII-Art for [SpringBoot banner](./src/main/resources/banner.txt) is generated
+  with [patorjk.com](http://patorjk.com/software/taag) (font Calvin S)
+- Repository is licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-```shell
-# Build with Maven wrapper
-$ ./mvnw clean package
-```
+### Functionality
 
-#### Docker build
+- Application implements CRUD operations for Categories and Products
+- Category and Product services are @Transactional to avoid race condition
+- Application gets currency exchange rates from Frankfurter [https://frankfurter.app](https://frankfurter.app)
+    - Frankfurter REST API is called via Spring `RestTemplate` and decorated with Resilience4j `CircuitBreaker`
+- Rates are cached with `Caffeine` during a period of their validity
+    - Cache eviction is scheduled to `16:01 CET MON-FRI`
 
-```shell
-# Build docker image with Maven wrapper
-$ ./mvnw clean deploy -Pdocker
-
-# Build and tag docker image with Docker
-$ docker build -t mirogaudi/product-catalog-service:1.0.0 .
-$ docker tag mirogaudi/product-catalog-service:1.0.0 mirogaudi/product-catalog-service:latest
-```
-
-#### Run application
-
-```shell
-# Run with Java
-$ java -jar target/product-catalog-service-1.0.0.jar
-  
-# Run with Docker
-$ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/product-catalog-service:latest
-```
-
-- Or just run `Application` in an IDE
-
-#### Test / check application API
-
-- Swagger UI [http://localhost:8080/pcs/swagger-ui/index.html](http://localhost:8080/pcs/swagger-ui/index.html)
-- OpenAPI [http://localhost:8080/pcs/v3/api-docs](http://localhost:8080/pcs/v3/api-docs)
-
-### Description
-
-Application is a demo of a product catalog with a simplified logic.
-
-#### Database
+### Database
 
 - Application DB stores categorized products
     - Categories are multilevel *(i.e. `Computers` <-- `Notebooks` <-- `Tablets`)*
@@ -75,24 +54,15 @@ Application is a demo of a product catalog with a simplified logic.
 
 
 - DB is initialized with Flyway
-    - [V1__init_schema.sql](./src/main/resources/db/migration/V1__init_schema.sql) (DB schema)
-    - [V2__insert_data.sql](./src/main/resources/db/migration/V2__insert_data.sql) (initial data)
+    - [V1__init_schema.sql](./src/main/resources/db/migration/V1__init_schema.sql)
+    - [V2__insert_data.sql](./src/main/resources/db/migration/V2__insert_data.sql)
 
 
 - Application uses H2 in-memory DB
     - H2 console [http://localhost:8080/pcs/h2-console](http://localhost:8080/pcs/h2-console)
-        - JDBC URL: `jdbc:h2:mem:test`
-        - User Name: `test`
-        - Password: `test`
-
-#### Functionality
-
-- Application implements CRUD operations for Categories and Products
-- Category and Product services are @Transactional to avoid race condition
-- Application gets currency exchange rates from Frankfurter [https://frankfurter.app](https://frankfurter.app)
-    - Frankfurter REST API is called via Spring `RestTemplate` and decorated with Resilience4j `CircuitBreaker`
-- Rates are cached with `Caffeine` during a period of their validity
-    - Cache eviction is scheduled to `16:01 CET MON-FRI`
+        - url: `jdbc:h2:mem:pcs`
+        - username: `sa`
+        - password: `<empty>`
 
 ### Configuration
 
@@ -112,15 +82,55 @@ pcs:
       zone: CET
 ```
 
-### Code quality
+## Getting started
 
-Build with Maven wrapper generating JaCoCo code coverage report (`target/site/jacoco/index.html`)
+### Maven build
 
 ```shell
+# Build with Maven wrapper
+$ ./mvnw clean package
+```
+
+### Docker build
+
+```shell
+# Build docker image with Maven wrapper
+$ ./mvnw clean deploy -Pdocker
+
+# Build and tag docker image with Docker
+$ docker build -t mirogaudi/product-catalog-service:1.0.0 .
+$ docker tag mirogaudi/product-catalog-service:1.0.0 mirogaudi/product-catalog-service:latest
+```
+
+### Run
+
+```shell
+# Run with Java
+$ java -jar target/product-catalog-service-1.0.0.jar
+  
+# Run with Docker
+$ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/product-catalog-service:latest
+```
+
+- Or just run `ProductCatalogServiceApplication` in an IDE
+
+### Test / Check API
+
+- Swagger UI: [http://localhost:8080/pcs/swagger-ui/index.html](http://localhost:8080/pcs/swagger-ui/index.html)
+- OpenAPI docs: [http://localhost:8080/pcs/v3/api-docs](http://localhost:8080/pcs/v3/api-docs)
+
+## Code quality
+
+### Code coverage
+
+```shell
+# Build with Maven wrapper generating JaCoCo report
 $ ./mvnw clean package -Pcode-coverage-report
 ```
 
-### Maintenance
+## Maintenance
+
+### Update dependencies
 
 ```shell
 # Update Maven wrapper
@@ -139,12 +149,7 @@ $ ./mvnw versions:display-property-updates
 $ ./mvnw versions:display-dependency-updates
 ```
 
-### Misc
-
-- Repository is licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
-- ASCII-Art for SpringBoot banner.txt is generated with [patorjk.com](http://patorjk.com/software/taag) (font Calvin S)
-
-### TODO:
+## TODO:
 
 - use Micrometer
 - use Gradle
