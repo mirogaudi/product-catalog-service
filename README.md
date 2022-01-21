@@ -2,7 +2,6 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/mirogaudi/product-catalog-service)
 ![GitHub maven workflow status](https://img.shields.io/github/workflow/status/mirogaudi/product-catalog-service/Java%20CI%20with%20Maven)
 ![JaCoCo coverage](./.github/badges/jacoco.svg)
-![Snyk Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/mirogaudi/product-catalog-service)
 ![GitHub license](https://img.shields.io/github/license/mirogaudi/product-catalog-service)
 
 # Product Catalog Service with REST API
@@ -55,7 +54,7 @@ Application is a demo of a product catalog having simplified logic
       in `EUR`)*
 
 - DB is initialized with Flyway
-    - [V1__init_schema.sql](./src/main/resources/db/migration/V1__init_schema.sql)
+    - [V1__create_schema.sql](./src/main/resources/db/migration/V1__create_schema.sql)
     - [V2__insert_data.sql](./src/main/resources/db/migration/V2__insert_data.sql)
 
 - Application uses H2 in-memory DB
@@ -124,8 +123,15 @@ $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/p
 ### Code coverage
 
 ```shell
-# Build with Maven wrapper generating JaCoCo report
+# Build with Maven wrapper generating JaCoCo code coverage report
 $ ./mvnw clean package -Pcode-coverage-report
+```
+
+### Dependencies vulnerabilities
+
+```shell
+# Build with Maven wrapper generating OWASP dependency vulnerability report
+$ ./mvnw clean package -Pdependency-vulnerability-report
 ```
 
 ## Maintenance
