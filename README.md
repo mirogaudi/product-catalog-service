@@ -1,7 +1,9 @@
-![languages](https://img.shields.io/github/languages/top/mirogaudi/product-catalog-service)
-![status](https://img.shields.io/github/workflow/status/mirogaudi/product-catalog-service/Java%20CI%20with%20Maven)
-![coverage](./.github/badges/jacoco.svg)
-[![license](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+![Lines of code](https://img.shields.io/tokei/lines/github/mirogaudi/product-catalog-service)
+![GitHub top language](https://img.shields.io/github/languages/top/mirogaudi/product-catalog-service)
+![GitHub maven workflow status](https://img.shields.io/github/workflow/status/mirogaudi/product-catalog-service/Java%20CI%20with%20Maven)
+![JaCoCo coverage](./.github/badges/jacoco.svg)
+![Snyk Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/mirogaudi/product-catalog-service)
+![GitHub license](https://img.shields.io/github/license/mirogaudi/product-catalog-service)
 
 # Product Catalog Service with REST API
 
@@ -52,11 +54,9 @@ Application is a demo of a product catalog having simplified logic
     - Product prices are stored in original and base currency *(i.e. original price in `USD` and calculated price
       in `EUR`)*
 
-
 - DB is initialized with Flyway
     - [V1__init_schema.sql](./src/main/resources/db/migration/V1__init_schema.sql)
     - [V2__insert_data.sql](./src/main/resources/db/migration/V2__insert_data.sql)
-
 
 - Application uses H2 in-memory DB
     - H2 console [http://localhost:8080/pcs/h2-console](http://localhost:8080/pcs/h2-console)
