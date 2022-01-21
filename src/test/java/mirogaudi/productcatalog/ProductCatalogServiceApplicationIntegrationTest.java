@@ -10,8 +10,8 @@ import org.springframework.context.ApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(classes = {Application.class})
-class ApplicationConfigTest {
+@SpringBootTest(classes = {ProductCatalogServiceApplication.class})
+class ProductCatalogServiceApplicationIntegrationTest {
 
     @Autowired
     private ApplicationContext context;

@@ -1,6 +1,6 @@
 package mirogaudi.productcatalog.connector.impl;
 
-import mirogaudi.productcatalog.Application;
+import mirogaudi.productcatalog.ProductCatalogServiceApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = {Application.class})
+@SpringBootTest(classes = {ProductCatalogServiceApplication.class})
 class FrankfurterRatesServiceConnectorIntegrationTest {
 
     @Autowired

@@ -1,6 +1,6 @@
 package mirogaudi.productcatalog.connector.impl;
 
-import mirogaudi.productcatalog.Application;
+import mirogaudi.productcatalog.ProductCatalogServiceApplication;
 import mirogaudi.productcatalog.connector.ConnectorRuntimeException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import static mirogaudi.productcatalog.testhelper.Currencies.USD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest(classes = {Application.class}, properties = {"pcs.rates.service.url=https://invalid.url"})
+@SpringBootTest(classes = {ProductCatalogServiceApplication.class}, properties = {"pcs.rates.service.url=https://invalid.url"})
 class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
 
     @Autowired
