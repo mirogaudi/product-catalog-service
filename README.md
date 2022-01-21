@@ -48,7 +48,7 @@ Application is a demo of a product catalog having simplified logic
 ### Database
 
 - Application DB stores categorized products
-    - Categories are multilevel *(i.e. `Computers` <-- `Notebooks` <-- `Tablets`)*
+    - Categories are multilevel *(i.e. `Computers` <-- `Portable computers` <-- `Tablets`)*
     - Products can relate to multiple categories *(i.e. `MacBook` relates to `Notebook` and to `Apple`)*
     - Product prices are stored in original and base currency *(i.e. original price in `USD` and calculated price
       in `EUR`)*
