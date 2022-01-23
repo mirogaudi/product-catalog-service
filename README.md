@@ -1,7 +1,7 @@
 ![Lines of code](https://img.shields.io/tokei/lines/github/mirogaudi/product-catalog-service)
 ![GitHub top language](https://img.shields.io/github/languages/top/mirogaudi/product-catalog-service)
 ![GitHub maven workflow status](https://img.shields.io/github/workflow/status/mirogaudi/product-catalog-service/Java%20CI%20with%20Maven)
-![JaCoCo coverage](./.github/badges/jacoco.svg)
+![JaCoCo coverage](.github/badges/jacoco.svg)
 ![GitHub license](https://img.shields.io/github/license/mirogaudi/product-catalog-service)
 
 # Product Catalog Service with REST API
@@ -13,8 +13,7 @@ Application is a demo of a product catalog having simplified logic
 ### Used technologies
 
 - Java 17
-- Maven Wrapper
-- Docker
+- Maven (wrapper)
 - Spring Boot
 - Spring Web MVC
 - Spring Cache (Caffeine)
@@ -24,6 +23,7 @@ Application is a demo of a product catalog having simplified logic
 - Project Reactor
 - Resilience4j
 - Lombok
+- Docker
 - OpenAPI 3 & Swagger UI (springdoc-openapi)
 - JUnit Jupiter
 - Mockito
@@ -32,14 +32,14 @@ Application is a demo of a product catalog having simplified logic
 #### Misc
 
 - Readme budges are generated using [shields.io](https://shields.io/)
-- ASCII-Art for [SpringBoot banner](./src/main/resources/banner.txt) is generated
+- ASCII-Art for [SpringBoot banner](src/main/resources/banner.txt) is generated
   with [patorjk.com](http://patorjk.com/software/taag) (font Calvin S)
 - Repository is licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ### Functionality
 
 - Application implements CRUD operations for Categories and Products
-- Category and Product services are @Transactional to avoid race condition
+- Category and Product services are `@Transactional` to avoid race condition
 - Application gets currency exchange rates from Frankfurter [https://frankfurter.app](https://frankfurter.app)
     - Frankfurter REST API is called via Spring `RestTemplate` and decorated with Resilience4j `CircuitBreaker`
 - Rates are cached with `Caffeine` during a period of their validity
@@ -54,8 +54,9 @@ Application is a demo of a product catalog having simplified logic
       in `EUR`)*
 
 - DB is initialized with Flyway
-    - [V1__create_schema.sql](./src/main/resources/db/migration/V1__create_schema.sql)
-    - [V2__insert_data.sql](./src/main/resources/db/migration/V2__insert_data.sql)
+    - [V1__create_schema.sql](src/main/resources/db/migration/V1__create_schema.sql) (initially generated with Spring
+      Data JPA, for details see [application.yml](src/main/resources/application.yml))
+    - [V2__insert_data.sql](src/main/resources/db/migration/V2__insert_data.sql)
 
 - Application uses H2 in-memory DB
     - H2 console [http://localhost:8080/pcs/h2-console](http://localhost:8080/pcs/h2-console)
@@ -65,7 +66,7 @@ Application is a demo of a product catalog having simplified logic
 
 ### Configuration
 
-See configuration in [application.yml](./src/main/resources/application.yml):
+See configuration in [application.yml](src/main/resources/application.yml):
 
 ```yaml
 # Product-catalog-service (pcs)
@@ -158,5 +159,4 @@ $ ./mvnw versions:display-dependency-updates
 ## TODO:
 
 - use Micrometer
-- use Gradle
 - use Spring WebFlux
