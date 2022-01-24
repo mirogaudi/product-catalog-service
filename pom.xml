@@ -314,6 +314,9 @@
                                     <name>${project.groupId}/${project.artifactId}</name>
                                     <build>
                                         <dockerFile>${project.basedir}/Dockerfile</dockerFile>
+                                        <args>
+                                            <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                                        </args>
                                         <tags>${project.version},latest</tags>
                                         <cleanup>remove</cleanup>
                                     </build>

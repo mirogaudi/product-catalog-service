@@ -2,7 +2,8 @@
 
 FROM bellsoft/liberica-openjdk-alpine:17
 VOLUME /tmp
-COPY target/*.jar app.jar
+ARG JAR_FILE
+COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
 LABEL org.opencontainers.image.authors="mirogaudi@ya.ru" \
     org.opencontainers.image.url="https://github.com/mirogaudi/product-catalog-service" \

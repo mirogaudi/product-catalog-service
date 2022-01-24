@@ -52,12 +52,10 @@ Application is a demo of a product catalog having simplified logic
     - Products can relate to multiple categories *(i.e. `MacBook` relates to `Notebook` and to `Apple`)*
     - Product prices are stored in original and base currency *(i.e. original price in `USD` and calculated price
       in `EUR`)*
-
 - DB is initialized with Flyway
     - [V1__create_schema.sql](src/main/resources/db/migration/V1__create_schema.sql) (initially generated with Spring
       Data JPA, for details see [application.yml](src/main/resources/application.yml))
     - [V2__insert_data.sql](src/main/resources/db/migration/V2__insert_data.sql)
-
 - Application uses H2 in-memory DB
     - H2 console [http://localhost:8080/pcs/h2-console](http://localhost:8080/pcs/h2-console)
         - url: `jdbc:h2:mem:pcs`
@@ -95,7 +93,7 @@ $ ./mvnw clean package
 
 ```shell
 # Build docker image with Maven wrapper
-$ ./mvnw clean deploy -Pdocker
+$ ./mvnw clean package -Pdocker
 
 # Build and tag docker image with Docker
 $ docker build -t mirogaudi/product-catalog-service:1.0.0 .
