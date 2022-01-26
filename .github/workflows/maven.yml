@@ -29,6 +29,7 @@ jobs:
         uses: cicirello/jacoco-badge-generator@v2
         with:
           generate-coverage-badge: false
+          generate-branches-badge: false
           generate-coverage-endpoint: true
           generate-branches-endpoint: true
 
