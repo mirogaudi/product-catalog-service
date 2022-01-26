@@ -57,10 +57,6 @@ Application is a demo of a product catalog having simplified logic
       Data JPA, for details see [application.yml](src/main/resources/application.yml))
     - [V2__insert_data.sql](src/main/resources/db/migration/V2__insert_data.sql)
 - Application uses H2 in-memory DB
-    - H2 console [http://localhost:8080/pcs/h2-console](http://localhost:8080/pcs/h2-console)
-        - url: `jdbc:h2:mem:pcs`
-        - username: `sa`
-        - password: `<empty>`
 
 ### Configuration
 
@@ -92,12 +88,12 @@ $ ./mvnw clean package
 ### Docker build
 
 ```shell
-# Build docker image with Maven wrapper
-$ ./mvnw clean package -Pdocker
-
-# Build and tag docker image with Docker
+# Build and tag docker image with Docker (requires artifacts to be already built)
 $ docker build -t mirogaudi/product-catalog-service:1.0.0 .
 $ docker tag mirogaudi/product-catalog-service:1.0.0 mirogaudi/product-catalog-service:latest
+
+# Build docker image with Maven wrapper
+$ ./mvnw clean package -Pdocker
 ```
 
 ### Run
@@ -112,10 +108,17 @@ $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/p
 
 - Or just run `ProductCatalogServiceApplication` in an IDE
 
-### Test / Check API
+### View and try API
 
-- Swagger UI: [http://localhost:8080/pcs/swagger-ui/index.html](http://localhost:8080/pcs/swagger-ui/index.html)
 - OpenAPI docs: [http://localhost:8080/pcs/v3/api-docs](http://localhost:8080/pcs/v3/api-docs)
+- Swagger UI: [http://localhost:8080/pcs/swagger-ui/index.html](http://localhost:8080/pcs/swagger-ui/index.html)
+
+### View DB
+
+- H2 console [http://localhost:8080/pcs/h2-console](http://localhost:8080/pcs/h2-console)
+    - url: `jdbc:h2:mem:pcs`
+    - username: `sa`
+    - password: `<empty>`
 
 ## Code quality
 
