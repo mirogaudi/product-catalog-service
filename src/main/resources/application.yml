@@ -6,23 +6,16 @@ spring:
   application.name: product-catalog-service
 
   jpa:
-    # Uncomment to generate DB schema script with Spring Data JPA on startup
-    #properties.javax.persistence.schema-generation:
-    #  create-source: metadata
-    #  scripts:
-    #    action: create
-    #    create-target: src/main/resources/db/migration/V1__create_schema.sql
-    #generate-ddl: true
-
-    hibernate:ddl-auto: validate
-
+    generate-ddl: false
     open-in-view: false
+
+    hibernate.ddl-auto: validate
 
   datasource:
     driverClassName: org.h2.Driver
     url: jdbc:h2:mem:pcs
     username: sa
-    password:
+    password: # empty
 
   h2.console:
     enabled: true
