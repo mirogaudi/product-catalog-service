@@ -59,7 +59,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> createProduct(
             @Parameter(description = "Product name")
-            @Size(min = 3, max = 64)
+            @Size(min = 3, max = 256)
             @RequestParam String name,
 
             @Parameter(description = "Product original price")
@@ -94,6 +94,7 @@ public class ProductController {
             @PathVariable Long id,
 
             @Parameter(description = "Product name")
+            @Size(min = 3, max = 256)
             @RequestParam String name,
 
             @Parameter(description = "Product original price")

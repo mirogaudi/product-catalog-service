@@ -55,7 +55,7 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<Category> createCategory(
             @Parameter(description = "Category name")
-            @Size(min = 3, max = 64)
+            @Size(min = 3, max = 128)
             @RequestParam String name,
 
             @Parameter(description = "Parent category ID")
@@ -78,7 +78,7 @@ public class CategoryController {
             @PathVariable Long id,
 
             @Parameter(description = "Category name")
-            @Size(min = 3, max = 64)
+            @Size(min = 3, max = 128)
             @RequestParam String name,
 
             @Parameter(description = "Parent category ID")

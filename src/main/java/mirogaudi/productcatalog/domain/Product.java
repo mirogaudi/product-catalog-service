@@ -2,71 +2,101 @@ package mirogaudi.productcatalog.domain;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static javax.persistence.FetchType.EAGER;
 
 /**
  * Simplified product entity, has {@link ManyToMany} relationship to a multilevel {@link Category}.
  */
 @Entity
-@Data
-public class Product {
+@Table(name = "product")
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true, callSuper = true)
+public class Product extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     @NotNull
-    @Size(min = 3, max = 64)
+    @Size(min = 3, max = 256)
+    @ToString.Include
     private String name;
 
     // price in base currency
-    @Column(nullable = false)
+    @Column(name = "price", nullable = false)
     @NotNull
+    @ToString.Include
     private BigDecimal price;
 
     // base currency ISO 4217 code
-    @Column(nullable = false)
+    @Column(name = "currency", nullable = false)
     @NotNull
     @Size(min = 3, max = 3)
+    @ToString.Include
     private String currency;
 
     // price in original currency
-    @Column(nullable = false)
+    @Column(name = "original_price", nullable = false)
     @NotNull
+    @ToString.Include
     private BigDecimal originalPrice;
 
     // original currency ISO 4217 code
-    @Column(nullable = false)
+    @Column(name = "original_currency", nullable = false)
     @NotNull
     @Size(min = 3, max = 3)
+    @ToString.Include
     private String originalCurrency;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = EAGER)
+    @JoinTable(name = "product_category",
+            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
     @NotNull
     @NotEmpty
     @JsonIgnore
-    private List<Category> category;
+    private List<Category> category = new ArrayList<>();
 
     @JsonGetter
+    @ToString.Include
     public List<Long> getCategoryIds() {
         return category.stream()
                 .map(Category::getId)
                 .toList();
+    }
+
+    /**
+     * Sets categories converting given immutable category list into mutable one to meet Hibernate expectations.
+     */
+    public void setCategory(List<Category> category) {
+        this.category = new ArrayList<>(category);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 
 }
