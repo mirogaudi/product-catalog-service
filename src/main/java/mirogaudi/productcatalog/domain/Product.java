@@ -79,6 +79,7 @@ public class Product extends BaseEntity {
     public List<Long> getCategoryIds() {
         return category.stream()
                 .map(Category::getId)
+                .sorted()
                 .toList();
     }
 

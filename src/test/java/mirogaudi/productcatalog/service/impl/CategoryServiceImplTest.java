@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +32,7 @@ class CategoryServiceImplTest {
 
     @Test
     void findAll() {
-        when(categoryRepository.findAll()).thenReturn(Collections.emptyList());
+        when(categoryRepository.findAll()).thenReturn(List.of());
 
         var categories = sut.findAll();
         verify(categoryRepository).findAll();

@@ -15,8 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.Currency;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -49,7 +49,7 @@ class ProductServiceImplTest {
 
     @Test
     void findAll() {
-        when(productRepository.findAll()).thenReturn(Collections.emptyList());
+        when(productRepository.findAll()).thenReturn(List.of());
 
         var products = sut.findAll();
         verify(productRepository).findAll();

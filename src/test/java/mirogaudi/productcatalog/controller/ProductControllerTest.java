@@ -10,9 +10,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Currency;
+import java.util.List;
 import java.util.Set;
 
 import static java.math.BigDecimal.TEN;
@@ -47,7 +46,7 @@ class ProductControllerTest {
     void findAllProducts() throws Exception {
         Product product = product(1L, "product", CATEGORY);
 
-        given(productService.findAll()).willReturn(Collections.singletonList(product));
+        given(productService.findAll()).willReturn(List.of(product));
 
         mockMvc.perform(get(API_PRODUCTS + "/")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -183,7 +182,7 @@ class ProductControllerTest {
         product.setName(name);
         product.setOriginalPrice(TEN);
         product.setOriginalCurrency(EUR.getCurrencyCode());
-        product.setCategory(Arrays.asList(categories));
+        product.setCategory(List.of(categories));
 
         return product;
     }

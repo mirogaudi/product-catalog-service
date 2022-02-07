@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Collections;
+import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -39,7 +39,7 @@ class CategoryControllerTest {
         Category topCategory = category(1L, "topCategory", null);
         Category subCategory = category(2L, "subCategory", topCategory);
 
-        given(categoryService.findAll()).willReturn(Collections.singletonList(subCategory));
+        given(categoryService.findAll()).willReturn(List.of(subCategory));
 
         mockMvc.perform(get(API_CATEGORIES)
                         .contentType(MediaType.APPLICATION_JSON))
