@@ -32,16 +32,16 @@ class ProductRepositoryIntegrationTest {
 
     @Test
     void entityIsInitialized() {
-        Optional<Product> product = productRepository.findById(1L);
-        assertTrue(product.isPresent());
+        assertTrue(productRepository.findById(1L).isPresent());
     }
 
     @Test
     void categoryEagerLoadEnabled() {
-        Optional<Product> product = productRepository.findById(1L);
-        assertTrue(product.isPresent());
+        Optional<Product> productOptional = productRepository.findById(1L);
+        assertTrue(productOptional.isPresent());
 
-        product.get().getCategory().forEach(category ->
+        Product product = productOptional.get();
+        product.getCategory().forEach(category ->
                 assertFalse(HibernateProxy.class.isAssignableFrom(category.getClass()))
         );
     }

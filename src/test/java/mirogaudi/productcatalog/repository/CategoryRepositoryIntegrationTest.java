@@ -24,17 +24,17 @@ class CategoryRepositoryIntegrationTest {
 
     @Test
     void entityIsInitialized() {
-        Optional<Category> topCategory = categoryRepository.findById(1L);
-
-        assertTrue(topCategory.isPresent());
+        assertTrue(categoryRepository.findById(1L).isPresent());
     }
 
     @Test
     void parentLazyLoadEnabled() {
-        Optional<Category> subCategory = categoryRepository.findById(2L);
+        Optional<Category> subCategoryOptional = categoryRepository.findById(2L);
+        assertTrue(subCategoryOptional.isPresent());
 
-        assertTrue(subCategory.isPresent());
-        assertTrue(HibernateProxy.class.isAssignableFrom(subCategory.get().getParent().getClass()));
+        Category subCategory = subCategoryOptional.get();
+        assertNotNull(subCategory.getParent());
+        assertTrue(HibernateProxy.class.isAssignableFrom(subCategory.getParent().getClass()));
     }
 
     @Test

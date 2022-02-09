@@ -231,8 +231,7 @@ class ProductServiceImplTest {
     @Test
     void delete() {
         Long id = 1L;
-        Product product = new Product();
-        when(productRepository.findById(id)).thenReturn(Optional.of(product));
+        when(productRepository.existsById(id)).thenReturn(true);
 
         sut.delete(id);
         verify(productRepository).deleteById(id);
@@ -248,7 +247,7 @@ class ProductServiceImplTest {
     @Test
     void delete_invalid_id() {
         Long id = 1L;
-        when(productRepository.findById(id)).thenReturn(Optional.empty());
+        when(productRepository.existsById(id)).thenReturn(false);
 
         assertThrows(IllegalStateException.class,
                 () -> sut.delete(id));

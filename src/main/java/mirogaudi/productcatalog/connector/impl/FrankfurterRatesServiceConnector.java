@@ -73,7 +73,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
     }
 
     protected record FrankfurterRates(Currency base,
-                                    Map<Currency, Double> rates) {
+                                      Map<Currency, Double> rates) {
     }
 
 }

@@ -165,8 +165,7 @@ class CategoryServiceImplTest {
     @Test
     void delete() {
         Long id = 1L;
-        Category category = category();
-        when(categoryRepository.findById(id)).thenReturn(Optional.of(category));
+        when(categoryRepository.existsById(id)).thenReturn(true);
 
         sut.delete(id);
         verify(categoryRepository).deleteById(id);
@@ -182,7 +181,7 @@ class CategoryServiceImplTest {
     @Test
     void delete_invalid_id() {
         Long id = 1L;
-        when(categoryRepository.findById(id)).thenReturn(Optional.empty());
+        when(categoryRepository.existsById(id)).thenReturn(false);
 
         assertThrows(IllegalStateException.class,
                 () -> sut.delete(id));
