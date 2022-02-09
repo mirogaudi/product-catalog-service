@@ -70,9 +70,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void delete(@NonNull Long id) {
-        Category category = find(id);
-        Assert.state(category != null, String.format(
-                "Category with id '%d' not found", id));
+        Assert.state(categoryRepository.existsById(id), String.format(
+                "Category with id '%d' does not exist", id));
 
         categoryRepository.deleteById(id);
     }

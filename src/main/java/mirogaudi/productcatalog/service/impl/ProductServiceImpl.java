@@ -105,9 +105,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void delete(@NonNull Long id) {
-        Product product = find(id);
-        Assert.state(product != null, String.format(
-                "Product with id '%d' not found", id));
+        Assert.state(productRepository.existsById(id), String.format(
+                "Product with id '%d' does not exist", id));
 
         productRepository.deleteById(id);
     }
