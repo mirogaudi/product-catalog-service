@@ -2,10 +2,15 @@ package mirogaudi.productcatalog.controller;
 
 import mirogaudi.productcatalog.domain.Category;
 import mirogaudi.productcatalog.service.CategoryService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.ConcurrencyFailureException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -13,7 +18,9 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -33,6 +40,11 @@ class CategoryControllerTest {
 
     @MockBean
     private CategoryService categoryService;
+
+    @AfterEach
+    void tearDown() {
+        reset(categoryService);
+    }
 
     @Test
     void findAllCategories() throws Exception {
@@ -76,6 +88,43 @@ class CategoryControllerTest {
     }
 
     @Test
+    void getCategory_badRequest() throws Exception {
+        var id = "abc";
+
+        mockMvc.perform(get(API_CATEGORIES + "/" + id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verify(categoryService, never()).find(any());
+    }
+
+    @ParameterizedTest
+    @ValueSource(classes = {
+            ConcurrencyFailureException.class,
+            DataIntegrityViolationException.class
+    })
+    void getCategory_conflict(Class<? extends Throwable> clazz) throws Exception {
+        var id = 1L;
+
+        given(categoryService.find(id)).willThrow(clazz);
+
+        mockMvc.perform(get(API_CATEGORIES + "/" + id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    void getCategory_internalServerError() throws Exception {
+        var id = 1L;
+
+        given(categoryService.find(id)).willThrow(IllegalStateException.class);
+
+        mockMvc.perform(get(API_CATEGORIES + "/" + id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
     void createCategory() throws Exception {
         Category category = category(1L, "category", null);
 
@@ -89,8 +138,6 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$.name", is(category.getName())))
                 .andExpect(jsonPath("$.parentId").isEmpty());
         verify(categoryService).create(category.getName(), null);
-
-        reset(categoryService);
     }
 
     @Test
@@ -107,8 +154,17 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$.name", is(category.getName())))
                 .andExpect(jsonPath("$.parentId").isEmpty());
         verify(categoryService).update(category.getId(), category.getName(), null);
+    }
 
-        reset(categoryService);
+    @Test
+    void updateCategory_badRequest() throws Exception {
+        var id = 1L;
+        var invalidName = "c";
+
+        mockMvc.perform(put(API_CATEGORIES + "/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("name", invalidName))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -119,8 +175,6 @@ class CategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(categoryService).delete(category.getId());
-
-        reset(categoryService);
     }
 
     static Category category(Long id, String name, Category parent) {

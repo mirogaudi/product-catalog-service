@@ -59,15 +59,13 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> createProduct(
             @Parameter(description = "Product name")
-            @Size(min = 3, max = 256)
-            @RequestParam String name,
+            @RequestParam @Size(min = 3, max = 256) String name,
 
             @Parameter(description = "Product original price")
             @RequestParam BigDecimal originalPrice,
 
-            @Parameter(description = "Product original currency ISO code", schema = @Schema(
-                    allowableValues = {"EUR", "USD", "CNY", "KRW", "JPY"}
-            ))
+            @Parameter(description = "Product original currency ISO code",
+                    schema = @Schema(allowableValues = {"EUR", "USD", "CNY", "KRW", "JPY"}))
             @RequestParam String originalCurrency,
 
             @Parameter(description = "Product category ID")
@@ -94,15 +92,13 @@ public class ProductController {
             @PathVariable Long id,
 
             @Parameter(description = "Product name")
-            @Size(min = 3, max = 256)
-            @RequestParam String name,
+            @RequestParam @Size(min = 3, max = 256) String name,
 
             @Parameter(description = "Product original price")
             @RequestParam BigDecimal originalPrice,
 
-            @Parameter(description = "Product original currency ISO code", schema = @Schema(
-                    allowableValues = {"EUR", "USD", "CNY", "KRW", "JPY"}
-            ))
+            @Parameter(description = "Product original currency ISO code",
+                    schema = @Schema(allowableValues = {"EUR", "USD", "CNY", "KRW", "JPY"}))
             @RequestParam String originalCurrency,
 
             @Parameter(description = "Product category ID")

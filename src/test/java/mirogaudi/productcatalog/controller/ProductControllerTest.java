@@ -1,8 +1,10 @@
 package mirogaudi.productcatalog.controller;
 
+import mirogaudi.productcatalog.connector.ConnectorRuntimeException;
 import mirogaudi.productcatalog.domain.Category;
 import mirogaudi.productcatalog.domain.Product;
 import mirogaudi.productcatalog.service.ProductService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -41,6 +43,11 @@ class ProductControllerTest {
 
     @MockBean
     private ProductService productService;
+
+    @AfterEach
+    void tearDown() {
+        reset(productService);
+    }
 
     @Test
     void findAllProducts() throws Exception {
@@ -114,8 +121,48 @@ class ProductControllerTest {
                 Currency.getInstance(product.getOriginalCurrency()),
                 categoryIds
         );
+    }
 
-        reset(productService);
+    @Test
+    void createProduct_badGateway() throws Exception {
+        Product product = product(1L, "product", CATEGORY);
+
+        var categoryIds = Set.of(CATEGORY.getId());
+        given(productService.create(
+                product.getName(),
+                product.getOriginalPrice(),
+                Currency.getInstance(product.getOriginalCurrency()),
+                categoryIds
+        )).willThrow(ConnectorRuntimeException.class);
+
+        mockMvc.perform(post(API_PRODUCTS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("name", product.getName())
+                        .param("originalPrice", product.getOriginalPrice().toString())
+                        .param("originalCurrency", product.getOriginalCurrency())
+                        .param("categoryId", CATEGORY_ID.toString()))
+                .andExpect(status().isBadGateway());
+    }
+
+    @Test
+    void createProduct_internalServerError() throws Exception {
+        Product product = product(1L, "product", CATEGORY);
+
+        var categoryIds = Set.of(CATEGORY.getId());
+        given(productService.create(
+                product.getName(),
+                product.getOriginalPrice(),
+                Currency.getInstance(product.getOriginalCurrency()),
+                categoryIds
+        )).willThrow(RuntimeException.class);
+
+        mockMvc.perform(post(API_PRODUCTS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("name", product.getName())
+                        .param("originalPrice", product.getOriginalPrice().toString())
+                        .param("originalCurrency", product.getOriginalCurrency())
+                        .param("categoryId", CATEGORY_ID.toString()))
+                .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -150,8 +197,6 @@ class ProductControllerTest {
                 Currency.getInstance(product.getOriginalCurrency()),
                 categoryIds
         );
-
-        reset(productService);
     }
 
     @Test
@@ -162,8 +207,6 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(productService).delete(product.getId());
-
-        reset(productService);
     }
 
     private static Category category(Long id, String name) {
