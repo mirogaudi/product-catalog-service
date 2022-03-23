@@ -36,7 +36,7 @@
 
         <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
         <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
-        <dependency-check-plugin.version>6.5.3</dependency-check-plugin.version>
+        <dependency-check-plugin.version>7.0.1</dependency-check-plugin.version>
         <docker-plugin.version>0.39.1</docker-plugin.version>
 
     </properties>
@@ -218,7 +218,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.9.1</version>
+                    <version>3.11.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
