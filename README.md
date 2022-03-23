@@ -163,6 +163,5 @@ $ ./mvnw versions:display-dependency-updates
 ## TODO:
 
 - use static code analysis (Detekt/Findbugs/PMD/Checkstyle)
-- use Dependabot
 - use Micrometer
 - use Spring WebFlux
