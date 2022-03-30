@@ -1,9 +1,12 @@
 /* Categories */
 insert into category (name, parent_id)
-values ('Computers', null),
-       ('Portable computers', (select id from category where name = 'Computers')),
-       ('Tablets', (select id from category where name = 'Portable computers')),
-       ('Apple', null);
+values ('Computers', null);
+insert into category (name, parent_id)
+values ('Portable computers', (select id from category where name = 'Computers'));
+insert into category (name, parent_id)
+values ('Tablets', (select id from category where name = 'Portable computers'));
+insert into category (name, parent_id)
+values ('Apple', null);
 
 /* Products */
 insert into product (name, price, currency, original_price, original_currency)
