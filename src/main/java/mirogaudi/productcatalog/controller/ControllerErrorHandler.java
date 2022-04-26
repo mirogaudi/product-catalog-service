@@ -34,7 +34,7 @@ public class ControllerErrorHandler {
         ConstraintViolationException.class
     })
     public ResponseEntity<Error> requestErrorHandler(Exception e) {
-        return errorResponseEntity(e, BAD_REQUEST);
+        return errorResponseEntity(BAD_REQUEST, e);
     }
 
     @ExceptionHandler({
@@ -42,31 +42,31 @@ public class ControllerErrorHandler {
         DataIntegrityViolationException.class
     })
     public ResponseEntity<Error> conflictErrorHandler(Exception e) {
-        return errorResponseEntity(e, CONFLICT);
+        return errorResponseEntity(CONFLICT, e);
     }
 
     @ExceptionHandler({
         IllegalStateException.class
     })
     public ResponseEntity<Error> internalErrorHandler(Exception e) {
-        return errorResponseEntity(e, INTERNAL_SERVER_ERROR);
+        return errorResponseEntity(INTERNAL_SERVER_ERROR, e);
     }
 
     @ExceptionHandler({
         ConnectorRuntimeException.class
     })
     public ResponseEntity<Error> connectorErrorHandler(Exception e) {
-        return errorResponseEntity(e, BAD_GATEWAY);
+        return errorResponseEntity(BAD_GATEWAY, e);
     }
 
     @ExceptionHandler({
         Throwable.class
     })
     public ResponseEntity<Error> defaultErrorHandler(Throwable t) {
-        return errorResponseEntity(t, INTERNAL_SERVER_ERROR);
+        return errorResponseEntity(INTERNAL_SERVER_ERROR, t);
     }
 
-    private ResponseEntity<Error> errorResponseEntity(Throwable t, HttpStatus status) {
+    private ResponseEntity<Error> errorResponseEntity(HttpStatus status, Throwable t) {
         Error error = new Error(
             LocalDateTime.now(),
             status.value(),
