@@ -3,7 +3,6 @@ package mirogaudi.productcatalog.controller;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.extern.slf4j.Slf4j;
 import mirogaudi.productcatalog.connector.ConnectorRuntimeException;
-import org.springframework.core.NestedExceptionUtils;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -70,8 +69,8 @@ public class ControllerErrorHandler {
         Error error = new Error(
             LocalDateTime.now(),
             status.value(),
-            t.toString(),
-            NestedExceptionUtils.getMostSpecificCause(t).toString()
+            status.getReasonPhrase(),
+            t.toString()
         );
 
         LOG.error("Error occurred: {}", error);
@@ -83,7 +82,7 @@ public class ControllerErrorHandler {
                          LocalDateTime timestamp,
                          int status,
                          String error,
-                         String cause) {
+                         String message) {
     }
 
 }
