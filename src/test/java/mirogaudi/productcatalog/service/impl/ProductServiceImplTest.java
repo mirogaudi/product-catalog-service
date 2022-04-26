@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -52,6 +53,7 @@ class ProductServiceImplTest {
         when(productRepository.findAll()).thenReturn(List.of());
 
         var products = sut.findAll();
+
         verify(productRepository).findAll();
         assertTrue(products.isEmpty());
     }
@@ -63,6 +65,7 @@ class ProductServiceImplTest {
         when(productRepository.findById(id)).thenReturn(Optional.of(expectedProduct));
 
         Product product = sut.find(id);
+
         verify(productRepository).findById(id);
         assertEquals(expectedProduct, product);
     }
@@ -71,7 +74,7 @@ class ProductServiceImplTest {
     @NullSource
     void find_null_id(Long id) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.find(id));
+            () -> sut.find(id));
     }
 
     @Test
@@ -87,44 +90,61 @@ class ProductServiceImplTest {
         Product expectedProduct = new Product();
         when(productRepository.save(any())).thenReturn(expectedProduct);
 
-        Product createdProduct = sut.create(
-                "name",
-                originalPrice, USD,
-                Set.of(categoryId));
+        Product createdProduct = sut.create("name", originalPrice, USD, Set.of(categoryId));
+
         verify(currencyExchangeService).convert(originalPrice, USD, EUR);
         verify(productRepository).save(any());
         assertEquals(expectedProduct, createdProduct);
+    }
+
+    @Test
+    void create_null_converted_price() {
+        when(baseCurrency.get()).thenReturn(EUR);
+
+        BigDecimal originalPrice = TEN;
+        when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(Mono.fromCallable(() -> null));
+
+        Set<Long> categories = Set.of();
+
+        assertThrows(IllegalStateException.class,
+            () -> sut.create("name", originalPrice, USD, categories));
+
+        verify(currencyExchangeService).convert(originalPrice, USD, EUR);
+        verify(productRepository, never()).save(any());
     }
 
     @ParameterizedTest
     @NullSource
     void create_null_name(String name) {
         var categoryIds = Set.of(1L);
+
         assertThrows(IllegalArgumentException.class,
-                () -> sut.create(name, TEN, USD, categoryIds));
+            () -> sut.create(name, TEN, USD, categoryIds));
     }
 
     @ParameterizedTest
     @NullSource
     void create_null_originalPrice(BigDecimal originalPrice) {
         var categoryIds = Set.of(1L);
+
         assertThrows(IllegalArgumentException.class,
-                () -> sut.create("name", originalPrice, USD, categoryIds));
+            () -> sut.create("name", originalPrice, USD, categoryIds));
     }
 
     @ParameterizedTest
     @NullSource
     void create_null_originalCurrency(Currency originalCurrency) {
         var categoryIds = Set.of(1L);
+
         assertThrows(IllegalArgumentException.class,
-                () -> sut.create("name", TEN, originalCurrency, categoryIds));
+            () -> sut.create("name", TEN, originalCurrency, categoryIds));
     }
 
     @ParameterizedTest
     @NullSource
     void create_null_categoryIds(Set<Long> categoryIds) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.create("name", TEN, USD, categoryIds));
+            () -> sut.create("name", TEN, USD, categoryIds));
     }
 
     @Test
@@ -133,8 +153,9 @@ class ProductServiceImplTest {
         when(categoryService.find(categoryId)).thenReturn(null);
 
         var categoryIds = Set.of(categoryId);
+
         assertThrows(IllegalStateException.class,
-                () -> sut.create("name", ONE, EUR, categoryIds));
+            () -> sut.create("name", ONE, EUR, categoryIds));
     }
 
     @Test
@@ -154,23 +175,40 @@ class ProductServiceImplTest {
         Product expectedProduct = new Product();
         when(productRepository.save(any())).thenReturn(expectedProduct);
 
-        Product updatedProduct = sut.update(
-                id,
-                "name",
-                originalPrice, EUR,
-                Set.of(categoryId)
-        );
+        Product updatedProduct = sut.update(id, "name", originalPrice, EUR, Set.of(categoryId));
+
         verify(currencyExchangeService).convert(originalPrice, EUR, EUR);
         verify(productRepository).save(any());
         assertEquals(expectedProduct, updatedProduct);
+    }
+
+    @Test
+    void update_null_converted_price() {
+        when(baseCurrency.get()).thenReturn(EUR);
+
+        Long id = 1L;
+        Product product = new Product();
+        when(productRepository.findById(id)).thenReturn(Optional.of(product));
+
+        BigDecimal originalPrice = TEN;
+        when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(Mono.fromCallable(() -> null));
+
+        Set<Long> categories = Set.of();
+
+        assertThrows(IllegalStateException.class,
+            () -> sut.update(id, "name", originalPrice, USD, categories));
+
+        verify(currencyExchangeService).convert(originalPrice, USD, EUR);
+        verify(productRepository, never()).save(any());
     }
 
     @ParameterizedTest
     @NullSource
     void update_null_id(Long id) {
         var categoryIds = Set.of(1L);
+
         assertThrows(IllegalArgumentException.class,
-                () -> sut.update(id, "name", TEN, USD, categoryIds));
+            () -> sut.update(id, "name", TEN, USD, categoryIds));
     }
 
     @Test
@@ -179,39 +217,43 @@ class ProductServiceImplTest {
         when(productRepository.findById(id)).thenReturn(Optional.empty());
 
         var categoryIds = Set.of(1L);
+
         assertThrows(IllegalStateException.class,
-                () -> sut.update(id, "name", ONE, EUR, categoryIds));
+            () -> sut.update(id, "name", ONE, EUR, categoryIds));
     }
 
     @ParameterizedTest
     @NullSource
     void update_null_name(String name) {
         var categoryIds = Set.of(1L);
+
         assertThrows(IllegalArgumentException.class,
-                () -> sut.update(1L, name, TEN, USD, categoryIds));
+            () -> sut.update(1L, name, TEN, USD, categoryIds));
     }
 
     @ParameterizedTest
     @NullSource
     void update_null_originalPrice(BigDecimal originalPrice) {
         var categoryIds = Set.of(1L);
+
         assertThrows(IllegalArgumentException.class,
-                () -> sut.update(1L, "name", originalPrice, USD, categoryIds));
+            () -> sut.update(1L, "name", originalPrice, USD, categoryIds));
     }
 
     @ParameterizedTest
     @NullSource
     void update_null_originalCurrency(Currency originalCurrency) {
         var categoryIds = Set.of(1L);
+
         assertThrows(IllegalArgumentException.class,
-                () -> sut.update(1L, "name", TEN, originalCurrency, categoryIds));
+            () -> sut.update(1L, "name", TEN, originalCurrency, categoryIds));
     }
 
     @ParameterizedTest
     @NullSource
     void update_null_categoryIds(Set<Long> categoryIds) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.update(1L, "name", TEN, USD, categoryIds));
+            () -> sut.update(1L, "name", TEN, USD, categoryIds));
     }
 
     @Test
@@ -224,8 +266,9 @@ class ProductServiceImplTest {
         when(categoryService.find(categoryId)).thenReturn(null);
 
         var categoryId1 = Set.of(categoryId);
+
         assertThrows(IllegalStateException.class,
-                () -> sut.update(id, "name", ONE, EUR, categoryId1));
+            () -> sut.update(id, "name", ONE, EUR, categoryId1));
     }
 
     @Test
@@ -234,6 +277,7 @@ class ProductServiceImplTest {
         when(productRepository.existsById(id)).thenReturn(true);
 
         sut.delete(id);
+
         verify(productRepository).deleteById(id);
     }
 
@@ -241,7 +285,7 @@ class ProductServiceImplTest {
     @NullSource
     void delete_null_id(Long id) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.delete(id));
+            () -> sut.delete(id));
     }
 
     @Test
@@ -250,7 +294,7 @@ class ProductServiceImplTest {
         when(productRepository.existsById(id)).thenReturn(false);
 
         assertThrows(IllegalStateException.class,
-                () -> sut.delete(id));
+            () -> sut.delete(id));
     }
 
     private Category category() {

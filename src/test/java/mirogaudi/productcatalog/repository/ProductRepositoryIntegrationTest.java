@@ -41,8 +41,8 @@ class ProductRepositoryIntegrationTest {
         assertTrue(productOptional.isPresent());
 
         Product product = productOptional.get();
-        product.getCategory().forEach(category ->
-                assertFalse(HibernateProxy.class.isAssignableFrom(category.getClass()))
+        product.getCategories().forEach(category ->
+            assertFalse(HibernateProxy.class.isAssignableFrom(category.getClass()))
         );
     }
 
@@ -55,7 +55,7 @@ class ProductRepositoryIntegrationTest {
 
         Product product = productOptional.get();
         assertNotNull(product.getName());
-        List<Category> categories = product.getCategory();
+        List<Category> categories = product.getCategories();
         assertNotNull(categories);
         assertFalse(categories.isEmpty());
 
@@ -79,7 +79,7 @@ class ProductRepositoryIntegrationTest {
         product.setCurrency(EUR.getCurrencyCode());
 
         Optional<Category> categoryOptional = categoryRepository.findById(1L);
-        categoryOptional.ifPresent(category -> product.setCategory(List.of(category)));
+        categoryOptional.ifPresent(category -> product.setCategories(List.of(category)));
 
         Set<Product> set = Set.of(product);
 

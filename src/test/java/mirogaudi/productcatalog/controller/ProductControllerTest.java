@@ -56,13 +56,13 @@ class ProductControllerTest {
         given(productService.findAll()).willReturn(List.of(product));
 
         mockMvc.perform(get(API_PRODUCTS + "/")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id").value(product.getId()))
-                .andExpect(jsonPath("$[0].name", is(product.getName())))
-                .andExpect(jsonPath("$[0].categoryIds", hasSize(1)))
-                .andExpect(jsonPath("$[0].categoryIds[0]").value(CATEGORY.getId()));
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].id").value(product.getId()))
+            .andExpect(jsonPath("$[0].name", is(product.getName())))
+            .andExpect(jsonPath("$[0].categoryIds", hasSize(1)))
+            .andExpect(jsonPath("$[0].categoryIds[0]").value(CATEGORY.getId()));
     }
 
     @Test
@@ -72,12 +72,12 @@ class ProductControllerTest {
         given(productService.find(product.getId())).willReturn(product);
 
         mockMvc.perform(get(API_PRODUCTS + "/" + product.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(product.getId()))
-                .andExpect(jsonPath("$.name", is(product.getName())))
-                .andExpect(jsonPath("$.categoryIds", hasSize(1)))
-                .andExpect(jsonPath("$.categoryIds[0]").value(CATEGORY.getId()));
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(product.getId()))
+            .andExpect(jsonPath("$.name", is(product.getName())))
+            .andExpect(jsonPath("$.categoryIds", hasSize(1)))
+            .andExpect(jsonPath("$.categoryIds[0]").value(CATEGORY.getId()));
     }
 
     @Test
@@ -87,8 +87,8 @@ class ProductControllerTest {
         given(productService.find(product.getId())).willReturn(null);
 
         mockMvc.perform(get(API_PRODUCTS + "/" + product.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -97,29 +97,29 @@ class ProductControllerTest {
 
         var categoryIds = Set.of(CATEGORY.getId());
         given(productService.create(
-                product.getName(),
-                product.getOriginalPrice(),
-                Currency.getInstance(product.getOriginalCurrency()),
-                categoryIds
+            product.getName(),
+            product.getOriginalPrice(),
+            Currency.getInstance(product.getOriginalCurrency()),
+            categoryIds
         )).willReturn(product);
 
         mockMvc.perform(post(API_PRODUCTS)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("name", product.getName())
-                        .param("originalPrice", product.getOriginalPrice().toString())
-                        .param("originalCurrency", product.getOriginalCurrency())
-                        .param("categoryId", CATEGORY_ID.toString()))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(product.getId()))
-                .andExpect(jsonPath("$.name", is(product.getName())))
-                .andExpect(jsonPath("$.categoryIds", hasSize(1)))
-                .andExpect(jsonPath("$.categoryIds[0]").value(CATEGORY.getId()));
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", product.getName())
+                .param("originalPrice", product.getOriginalPrice().toString())
+                .param("originalCurrency", product.getOriginalCurrency())
+                .param("categoryId", CATEGORY_ID.toString()))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.id").value(product.getId()))
+            .andExpect(jsonPath("$.name", is(product.getName())))
+            .andExpect(jsonPath("$.categoryIds", hasSize(1)))
+            .andExpect(jsonPath("$.categoryIds[0]").value(CATEGORY.getId()));
 
         verify(productService).create(
-                product.getName(),
-                product.getOriginalPrice(),
-                Currency.getInstance(product.getOriginalCurrency()),
-                categoryIds
+            product.getName(),
+            product.getOriginalPrice(),
+            Currency.getInstance(product.getOriginalCurrency()),
+            categoryIds
         );
     }
 
@@ -129,19 +129,19 @@ class ProductControllerTest {
 
         var categoryIds = Set.of(CATEGORY.getId());
         given(productService.create(
-                product.getName(),
-                product.getOriginalPrice(),
-                Currency.getInstance(product.getOriginalCurrency()),
-                categoryIds
+            product.getName(),
+            product.getOriginalPrice(),
+            Currency.getInstance(product.getOriginalCurrency()),
+            categoryIds
         )).willThrow(ConnectorRuntimeException.class);
 
         mockMvc.perform(post(API_PRODUCTS)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("name", product.getName())
-                        .param("originalPrice", product.getOriginalPrice().toString())
-                        .param("originalCurrency", product.getOriginalCurrency())
-                        .param("categoryId", CATEGORY_ID.toString()))
-                .andExpect(status().isBadGateway());
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", product.getName())
+                .param("originalPrice", product.getOriginalPrice().toString())
+                .param("originalCurrency", product.getOriginalCurrency())
+                .param("categoryId", CATEGORY_ID.toString()))
+            .andExpect(status().isBadGateway());
     }
 
     @Test
@@ -150,19 +150,19 @@ class ProductControllerTest {
 
         var categoryIds = Set.of(CATEGORY.getId());
         given(productService.create(
-                product.getName(),
-                product.getOriginalPrice(),
-                Currency.getInstance(product.getOriginalCurrency()),
-                categoryIds
+            product.getName(),
+            product.getOriginalPrice(),
+            Currency.getInstance(product.getOriginalCurrency()),
+            categoryIds
         )).willThrow(RuntimeException.class);
 
         mockMvc.perform(post(API_PRODUCTS)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("name", product.getName())
-                        .param("originalPrice", product.getOriginalPrice().toString())
-                        .param("originalCurrency", product.getOriginalCurrency())
-                        .param("categoryId", CATEGORY_ID.toString()))
-                .andExpect(status().isInternalServerError());
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", product.getName())
+                .param("originalPrice", product.getOriginalPrice().toString())
+                .param("originalCurrency", product.getOriginalCurrency())
+                .param("categoryId", CATEGORY_ID.toString()))
+            .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -171,31 +171,31 @@ class ProductControllerTest {
 
         var categoryIds = Set.of(CATEGORY.getId());
         given(productService.update(
-                product.getId(),
-                product.getName(),
-                product.getOriginalPrice(),
-                Currency.getInstance(product.getOriginalCurrency()),
-                categoryIds
+            product.getId(),
+            product.getName(),
+            product.getOriginalPrice(),
+            Currency.getInstance(product.getOriginalCurrency()),
+            categoryIds
         )).willReturn(product);
 
         mockMvc.perform(put(API_PRODUCTS + "/" + product.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("name", product.getName())
-                        .param("originalPrice", product.getOriginalPrice().toString())
-                        .param("originalCurrency", product.getOriginalCurrency())
-                        .param("categoryId", CATEGORY_ID.toString()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(product.getId()))
-                .andExpect(jsonPath("$.name", is(product.getName())))
-                .andExpect(jsonPath("$.categoryIds", hasSize(1)))
-                .andExpect(jsonPath("$.categoryIds[0]").value(CATEGORY.getId()));
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", product.getName())
+                .param("originalPrice", product.getOriginalPrice().toString())
+                .param("originalCurrency", product.getOriginalCurrency())
+                .param("categoryId", CATEGORY_ID.toString()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(product.getId()))
+            .andExpect(jsonPath("$.name", is(product.getName())))
+            .andExpect(jsonPath("$.categoryIds", hasSize(1)))
+            .andExpect(jsonPath("$.categoryIds[0]").value(CATEGORY.getId()));
 
         verify(productService).update(
-                product.getId(),
-                product.getName(),
-                product.getOriginalPrice(),
-                Currency.getInstance(product.getOriginalCurrency()),
-                categoryIds
+            product.getId(),
+            product.getName(),
+            product.getOriginalPrice(),
+            Currency.getInstance(product.getOriginalCurrency()),
+            categoryIds
         );
     }
 
@@ -204,8 +204,8 @@ class ProductControllerTest {
         Product product = product(1L, "product", CATEGORY);
 
         mockMvc.perform(delete(API_PRODUCTS + "/" + product.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
         verify(productService).delete(product.getId());
     }
 
@@ -225,7 +225,7 @@ class ProductControllerTest {
         product.setName(name);
         product.setOriginalPrice(TEN);
         product.setOriginalCurrency(EUR.getCurrencyCode());
-        product.setCategory(List.of(categories));
+        product.setCategories(List.of(categories));
 
         return product;
     }

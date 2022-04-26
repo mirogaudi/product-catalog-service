@@ -54,12 +54,12 @@ class CategoryControllerTest {
         given(categoryService.findAll()).willReturn(List.of(subCategory));
 
         mockMvc.perform(get(API_CATEGORIES)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id").value(subCategory.getId()))
-                .andExpect(jsonPath("$[0].name", is(subCategory.getName())))
-                .andExpect(jsonPath("$[0].parentId").value(topCategory.getId()));
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].id").value(subCategory.getId()))
+            .andExpect(jsonPath("$[0].name", is(subCategory.getName())))
+            .andExpect(jsonPath("$[0].parentId").value(topCategory.getId()));
     }
 
     @Test
@@ -69,11 +69,11 @@ class CategoryControllerTest {
         given(categoryService.find(category.getId())).willReturn(category);
 
         mockMvc.perform(get(API_CATEGORIES + "/" + category.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(category.getId()))
-                .andExpect(jsonPath("$.name", is(category.getName())))
-                .andExpect(jsonPath("$.parentId").isEmpty());
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(category.getId()))
+            .andExpect(jsonPath("$.name", is(category.getName())))
+            .andExpect(jsonPath("$.parentId").isEmpty());
     }
 
     @Test
@@ -83,8 +83,8 @@ class CategoryControllerTest {
         given(categoryService.find(category.getId())).willReturn(null);
 
         mockMvc.perform(get(API_CATEGORIES + "/" + category.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -92,16 +92,16 @@ class CategoryControllerTest {
         var id = "abc";
 
         mockMvc.perform(get(API_CATEGORIES + "/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
 
         verify(categoryService, never()).find(any());
     }
 
     @ParameterizedTest
     @ValueSource(classes = {
-            ConcurrencyFailureException.class,
-            DataIntegrityViolationException.class
+        ConcurrencyFailureException.class,
+        DataIntegrityViolationException.class
     })
     void getCategory_conflict(Class<? extends Throwable> clazz) throws Exception {
         var id = 1L;
@@ -109,8 +109,8 @@ class CategoryControllerTest {
         given(categoryService.find(id)).willThrow(clazz);
 
         mockMvc.perform(get(API_CATEGORIES + "/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict());
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isConflict());
     }
 
     @Test
@@ -120,8 +120,8 @@ class CategoryControllerTest {
         given(categoryService.find(id)).willThrow(IllegalStateException.class);
 
         mockMvc.perform(get(API_CATEGORIES + "/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError());
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -131,12 +131,12 @@ class CategoryControllerTest {
         given(categoryService.create(category.getName(), null)).willReturn(category);
 
         mockMvc.perform(post(API_CATEGORIES)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("name", category.getName()))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(category.getId()))
-                .andExpect(jsonPath("$.name", is(category.getName())))
-                .andExpect(jsonPath("$.parentId").isEmpty());
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", category.getName()))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.id").value(category.getId()))
+            .andExpect(jsonPath("$.name", is(category.getName())))
+            .andExpect(jsonPath("$.parentId").isEmpty());
         verify(categoryService).create(category.getName(), null);
     }
 
@@ -147,12 +147,12 @@ class CategoryControllerTest {
         given(categoryService.update(category.getId(), category.getName(), null)).willReturn(category);
 
         mockMvc.perform(put(API_CATEGORIES + "/" + category.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("name", category.getName()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(category.getId()))
-                .andExpect(jsonPath("$.name", is(category.getName())))
-                .andExpect(jsonPath("$.parentId").isEmpty());
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", category.getName()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(category.getId()))
+            .andExpect(jsonPath("$.name", is(category.getName())))
+            .andExpect(jsonPath("$.parentId").isEmpty());
         verify(categoryService).update(category.getId(), category.getName(), null);
     }
 
@@ -162,9 +162,9 @@ class CategoryControllerTest {
         var invalidName = "c";
 
         mockMvc.perform(put(API_CATEGORIES + "/" + id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("name", invalidName))
-                .andExpect(status().isBadRequest());
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", invalidName))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -172,8 +172,8 @@ class CategoryControllerTest {
         Category category = category(1L, "category", null);
 
         mockMvc.perform(delete(API_CATEGORIES + "/" + category.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
         verify(categoryService).delete(category.getId());
     }
 

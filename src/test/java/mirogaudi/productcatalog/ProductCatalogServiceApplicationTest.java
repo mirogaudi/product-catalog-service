@@ -8,9 +8,7 @@ class ProductCatalogServiceApplicationTest {
 
     @Test
     void main() {
-        assertDoesNotThrow(() ->
-                ProductCatalogServiceApplication.main(new String[]{})
-        );
+        assertDoesNotThrow(() -> ProductCatalogServiceApplication.main(new String[]{}));
     }
 
 }

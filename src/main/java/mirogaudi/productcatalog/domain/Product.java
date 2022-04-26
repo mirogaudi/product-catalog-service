@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -19,8 +21,6 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import static javax.persistence.FetchType.EAGER;
 
 /**
  * Simplified product entity, has {@link ManyToMany} relationship to a multilevel {@link Category}.
@@ -65,29 +65,29 @@ public class Product extends BaseEntity {
     @ToString.Include
     private String originalCurrency;
 
-    @ManyToMany(fetch = EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "product_category",
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
+        joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
     @NotNull
     @NotEmpty
     @JsonIgnore
-    private List<Category> category = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 
     @JsonGetter
     @ToString.Include
     public List<Long> getCategoryIds() {
-        return category.stream()
-                .map(Category::getId)
-                .sorted()
-                .toList();
+        return categories.stream()
+            .map(Category::getId)
+            .sorted()
+            .toList();
     }
 
     /**
      * Sets categories converting given immutable category list into mutable one to meet Hibernate expectations.
      */
-    public void setCategory(List<Category> category) {
-        this.category = new ArrayList<>(category);
+    public void setCategories(List<Category> categories) {
+        this.categories = new ArrayList<>(categories);
     }
 
     @Override

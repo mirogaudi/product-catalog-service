@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAll() {
         return StreamSupport.stream(productRepository.findAll().spliterator(), false)
-                .toList();
+            .toList();
     }
 
     @Override
@@ -49,10 +49,10 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product();
 
         return save(
-                product,
-                name,
-                originalPrice, originalCurrency,
-                categoryIds
+            product,
+            name,
+            originalPrice, originalCurrency,
+            categoryIds
         );
     }
 
@@ -64,13 +64,13 @@ public class ProductServiceImpl implements ProductService {
                           @NonNull Set<Long> categoryIds) {
         Product product = find(id);
         Assert.state(product != null, String.format(
-                "Product with id '%d' not found", id));
+            "Product with id '%d' not found", id));
 
         return save(
-                product,
-                name,
-                originalPrice, originalCurrency,
-                categoryIds
+            product,
+            name,
+            originalPrice, originalCurrency,
+            categoryIds
         );
     }
 
@@ -80,13 +80,18 @@ public class ProductServiceImpl implements ProductService {
                          Currency originalCurrency,
                          Set<Long> categoryIds) {
         product.setName(name);
-        product.setCategory(findCategories(categoryIds));
+        product.setCategories(findCategories(categoryIds));
 
         product.setOriginalPrice(originalPrice);
         product.setOriginalCurrency(originalCurrency.getCurrencyCode());
 
         Currency currency = baseCurrency.get();
-        product.setPrice(currencyExchangeService.convert(originalPrice, originalCurrency, currency).block());
+
+        BigDecimal price = currencyExchangeService.convert(originalPrice, originalCurrency, currency).block();
+        Assert.state(price != null, String.format(
+            "No price got converting original price '%s' from '%s' to '%s'", originalPrice, originalCurrency, currency));
+
+        product.setPrice(price);
         product.setCurrency(currency.getCurrencyCode());
 
         return productRepository.save(product);
@@ -94,19 +99,19 @@ public class ProductServiceImpl implements ProductService {
 
     private List<Category> findCategories(Set<Long> categoryIds) {
         return categoryIds.stream()
-                .map(id -> {
-                    Category category = categoryService.find(id);
-                    Assert.state(category != null, String.format(
-                            "Category with id '%d' not found", id));
-                    return category;
-                })
-                .toList();
+            .map(id -> {
+                Category category = categoryService.find(id);
+                Assert.state(category != null, String.format(
+                    "Category with id '%d' not found", id));
+                return category;
+            })
+            .toList();
     }
 
     @Override
     public void delete(@NonNull Long id) {
         Assert.state(productRepository.existsById(id), String.format(
-                "Product with id '%d' does not exist", id));
+            "Product with id '%d' does not exist", id));
 
         productRepository.deleteById(id);
     }

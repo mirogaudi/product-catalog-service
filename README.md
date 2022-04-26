@@ -70,15 +70,15 @@ See configuration in [application.yml](src/main/resources/application.yml):
 ```yaml
 # Product-catalog-service (pcs)
 pcs:
-  # Base currency
-  base-currency-code: EUR
+    # Base currency
+    base-currency-code: EUR
 
-  # Rates service
-  rates:
-    service.url: https://frankfurter.app
-    cache.evict:
-      cron: 0 1 16 * * MON-FRI
-      zone: CET
+    # Rates service
+    rates:
+        service.url: https://frankfurter.app
+        cache.evict:
+            cron: 0 1 16 * * MON-FRI
+            zone: CET
 ```
 
 ## Getting started
@@ -106,7 +106,7 @@ $ ./mvnw clean package -Pdocker
 ```shell
 # Run with Java
 $ java -jar target/product-catalog-service-1.0.0.jar
-  
+
 # Run with Docker
 $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/product-catalog-service:latest
 ```

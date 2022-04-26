@@ -41,8 +41,8 @@ public class CategoryController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Category> getCategory(
-            @Parameter(description = "Category ID")
-            @PathVariable Long id
+        @Parameter(description = "Category ID")
+        @PathVariable Long id
     ) {
         Category category = categoryService.find(id);
         if (category == null) {
@@ -54,41 +54,41 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<Category> createCategory(
-            @Parameter(description = "Category name")
-            @RequestParam @Size(min = 3, max = 128) String name,
+        @Parameter(description = "Category name")
+        @RequestParam @Size(min = 3, max = 128) String name,
 
-            @Parameter(description = "Parent category ID")
-            @RequestParam(required = false) Long parentId
+        @Parameter(description = "Parent category ID")
+        @RequestParam(required = false) Long parentId
     ) {
         Category createdCategory = categoryService.create(name, parentId);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(createdCategory.getId())
-                .toUri();
+            .fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(createdCategory.getId())
+            .toUri();
 
         return ResponseEntity.created(location).body(createdCategory);
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Category> updateCategory(
-            @Parameter(description = "Category ID")
-            @PathVariable Long id,
+        @Parameter(description = "Category ID")
+        @PathVariable Long id,
 
-            @Parameter(description = "Category name")
-            @RequestParam @Size(min = 3, max = 128) String name,
+        @Parameter(description = "Category name")
+        @RequestParam @Size(min = 3, max = 128) String name,
 
-            @Parameter(description = "Parent category ID")
-            @RequestParam(required = false) Long parentId
+        @Parameter(description = "Parent category ID")
+        @RequestParam(required = false) Long parentId
     ) {
         return ResponseEntity.ok(categoryService.update(id, name, parentId));
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteCategory(
-            @Parameter(description = "Category ID")
-            @PathVariable Long id
+        @Parameter(description = "Category ID")
+        @PathVariable Long id
     ) {
         categoryService.delete(id);
 

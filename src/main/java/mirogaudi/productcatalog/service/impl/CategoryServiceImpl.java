@@ -23,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAll() {
         return StreamSupport.stream(categoryRepository.findAll().spliterator(), false)
-                .toList();
+            .toList();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
                            Long parentId) {
         Category category = find(id);
         Assert.state(category != null, String.format(
-                "Category with id '%d' not found", id));
+            "Category with id '%d' not found", id));
 
         return save(category, name, parentId);
     }
@@ -58,10 +58,10 @@ public class CategoryServiceImpl implements CategoryService {
         Category parent = null;
         if (parentId != null) {
             Assert.isTrue(!parentId.equals(category.getId()), String.format(
-                    "Parent category id '%d' is invalid: category can not be a parent for itself", parentId));
+                "Parent category id '%d' is invalid: category can not be a parent for itself", parentId));
             parent = find(parentId);
             Assert.state(parent != null, String.format(
-                    "Parent category with id '%d' not found", parentId));
+                "Parent category with id '%d' not found", parentId));
         }
         category.setParent(parent);
 
@@ -71,7 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void delete(@NonNull Long id) {
         Assert.state(categoryRepository.existsById(id), String.format(
-                "Category with id '%d' does not exist", id));
+            "Category with id '%d' does not exist", id));
 
         categoryRepository.deleteById(id);
     }

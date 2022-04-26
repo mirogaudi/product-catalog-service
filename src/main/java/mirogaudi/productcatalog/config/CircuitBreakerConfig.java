@@ -14,13 +14,13 @@ public class CircuitBreakerConfig {
     @Bean
     public CircuitBreakerConfigCustomizer circuitBreakerCustomizer() {
         return CircuitBreakerConfigCustomizer
-                .of("backendFrankfurter", builder -> builder
-                        .slidingWindowSize(10)
-                        .permittedNumberOfCallsInHalfOpenState(3)
-                        .slidingWindowType(TIME_BASED)
-                        .minimumNumberOfCalls(20)
-                        .waitDurationInOpenState(Duration.ofSeconds(10))
-                        .failureRateThreshold(50)
-                );
+            .of("backendFrankfurter", builder -> builder
+                .slidingWindowSize(10)
+                .permittedNumberOfCallsInHalfOpenState(3)
+                .slidingWindowType(TIME_BASED)
+                .minimumNumberOfCalls(20)
+                .waitDurationInOpenState(Duration.ofSeconds(10))
+                .failureRateThreshold(50)
+            );
     }
 }

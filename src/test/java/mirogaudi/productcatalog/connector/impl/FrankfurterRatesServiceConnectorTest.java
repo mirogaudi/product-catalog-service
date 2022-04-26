@@ -47,14 +47,14 @@ class FrankfurterRatesServiceConnectorTest {
     @NullSource
     void getCurrencyExchangeRate_null_fromCurrency(Currency fromCurrency) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.getCurrencyExchangeRate(fromCurrency, EUR));
+            () -> sut.getCurrencyExchangeRate(fromCurrency, EUR));
     }
 
     @ParameterizedTest
     @NullSource
     void getCurrencyExchangeRate_null_toCurrency(Currency toCurrency) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.getCurrencyExchangeRate(USD, toCurrency));
+            () -> sut.getCurrencyExchangeRate(USD, toCurrency));
     }
 
     @Test
@@ -63,7 +63,7 @@ class FrankfurterRatesServiceConnectorTest {
 
         double expectedRate = Double.parseDouble("0.89952");
         when(restTemplate.getForObject(anyString(), any()))
-                .thenReturn(new FrankfurterRates(USD, Maps.newHashMap(EUR, expectedRate)));
+            .thenReturn(new FrankfurterRates(USD, Maps.newHashMap(EUR, expectedRate)));
 
         BigDecimal actualRate = sut.getCurrencyExchangeRate(USD, EUR);
         assertEquals(expectedRate, actualRate.doubleValue());
@@ -77,10 +77,10 @@ class FrankfurterRatesServiceConnectorTest {
         when(serviceUri.get()).thenReturn(URI.create(SERVICE_URL));
 
         when(restTemplate.getForObject(anyString(), any()))
-                .thenThrow(new RestClientException("error"));
+            .thenThrow(new RestClientException("error"));
 
         assertThrows(ConnectorRuntimeException.class,
-                () -> sut.getCurrencyExchangeRate(USD, EUR)
+            () -> sut.getCurrencyExchangeRate(USD, EUR)
         );
 
         verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(FrankfurterRates.class));

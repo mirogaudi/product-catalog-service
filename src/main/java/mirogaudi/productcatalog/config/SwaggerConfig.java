@@ -14,19 +14,19 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-                .info(new Info()
-                        .title("Product Catalog API")
-                        .description("Demo product catalog service")
-                        .version("v1.0.0")
-                        .contact(new Contact()
-                                .email("mirogaudi@ya.ru")
-                                .url("https://github.com/mirogaudi"))
-                        .license(new License()
-                                .name("Apache-2.0")
-                                .url("https://www.apache.org/licenses/LICENSE-2.0.html")))
-                .externalDocs(new ExternalDocumentation()
-                        .description("Source code on GitHub")
-                        .url("https://github.com/mirogaudi/product-catalog-service"));
+            .info(new Info()
+                .title("Product Catalog API")
+                .description("Demo product catalog service")
+                .version("v1.0.0")
+                .contact(new Contact()
+                    .email("mirogaudi@ya.ru")
+                    .url("https://github.com/mirogaudi"))
+                .license(new License()
+                    .name("Apache-2.0")
+                    .url("https://www.apache.org/licenses/LICENSE-2.0.html")))
+            .externalDocs(new ExternalDocumentation()
+                .description("Source code on GitHub")
+                .url("https://github.com/mirogaudi/product-catalog-service"));
     }
 
 }

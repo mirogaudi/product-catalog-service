@@ -20,9 +20,9 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
     @Test
     void getCurrencyExchangeRate_() {
         ConnectorRuntimeException exception = assertThrows(ConnectorRuntimeException.class,
-                () -> ratesServiceConnector.getCurrencyExchangeRate(USD, EUR));
+            () -> ratesServiceConnector.getCurrencyExchangeRate(USD, EUR));
         assertEquals("Circuit breaker fallback called trying to obtain USD to EUR rate from Frankfurter rates service.",
-                exception.getMessage());
+            exception.getMessage());
     }
 
 }

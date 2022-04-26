@@ -45,8 +45,8 @@ public class ProductController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Product> getProduct(
-            @Parameter(description = "Product ID")
-            @PathVariable Long id
+        @Parameter(description = "Product ID")
+        @PathVariable Long id
     ) {
         Product product = productService.find(id);
         if (product == null) {
@@ -58,63 +58,63 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> createProduct(
-            @Parameter(description = "Product name")
-            @RequestParam @Size(min = 3, max = 256) String name,
+        @Parameter(description = "Product name")
+        @RequestParam @Size(min = 3, max = 256) String name,
 
-            @Parameter(description = "Product original price")
-            @RequestParam BigDecimal originalPrice,
+        @Parameter(description = "Product original price")
+        @RequestParam BigDecimal originalPrice,
 
-            @Parameter(description = "Product original currency ISO code",
-                    schema = @Schema(allowableValues = {"EUR", "USD", "CNY", "KRW", "JPY"}))
-            @RequestParam String originalCurrency,
+        @Parameter(description = "Product original currency ISO code",
+            schema = @Schema(allowableValues = {"EUR", "USD", "CNY", "KRW", "JPY"}))
+        @RequestParam String originalCurrency,
 
-            @Parameter(description = "Product category ID")
-            @RequestParam Long... categoryId
+        @Parameter(description = "Product category ID")
+        @RequestParam Long... categoryId
     ) {
         Product createdProduct = productService.create(
-                name,
-                originalPrice, Currency.getInstance(originalCurrency),
-                Set.of(categoryId)
+            name,
+            originalPrice, Currency.getInstance(originalCurrency),
+            Set.of(categoryId)
         );
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(createdProduct.getId())
-                .toUri();
+            .fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(createdProduct.getId())
+            .toUri();
 
         return ResponseEntity.created(location).body(createdProduct);
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Product> updateProduct(
-            @Parameter(description = "Product ID")
-            @PathVariable Long id,
+        @Parameter(description = "Product ID")
+        @PathVariable Long id,
 
-            @Parameter(description = "Product name")
-            @RequestParam @Size(min = 3, max = 256) String name,
+        @Parameter(description = "Product name")
+        @RequestParam @Size(min = 3, max = 256) String name,
 
-            @Parameter(description = "Product original price")
-            @RequestParam BigDecimal originalPrice,
+        @Parameter(description = "Product original price")
+        @RequestParam BigDecimal originalPrice,
 
-            @Parameter(description = "Product original currency ISO code",
-                    schema = @Schema(allowableValues = {"EUR", "USD", "CNY", "KRW", "JPY"}))
-            @RequestParam String originalCurrency,
+        @Parameter(description = "Product original currency ISO code",
+            schema = @Schema(allowableValues = {"EUR", "USD", "CNY", "KRW", "JPY"}))
+        @RequestParam String originalCurrency,
 
-            @Parameter(description = "Product category ID")
-            @RequestParam Long... categoryId
+        @Parameter(description = "Product category ID")
+        @RequestParam Long... categoryId
     ) {
         return ResponseEntity.ok(productService.update(
-                id, name,
-                originalPrice, Currency.getInstance(originalCurrency),
-                Set.of(categoryId)
+            id, name,
+            originalPrice, Currency.getInstance(originalCurrency),
+            Set.of(categoryId)
         ));
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteProduct(
-            @Parameter(description = "Product ID")
-            @PathVariable Long id
+        @Parameter(description = "Product ID")
+        @PathVariable Long id
     ) {
         productService.delete(id);
 

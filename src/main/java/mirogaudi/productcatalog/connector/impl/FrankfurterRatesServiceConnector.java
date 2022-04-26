@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 import static mirogaudi.productcatalog.config.CacheConfig.RATES_CACHE_NAME;
 
 /**
- * Connector for the Frankfurter currency exchange rates service (https://www.frankfurter.app)
+ * Connector for the Frankfurter currency exchange rates service (<a href="https://www.frankfurter.app">https://www.frankfurter.app</a>)
  */
 @Component
 @RequiredArgsConstructor(onConstructor_ = {@Lazy})
@@ -40,25 +40,25 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
         try {
             // see "https://www.frankfurter.app/docs/#latest"
             String url = UriComponentsBuilder.fromUri(serviceUri.get())
-                    .path("latest")
-                    .queryParam("from", fromCurrency.getCurrencyCode())
-                    .queryParam("to", toCurrency.getCurrencyCode())
-                    .toUriString();
+                .path("latest")
+                .queryParam("from", fromCurrency.getCurrencyCode())
+                .queryParam("to", toCurrency.getCurrencyCode())
+                .toUriString();
 
             FrankfurterRates response = restTemplate.getForObject(url, FrankfurterRates.class);
             Assert.state(response != null, String.format(
-                    "No response obtained calling Frankfurter rates service API: %s", url));
+                "No response obtained calling Frankfurter rates service API: %s", url));
 
             Double rate = response.rates().get(toCurrency);
             Assert.state(rate != null, String.format(
-                    "No %s to %s rate obtained calling Frankfurter rates service API.",
-                    fromCurrency, toCurrency));
+                "No %s to %s rate obtained calling Frankfurter rates service API.",
+                fromCurrency, toCurrency));
 
             return BigDecimal.valueOf(rate);
         } catch (Exception e) {
             throw new ConnectorRuntimeException(String.format(
-                    "Failed to obtain %s to %s rate from Frankfurter rates service.",
-                    fromCurrency, toCurrency
+                "Failed to obtain %s to %s rate from Frankfurter rates service.",
+                fromCurrency, toCurrency
             ), e);
         }
     }
@@ -67,8 +67,8 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
                                                        Currency toCurrency,
                                                        Throwable throwable) {
         throw new ConnectorRuntimeException(String.format(
-                "Circuit breaker fallback called trying to obtain %s to %s rate from Frankfurter rates service.",
-                fromCurrency, toCurrency
+            "Circuit breaker fallback called trying to obtain %s to %s rate from Frankfurter rates service.",
+            fromCurrency, toCurrency
         ), throwable);
     }
 

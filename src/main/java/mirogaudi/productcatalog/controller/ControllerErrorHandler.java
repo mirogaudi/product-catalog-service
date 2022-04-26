@@ -29,38 +29,38 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class ControllerErrorHandler {
 
     @ExceptionHandler({
-            MethodArgumentTypeMismatchException.class,
-            MethodArgumentNotValidException.class,
-            ConstraintViolationException.class
+        MethodArgumentTypeMismatchException.class,
+        MethodArgumentNotValidException.class,
+        ConstraintViolationException.class
     })
     public ResponseEntity<Error> requestErrorHandler(Exception e) {
         return errorResponseEntity(e, BAD_REQUEST);
     }
 
     @ExceptionHandler({
-            ConcurrencyFailureException.class,
-            DataIntegrityViolationException.class
+        ConcurrencyFailureException.class,
+        DataIntegrityViolationException.class
     })
     public ResponseEntity<Error> conflictErrorHandler(Exception e) {
         return errorResponseEntity(e, CONFLICT);
     }
 
     @ExceptionHandler({
-            IllegalStateException.class
+        IllegalStateException.class
     })
     public ResponseEntity<Error> internalErrorHandler(Exception e) {
         return errorResponseEntity(e, INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({
-            ConnectorRuntimeException.class
+        ConnectorRuntimeException.class
     })
     public ResponseEntity<Error> connectorErrorHandler(Exception e) {
         return errorResponseEntity(e, BAD_GATEWAY);
     }
 
     @ExceptionHandler({
-            Throwable.class
+        Throwable.class
     })
     public ResponseEntity<Error> defaultErrorHandler(Throwable t) {
         return errorResponseEntity(t, INTERNAL_SERVER_ERROR);
@@ -68,10 +68,10 @@ public class ControllerErrorHandler {
 
     private ResponseEntity<Error> errorResponseEntity(Throwable t, HttpStatus status) {
         Error error = new Error(
-                LocalDateTime.now(),
-                status.value(),
-                t.toString(),
-                NestedExceptionUtils.getMostSpecificCause(t).toString()
+            LocalDateTime.now(),
+            status.value(),
+            t.toString(),
+            NestedExceptionUtils.getMostSpecificCause(t).toString()
         );
 
         LOG.error("Error occurred: {}", error);

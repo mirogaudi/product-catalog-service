@@ -35,6 +35,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.findAll()).thenReturn(List.of());
 
         var categories = sut.findAll();
+
         verify(categoryRepository).findAll();
         assertTrue(categories.isEmpty());
     }
@@ -47,6 +48,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(id)).thenReturn(Optional.of(expectedCategory));
 
         Category category = sut.find(id);
+
         verify(categoryRepository).findById(id);
         assertEquals(expectedCategory, category);
     }
@@ -55,7 +57,7 @@ class CategoryServiceImplTest {
     @NullSource
     void find_null_id(Long id) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.find(id));
+            () -> sut.find(id));
     }
 
     @Test
@@ -68,6 +70,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.save(any())).thenReturn(expectedCategory);
 
         Category createdCategory = sut.create("name", parentId);
+
         verify(categoryRepository).save(any());
         assertEquals(expectedCategory, createdCategory);
     }
@@ -78,6 +81,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.save(any())).thenReturn(expectedCategory);
 
         Category createdCategory = sut.create("name", null);
+
         verify(categoryRepository).save(any());
         assertEquals(expectedCategory, createdCategory);
     }
@@ -86,7 +90,7 @@ class CategoryServiceImplTest {
     @NullSource
     void create_null_name(String name) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.create(name, 1L));
+            () -> sut.create(name, 1L));
     }
 
     @Test
@@ -95,7 +99,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(parentId)).thenReturn(Optional.empty());
 
         assertThrows(IllegalStateException.class,
-                () -> sut.create("name", parentId));
+            () -> sut.create("name", parentId));
     }
 
     @Test
@@ -112,6 +116,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.save(any())).thenReturn(expectedCategory);
 
         Category updatedCategory = sut.update(id, "name", parentId);
+
         verify(categoryRepository).save(any());
         assertEquals(expectedCategory, updatedCategory);
     }
@@ -120,14 +125,14 @@ class CategoryServiceImplTest {
     @NullSource
     void update_null_id(Long id) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.update(id, "name", 1L));
+            () -> sut.update(id, "name", 1L));
     }
 
     @ParameterizedTest
     @NullSource
     void update_null_name(String name) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.update(1L, name, 1L));
+            () -> sut.update(1L, name, 1L));
     }
 
     @Test
@@ -136,7 +141,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(id)).thenReturn(Optional.empty());
 
         assertThrows(IllegalStateException.class,
-                () -> sut.update(id, "name", 1L));
+            () -> sut.update(id, "name", 1L));
     }
 
     @Test
@@ -148,7 +153,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(parentId)).thenReturn(Optional.empty());
 
         assertThrows(IllegalStateException.class,
-                () -> sut.update(id, "name", parentId));
+            () -> sut.update(id, "name", parentId));
     }
 
     @Test
@@ -159,7 +164,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(id)).thenReturn(Optional.of(category));
 
         assertThrows(IllegalArgumentException.class,
-                () -> sut.update(id, "name", id));
+            () -> sut.update(id, "name", id));
     }
 
     @Test
@@ -168,6 +173,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.existsById(id)).thenReturn(true);
 
         sut.delete(id);
+
         verify(categoryRepository).deleteById(id);
     }
 
@@ -175,7 +181,7 @@ class CategoryServiceImplTest {
     @NullSource
     void delete_null_id(Long id) {
         assertThrows(IllegalArgumentException.class,
-                () -> sut.delete(id));
+            () -> sut.delete(id));
     }
 
     @Test
@@ -184,7 +190,7 @@ class CategoryServiceImplTest {
         when(categoryRepository.existsById(id)).thenReturn(false);
 
         assertThrows(IllegalStateException.class,
-                () -> sut.delete(id));
+            () -> sut.delete(id));
     }
 
     private Category category() {

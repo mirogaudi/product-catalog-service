@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import static javax.persistence.FetchType.LAZY;
 
 /**
  * Simplified multilevel category entity.
@@ -35,7 +35,7 @@ public class Category extends BaseEntity {
     private String name;
 
     // Top category parent supposed to be null
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_id")
     @JsonIgnore
     private Category parent;
