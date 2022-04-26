@@ -76,7 +76,7 @@ public class ControllerErrorHandler {
 
         LOG.error("Error occurred: {}", error);
 
-        return new ResponseEntity<>(error, status);
+        return ResponseEntity.status(status).body(error);
     }
 
     private record Error(@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
