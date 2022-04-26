@@ -45,13 +45,6 @@ public class ControllerErrorHandler {
     }
 
     @ExceptionHandler({
-        IllegalStateException.class
-    })
-    public ResponseEntity<Error> internalErrorHandler(Exception e) {
-        return errorResponseEntity(INTERNAL_SERVER_ERROR, e);
-    }
-
-    @ExceptionHandler({
         ConnectorRuntimeException.class
     })
     public ResponseEntity<Error> connectorErrorHandler(Exception e) {
@@ -59,6 +52,7 @@ public class ControllerErrorHandler {
     }
 
     @ExceptionHandler({
+        IllegalStateException.class,
         Throwable.class
     })
     public ResponseEntity<Error> defaultErrorHandler(Throwable t) {
