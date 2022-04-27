@@ -76,7 +76,7 @@ public class ControllerErrorHandler {
                          LocalDateTime timestamp,
                          int status,
                          String error,
-                         String message) {
+                         String cause) {
     }
 
 }
