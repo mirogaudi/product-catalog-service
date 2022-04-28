@@ -36,7 +36,7 @@
 
         <surefire-plugin.version>3.0.0-M6</surefire-plugin.version>
         <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
-        <dependency-check-plugin.version>7.0.1</dependency-check-plugin.version>
+        <dependency-check-plugin.version>7.1.0</dependency-check-plugin.version>
         <docker-plugin.version>0.39.1</docker-plugin.version>
 
     </properties>
