@@ -48,8 +48,7 @@ class CategoryRepositoryIntegrationTest {
         assertNotNull(category.getName());
         assertNotNull(category.getParent());
 
-        Category otherCategory = new Category();
-        otherCategory.setId(id);
+        Category otherCategory = Category.builder().id(id).build();
 
         assertEquals(category, otherCategory);
     }

@@ -210,24 +210,20 @@ class ProductControllerTest {
     }
 
     private static Category category(Long id, String name) {
-        Category category = new Category();
-
-        category.setId(id);
-        category.setName(name);
-
-        return category;
+        return Category.builder()
+            .id(id)
+            .name(name)
+            .build();
     }
 
     private static Product product(Long id, String name, Category... categories) {
-        Product product = new Product();
-
-        product.setId(id);
-        product.setName(name);
-        product.setOriginalPrice(TEN);
-        product.setOriginalCurrency(EUR.getCurrencyCode());
-        product.setCategories(List.of(categories));
-
-        return product;
+        return Product.builder()
+            .id(id)
+            .name(name)
+            .originalPrice(TEN)
+            .originalCurrency(EUR.getCurrencyCode())
+            .categories(List.of(categories))
+            .build();
     }
 
 }

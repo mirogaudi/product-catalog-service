@@ -59,8 +59,7 @@ class ProductRepositoryIntegrationTest {
         assertNotNull(categories);
         assertFalse(categories.isEmpty());
 
-        Product otherProduct = new Product();
-        otherProduct.setId(id);
+        Product otherProduct = Product.builder().id(id).build();
 
         assertEquals(product, otherProduct);
     }

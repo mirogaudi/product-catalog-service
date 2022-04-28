@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +28,7 @@ import java.util.List;
 @Entity
 @Table(name = "product")
 @NoArgsConstructor
+@SuperBuilder
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true, callSuper = true)

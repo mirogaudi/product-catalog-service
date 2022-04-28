@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +23,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "category")
 @NoArgsConstructor
+@SuperBuilder
 @ToString(onlyExplicitlyIncluded = true, callSuper = true)
 @Getter
 @Setter

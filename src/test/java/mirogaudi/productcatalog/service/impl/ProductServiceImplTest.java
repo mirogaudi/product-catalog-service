@@ -61,7 +61,7 @@ class ProductServiceImplTest {
     @Test
     void find() {
         Long id = 1L;
-        Product expectedProduct = new Product();
+        Product expectedProduct = product();
         when(productRepository.findById(id)).thenReturn(Optional.of(expectedProduct));
 
         Product product = sut.find(id);
@@ -87,7 +87,7 @@ class ProductServiceImplTest {
         BigDecimal originalPrice = TEN;
         when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(Mono.fromCallable(() -> ONE));
 
-        Product expectedProduct = new Product();
+        Product expectedProduct = product();
         when(productRepository.save(any())).thenReturn(expectedProduct);
 
         Product createdProduct = sut.create("name", originalPrice, USD, Set.of(categoryId));
@@ -163,7 +163,7 @@ class ProductServiceImplTest {
         when(baseCurrency.get()).thenReturn(EUR);
 
         Long id = 1L;
-        Product product = new Product();
+        Product product = product();
         when(productRepository.findById(id)).thenReturn(Optional.of(product));
 
         Long categoryId = 2L;
@@ -172,7 +172,7 @@ class ProductServiceImplTest {
         BigDecimal originalPrice = TEN;
         when(currencyExchangeService.convert(originalPrice, EUR, EUR)).thenReturn(Mono.fromCallable(() -> TEN));
 
-        Product expectedProduct = new Product();
+        Product expectedProduct = product();
         when(productRepository.save(any())).thenReturn(expectedProduct);
 
         Product updatedProduct = sut.update(id, "name", originalPrice, EUR, Set.of(categoryId));
@@ -187,7 +187,7 @@ class ProductServiceImplTest {
         when(baseCurrency.get()).thenReturn(EUR);
 
         Long id = 1L;
-        Product product = new Product();
+        Product product = product();
         when(productRepository.findById(id)).thenReturn(Optional.of(product));
 
         BigDecimal originalPrice = TEN;
@@ -259,7 +259,7 @@ class ProductServiceImplTest {
     @Test
     void update_invalid_categoryId() {
         Long id = 1L;
-        Product product = new Product();
+        Product product = product();
         when(productRepository.findById(id)).thenReturn(Optional.of(product));
 
         Long categoryId = 2L;
@@ -299,6 +299,10 @@ class ProductServiceImplTest {
 
     private Category category() {
         return new Category();
+    }
+
+    private Product product() {
+        return new Product();
     }
 
 }

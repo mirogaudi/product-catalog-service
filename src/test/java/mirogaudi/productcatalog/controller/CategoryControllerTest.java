@@ -178,13 +178,11 @@ class CategoryControllerTest {
     }
 
     static Category category(Long id, String name, Category parent) {
-        Category category = new Category();
-
-        category.setId(id);
-        category.setName(name);
-        category.setParent(parent);
-
-        return category;
+        return Category.builder()
+            .id(id)
+            .name(name)
+            .parent(parent)
+            .build();
     }
 
 }
