@@ -35,7 +35,7 @@ public class Category extends BaseEntity {
     @ToString.Include
     private String name;
 
-    // Top category parent supposed to be null
+    // top category parent supposed to be null
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     @JsonIgnore
