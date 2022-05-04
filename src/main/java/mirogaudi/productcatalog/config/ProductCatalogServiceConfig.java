@@ -10,7 +10,7 @@ import java.util.Currency;
 import java.util.function.Supplier;
 
 @Configuration
-public class ProductCatalogServiceApplicationConfig {
+public class ProductCatalogServiceConfig {
 
     @Value("${pcs.base-currency-code:EUR}")
     private String baseCurrencyCode;

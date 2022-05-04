@@ -2,7 +2,6 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true
-
     hibernate.ddl-auto: create-drop
 
     properties:
@@ -10,4 +9,7 @@ spring:
         create-source: metadata
         scripts:
           action: create
-          create-target: src/main/resources/db/create_schema.sql
+          create-target: target/classes/db/create_schema.sql
+      hibernate:
+        format_sql: true
+        show_sql: true

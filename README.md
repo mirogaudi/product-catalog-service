@@ -58,7 +58,7 @@ Application is a demo of a product catalog having simplified logic
       in `EUR`)*
 - DB is initialized with Flyway
     - [V1__create_schema.sql](src/main/resources/db/migration/V1__create_schema.sql)
-        - initial script `src/main/resources/db/create_schema.sql` is generated with Spring Data JPA when starting
+        - initial script `target/classes/db/create_schema.sql` is generated with Spring Data JPA when starting
           application with `dev` profile (for details see [application-dev.yml](src/main/resources/application-dev.yml))
     - [V2__insert_data.sql](src/main/resources/db/migration/V2__insert_data.sql)
 - Application uses H2 in-memory DB
