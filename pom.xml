@@ -23,7 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
 
-        <flyway.version>8.5.9</flyway.version>
+        <flyway.version>8.5.10</flyway.version>
         <h2.version>2.1.212</h2.version>
 
         <resilience4j.version>1.7.1</resilience4j.version>
@@ -35,10 +35,13 @@
         <mockito.version>4.4.0</mockito.version>
 
         <surefire-plugin.version>3.0.0-M6</surefire-plugin.version>
-        <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
+        <site-plugin.version>4.0.0-M1</site-plugin.version>
+        <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
         <dependency-check-plugin.version>7.1.0</dependency-check-plugin.version>
         <docker-plugin.version>0.39.1</docker-plugin.version>
 
+        <require-maven.version>[3.6,)</require-maven.version>
+        <require-java.version>[17.0,)</require-java.version>
     </properties>
 
     <dependencies>
@@ -191,10 +194,10 @@
                     <fail>true</fail>
                     <rules>
                         <requireMavenVersion>
-                            <version>[3.6,)</version>
+                            <version>${require-maven.version}</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
-                            <version>[11.0,)</version>
+                            <version>${require-java.version}</version>
                         </requireJavaVersion>
                     </rules>
                 </configuration>
@@ -218,7 +221,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.12.0</version>
+                    <version>${site-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
