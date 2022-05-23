@@ -23,7 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
 
-        <flyway.version>8.5.10</flyway.version>
+        <flyway.version>8.5.11</flyway.version>
         <h2.version>2.1.212</h2.version>
 
         <resilience4j.version>1.7.1</resilience4j.version>
@@ -31,8 +31,8 @@
         <lombok.version>1.18.24</lombok.version>
         <springdoc-openapi.version>1.6.8</springdoc-openapi.version>
 
-        <junit-jupiter.version>5.8.2</junit-jupiter.version>
-        <mockito.version>4.4.0</mockito.version>
+        <junit-jupiter.version>5.9.0-M1</junit-jupiter.version>
+        <mockito.version>4.5.1</mockito.version>
 
         <surefire-plugin.version>3.0.0-M6</surefire-plugin.version>
         <site-plugin.version>4.0.0-M1</site-plugin.version>
