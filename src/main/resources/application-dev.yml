@@ -13,3 +13,10 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+        generate_statistics: true
+
+logging:
+  level:
+    root: info
+    org.hibernate.stat: info
+    mirogaudi.productcatalog: debug
