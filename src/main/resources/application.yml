@@ -18,7 +18,7 @@ spring:
     locations: classpath:db/migration
 
   datasource:
-    driverClassName: org.h2.Driver
+    driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:pcs
     username: sa
     password: # empty
