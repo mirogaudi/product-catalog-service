@@ -1,0 +1,35 @@
+spring:
+  jpa:
+    generate-ddl: false
+    open-in-view: false
+
+    hibernate.ddl-auto: validate
+
+  flyway:
+    locations: classpath:db/migration
+
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:pcs-test
+    username: sa
+    password: # empty
+
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 0
+
+logging:
+  level:
+    root: info
+
+# Product catalog service (pcs)
+pcs:
+  # Base currency
+  base-currency-code: EUR
+
+  # Rates service
+  rates:
+    service.url: https://frankfurter.app
+    cache.evict:
+      cron: 0 1 16 * * MON-FRI
+      zone: CET
