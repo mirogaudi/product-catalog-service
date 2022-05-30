@@ -1,9 +1,9 @@
 spring:
   jpa:
     generate-ddl: false
-    open-in-view: false
-
     hibernate.ddl-auto: validate
+
+    open-in-view: false
 
   flyway:
     locations: classpath:db/migration

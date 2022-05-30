@@ -7,9 +7,9 @@ spring:
 
   jpa:
     generate-ddl: false
-    open-in-view: false
-
     hibernate.ddl-auto: none
+
+    open-in-view: false
 
     properties:
       hibernate.connection.provider_disables_autocommit: true
