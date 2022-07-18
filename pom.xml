@@ -23,6 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
 
+        <!-- TODO update to 9.0.1 as soon as supported by Spring -->
         <flyway.version>8.5.13</flyway.version>
         <h2.version>2.1.214</h2.version>
 
@@ -40,7 +41,7 @@
         <dependency-check-plugin.version>7.1.1</dependency-check-plugin.version>
         <docker-plugin.version>0.40.1</docker-plugin.version>
 
-        <require-maven.version>[3.8,)</require-maven.version>
+        <require-maven.version>[3.6,)</require-maven.version>
         <require-java.version>[17.0,)</require-java.version>
     </properties>
 
