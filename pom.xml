@@ -23,8 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
 
-        <!-- TODO update to 9.x as soon as supported by Spring Boot -->
-        <flyway.version>8.5.13</flyway.version>
+        <flyway.version>9.2.0</flyway.version>
         <h2.version>2.1.214</h2.version>
 
         <resilience4j.version>1.7.1</resilience4j.version>
