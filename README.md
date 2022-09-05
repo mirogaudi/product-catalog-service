@@ -145,10 +145,16 @@ $ ./mvnw clean package -Pcode-coverage-report
 
 ### Dependencies vulnerabilities
 
+#### OWASP
+
 ```shell
 # Build with Maven wrapper generating OWASP dependency vulnerability report
 $ ./mvnw clean package -Pdependency-vulnerability-report
 ```
+
+#### Snyk
+
+[![Snyk Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/mirogaudi/product-catalog-service)](https://snyk.io/test/github/mirogaudi/product-catalog-service)
 
 ## Maintenance
 
