@@ -32,7 +32,7 @@
         <springdoc-openapi.version>1.6.11</springdoc-openapi.version>
 
         <junit-jupiter.version>5.9.0</junit-jupiter.version>
-        <mockito.version>4.7.0</mockito.version>
+        <mockito.version>4.8.0</mockito.version>
 
         <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
         <site-plugin.version>4.0.0-M3</site-plugin.version>
