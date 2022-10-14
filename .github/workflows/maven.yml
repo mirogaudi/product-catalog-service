@@ -24,7 +24,7 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven wrapper generating code coverage report
-        run: ./mvnw -B package -Pcode-coverage-report
+        run: ./mvnw -B package -Pcode-coverage
 
       - name: Generate JaCoCo badges
         uses: cicirello/jacoco-badge-generator@v2

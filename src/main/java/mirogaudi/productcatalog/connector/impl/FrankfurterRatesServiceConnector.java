@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 import static mirogaudi.productcatalog.config.CacheConfig.RATES_CACHE_NAME;
 
 /**
- * Connector for the Frankfurter currency exchange rates service (<a href="https://www.frankfurter.app">https://www.frankfurter.app</a>)
+ * Connector for the Frankfurter currency exchange rates service (<a href="https://www.frankfurter.app">https://www.frankfurter.app</a>).
  */
 @Component
 @RequiredArgsConstructor(onConstructor_ = {@Lazy})

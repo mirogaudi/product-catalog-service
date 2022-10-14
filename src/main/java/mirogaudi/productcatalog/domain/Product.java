@@ -75,6 +75,9 @@ public class Product extends BaseEntity {
     @JsonIgnore
     private List<Category> categories = new ArrayList<>();
 
+    /**
+     * Gets category IDs list.
+     */
     @JsonGetter
     @ToString.Include
     public List<Long> getCategoryIds() {
