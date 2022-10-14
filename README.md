@@ -140,7 +140,34 @@ $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/p
 
 ```shell
 # Build with Maven wrapper generating JaCoCo code coverage report
-$ ./mvnw clean package -Pcode-coverage-report
+$ ./mvnw clean package -Pcode-coverage
+```
+
+### Static code analysis
+
+#### Checkstyle
+
+Project uses [checkstyle.xml](checkstyle.xml) configuration based on customized
+Checkstyle's [google_checks.xml](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml)
+.
+
+```shell
+# Build with Maven wrapper checking with Checkstyle
+$ ./mvnw clean validate -Pcheckstyle
+```
+
+#### PMD
+
+```shell
+# Build with Maven wrapper checking with PMD
+$ ./mvnw clean package -Ppmd
+```
+
+#### SpotBugs
+
+```shell
+# Build with Maven wrapper checking with SpotBugs
+$ ./mvnw clean package -Pspotbugs
 ```
 
 ### Dependencies vulnerabilities
@@ -149,7 +176,7 @@ $ ./mvnw clean package -Pcode-coverage-report
 
 ```shell
 # Build with Maven wrapper generating OWASP dependency vulnerability report
-$ ./mvnw clean package -Pdependency-vulnerability-report
+$ ./mvnw clean package -Powasp
 ```
 
 #### Snyk
@@ -179,6 +206,5 @@ $ ./mvnw versions:display-dependency-updates
 
 ## TODO:
 
-- use static code analysis (Detekt/Findbugs/PMD/Checkstyle)
 - use Micrometer
 - use Spring WebFlux
