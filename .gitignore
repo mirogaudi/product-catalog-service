@@ -1,5 +1,3 @@
-target/
-
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -7,4 +5,8 @@ target/
 *.ipr
 out/
 
+### Maven ###
+target/
+
+### Other ###
 /.sdkmanrc
