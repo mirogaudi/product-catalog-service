@@ -189,7 +189,7 @@ $ ./mvnw clean package -Powasp
 
 ```shell
 # Update Maven wrapper
-$ ./mvnw -N io.takari:maven:wrapper
+$ ./mvnw wrapper:wrapper
 
 # Check for Maven plugins updates
 $ ./mvnw versions:display-plugin-updates
