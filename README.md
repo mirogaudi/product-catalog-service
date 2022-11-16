@@ -1,6 +1,4 @@
-[//]: # (TODO remove mirrow as soon as tokei fixed)
-[//]: # (![Lines of code]&#40;https://img.shields.io/tokei/lines/github/mirogaudi/product-catalog-service&#41;)
-![Lines of code](https://tokei.ekzhang.com/b1/github/mirogaudi/product-catalog-service)
+![Lines of code](https://img.shields.io/tokei/lines/github/mirogaudi/product-catalog-service)
 ![GitHub top language](https://img.shields.io/github/languages/top/mirogaudi/product-catalog-service)
 ![GitHub maven workflow status](https://img.shields.io/github/workflow/status/mirogaudi/product-catalog-service/Java_CI_with_Maven)
 ![JaCoCo coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mirogaudi/product-catalog-service/master/.github/badges/jacoco.json)
