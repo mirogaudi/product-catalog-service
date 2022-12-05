@@ -26,7 +26,7 @@
         <flyway.version>9.8.3</flyway.version>
         <h2.version>2.1.214</h2.version>
 
-        <resilience4j.version>2.0.0</resilience4j.version>
+        <resilience4j.version>2.0.1</resilience4j.version>
 
         <lombok.version>1.18.24</lombok.version>
         <springdoc-openapi.version>1.6.13</springdoc-openapi.version>
