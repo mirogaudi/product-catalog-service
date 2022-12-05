@@ -46,7 +46,7 @@
         <pmd-plugin.version>3.19.0</pmd-plugin.version>
         <jxr-plugin.version>3.3.0</jxr-plugin.version>
         <spotbugs-plugin.version>4.7.3.0</spotbugs-plugin.version>
-        <dependency-check-plugin.version>7.3.2</dependency-check-plugin.version>
+        <dependency-check-plugin.version>7.4.0</dependency-check-plugin.version>
 
         <docker-plugin.version>0.40.2</docker-plugin.version>
 
