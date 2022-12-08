@@ -23,7 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
 
-        <flyway.version>9.8.3</flyway.version>
+        <flyway.version>9.9.0</flyway.version>
         <h2.version>2.1.214</h2.version>
 
         <resilience4j.version>2.0.1</resilience4j.version>
