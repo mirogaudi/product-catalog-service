@@ -1,6 +1,6 @@
 ![Lines of code](https://img.shields.io/tokei/lines/github/mirogaudi/product-catalog-service)
 ![GitHub top language](https://img.shields.io/github/languages/top/mirogaudi/product-catalog-service)
-![GitHub maven workflow status](https://img.shields.io/github/workflow/status/mirogaudi/product-catalog-service/Java_CI_with_Maven)
+![GitHub maven workflow status](https://img.shields.io/github/actions/workflow/status/mirogaudi/product-catalog-service/maven.yml?branch=master)
 ![JaCoCo coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mirogaudi/product-catalog-service/master/.github/badges/jacoco.json)
 ![JaCoCo branches](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mirogaudi/product-catalog-service/master/.github/badges/branches.json)
 ![GitHub license](https://img.shields.io/github/license/mirogaudi/product-catalog-service)
