@@ -55,7 +55,7 @@ class ProductControllerTest {
 
         given(productService.findAll()).willReturn(List.of(product));
 
-        mockMvc.perform(get(API_PRODUCTS + "/")
+        mockMvc.perform(get(API_PRODUCTS)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(1)))
