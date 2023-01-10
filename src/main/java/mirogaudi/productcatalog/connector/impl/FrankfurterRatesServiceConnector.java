@@ -63,6 +63,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
         }
     }
 
+    @SuppressWarnings("PMD.UnusedPrivateMethod") // method is used by circuit breaker
     private BigDecimal fallbackGetCurrencyExchangeRate(Currency fromCurrency,
                                                        Currency toCurrency,
                                                        Throwable throwable) {
@@ -72,7 +73,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
         ), throwable);
     }
 
-    protected record FrankfurterRates(Currency base,
+    record FrankfurterRates(Currency base,
                                       Map<Currency, Double> rates) {
     }
 

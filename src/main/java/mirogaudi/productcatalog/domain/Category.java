@@ -2,12 +2,6 @@ package mirogaudi.productcatalog.domain;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +10,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Simplified multilevel category entity.
@@ -47,6 +46,7 @@ public class Category extends BaseEntity {
         return (parent != null) ? parent.getId() : null;
     }
 
+    @SuppressWarnings("PMD.UselessOverridingMethod") // method is needed since hashCode() was overridden
     @Override
     public boolean equals(Object o) {
         return super.equals(o);

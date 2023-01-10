@@ -56,8 +56,7 @@ Application DB stores categorized products:
 
 - Categories are multilevel *(i.e. `Computers` <-- `Portable computers` <-- `Tablets`)*
 - Products can relate to multiple categories *(i.e. `MacBook` relates to `Notebook` and to `Apple`)*
-- Product prices are stored in original and base currency *(i.e. original price in `USD` and calculated price
-  in `EUR`)*
+- Product prices are stored in original and base currency *(i.e. original price in `USD` and calculated price in `EUR`)*
 
 [![](https://mermaid.ink/img/pako:eNqtUs1ugzAMfhUr5_YFOG-79DJp10jITTyIBAkyySQEvPsCbVoYjF2Wm-3vxz_phXKaRCaIXwwWjLW08HgKPRWOO-iXWYCrKYz1YDS8X9aVL2RVIoPFmnY5DTJZnxu9rI7SLsOGnQ7K_4drqjieyFjlKnBsQHVrmA01sVFPWBOjX6SOFTbE_dnyP1abYHHYt8suIglsIT8cH07DAOczuOGZyUCKEtv7UaQ4ovWb1ie2ctajsW0qtmuRdMlDjStVzhYteJdMDc064iTiUms0On7QeU9S-JLijcXE0_SJoZrbHiM0NDqyX7XxjkXmOdBJYPDuo7MqxTfM_affkuM3QcjoYg)](https://mermaid.live/edit#pako:eNqtUs1ugzAMfhUr5_YFOG-79DJp10jITTyIBAkyySQEvPsCbVoYjF2Wm-3vxz_phXKaRCaIXwwWjLW08HgKPRWOO-iXWYCrKYz1YDS8X9aVL2RVIoPFmnY5DTJZnxu9rI7SLsOGnQ7K_4drqjieyFjlKnBsQHVrmA01sVFPWBOjX6SOFTbE_dnyP1abYHHYt8suIglsIT8cH07DAOczuOGZyUCKEtv7UaQ4ovWb1ie2ctajsW0qtmuRdMlDjStVzhYteJdMDc064iTiUms0On7QeU9S-JLijcXE0_SJoZrbHiM0NDqyX7XxjkXmOdBJYPDuo7MqxTfM_affkuM3QcjoYg)
 
@@ -143,11 +142,15 @@ $ ./mvnw clean package -Pcode-coverage
 
 ### Static code analysis
 
+```shell
+# Build with Maven wrapper performing static code analysis
+$ ./mvnw clean package -Pcheckstyle,pmd,spotbugs
+```
+
 #### Checkstyle
 
 Project uses [checkstyle.xml](checkstyle.xml) configuration based on customized
-Checkstyle's [google_checks.xml](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml)
-.
+Checkstyle's [google_checks.xml](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml).
 
 ```shell
 # Build with Maven wrapper checking with Checkstyle

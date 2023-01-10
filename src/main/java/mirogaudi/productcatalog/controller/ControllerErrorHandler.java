@@ -1,6 +1,7 @@
 package mirogaudi.productcatalog.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import mirogaudi.productcatalog.connector.ConnectorRuntimeException;
 import org.springframework.dao.ConcurrencyFailureException;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import jakarta.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpStatus.BAD_GATEWAY;

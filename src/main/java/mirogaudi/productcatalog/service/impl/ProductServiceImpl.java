@@ -89,7 +89,8 @@ public class ProductServiceImpl implements ProductService {
 
         BigDecimal price = currencyExchangeService.convert(originalPrice, originalCurrency, currency).block();
         Assert.state(price != null, String.format(
-            "No price got converting original price '%s' from '%s' to '%s'", originalPrice, originalCurrency, currency));
+            "No price got converting original price '%s' from '%s' to '%s'",
+            originalPrice, originalCurrency, currency));
 
         product.setPrice(price);
         product.setCurrency(currency.getCurrencyCode());
