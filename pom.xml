@@ -36,7 +36,7 @@
         <junit-jupiter.version>5.9.2</junit-jupiter.version>
         <mockito.version>5.1.1</mockito.version>
 
-        <checkstyle.version>10.6.0</checkstyle.version>
+        <checkstyle.version>10.7.0</checkstyle.version>
         <pmd.version>6.53.0</pmd.version>
         <spotbugs.version>4.7.3</spotbugs.version>
 
