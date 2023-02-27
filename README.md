@@ -111,7 +111,7 @@ $ ./mvnw clean package -Pdocker
 
 ```shell
 # Run with Java
-$ java -jar target/*.jar
+$ java -jar target/product-catalog-service-*.jar
 
 # Run with Maven wrapper (via Spring Boot plugin)
 $ ./mvnw spring-boot:run
