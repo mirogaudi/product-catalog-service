@@ -113,6 +113,9 @@ $ ./mvnw clean package -Pdocker
 # Run with Java
 $ java -jar target/product-catalog-service-1.0.0.jar
 
+# Run with Maven wrapper (via Spring Boot plugin)
+$ ./mvnw spring-boot:run
+
 # Run with Docker
 $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/product-catalog-service:latest
 ```
