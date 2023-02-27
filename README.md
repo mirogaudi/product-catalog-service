@@ -103,7 +103,7 @@ $ ./mvnw clean package
 $ docker build -t mirogaudi/product-catalog-service:1.0.0 .
 $ docker tag mirogaudi/product-catalog-service:1.0.0 mirogaudi/product-catalog-service:latest
 
-# Build docker image with Maven wrapper
+# Build docker image with Maven wrapper (via Docker plugin)
 $ ./mvnw clean package -Pdocker
 ```
 
