@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = {ProductCatalogServiceApplication.class})
-class FrankfurterRatesServiceConnectorIntegrationTest {
+class FrankfurterRatesServiceConnectorCacheIntegrationTest {
 
     @Autowired
-    private FrankfurterRatesServiceConnector ratesServiceConnector;
+    private FrankfurterRatesServiceConnector sut;
     @Autowired
     private CacheManager cacheManager;
 
@@ -43,7 +43,7 @@ class FrankfurterRatesServiceConnectorIntegrationTest {
         // rate is not in the cache before the call
         assertFalse(getRateFromCache(key).isPresent());
 
-        BigDecimal rate = ratesServiceConnector.getCurrencyExchangeRate(USD, EUR);
+        BigDecimal rate = sut.getCurrencyExchangeRate(USD, EUR);
         assertNotNull(rate);
 
         // rate is in the cache after the call

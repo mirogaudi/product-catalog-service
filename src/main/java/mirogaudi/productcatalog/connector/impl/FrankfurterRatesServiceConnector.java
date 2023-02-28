@@ -29,7 +29,7 @@ import static mirogaudi.productcatalog.config.CacheConfig.RATES_CACHE_NAME;
 @Slf4j
 public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
 
-    private final Supplier<URI> serviceUri;
+    private final Supplier<URI> ratesServiceUri;
     private final RestTemplate restTemplate;
 
     @CircuitBreaker(name = "backendFrankfurter", fallbackMethod = "fallbackGetCurrencyExchangeRate")
@@ -39,7 +39,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
                                               @NonNull Currency toCurrency) {
         try {
             // see "https://www.frankfurter.app/docs/#latest"
-            String url = UriComponentsBuilder.fromUri(serviceUri.get())
+            String url = UriComponentsBuilder.fromUri(ratesServiceUri.get())
                 .path("latest")
                 .queryParam("from", fromCurrency.getCurrencyCode())
                 .queryParam("to", toCurrency.getCurrencyCode())
@@ -74,7 +74,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
     }
 
     record FrankfurterRates(Currency base,
-                                      Map<Currency, Double> rates) {
+                            Map<Currency, Double> rates) {
     }
 
 }

@@ -36,7 +36,7 @@ class FrankfurterRatesServiceConnectorTest {
     private static final String SERVICE_PATH = SERVICE_URL + "/latest";
 
     @Mock
-    private Supplier<URI> serviceUri;
+    private Supplier<URI> ratesServiceUri;
     @Mock
     private RestTemplate restTemplate;
 
@@ -59,7 +59,7 @@ class FrankfurterRatesServiceConnectorTest {
 
     @Test
     void getCurrencyExchangeRate_ok() {
-        when(serviceUri.get()).thenReturn(URI.create(SERVICE_URL));
+        when(ratesServiceUri.get()).thenReturn(URI.create(SERVICE_URL));
 
         double expectedRate = Double.parseDouble("0.89952");
         when(restTemplate.getForObject(anyString(), any()))
@@ -69,12 +69,12 @@ class FrankfurterRatesServiceConnectorTest {
         assertEquals(expectedRate, actualRate.doubleValue());
 
         verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(FrankfurterRates.class));
-        verify(serviceUri).get();
+        verify(ratesServiceUri).get();
     }
 
     @Test
     void getCurrencyExchangeRate_not_ok_RestClientException() {
-        when(serviceUri.get()).thenReturn(URI.create(SERVICE_URL));
+        when(ratesServiceUri.get()).thenReturn(URI.create(SERVICE_URL));
 
         when(restTemplate.getForObject(anyString(), any()))
             .thenThrow(new RestClientException("error"));
@@ -84,7 +84,7 @@ class FrankfurterRatesServiceConnectorTest {
         );
 
         verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(FrankfurterRates.class));
-        verify(serviceUri).get();
+        verify(ratesServiceUri).get();
     }
 
 }
