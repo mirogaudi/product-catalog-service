@@ -33,6 +33,14 @@ logging:
   level:
     root: info
 
+management:
+  endpoints.web.exposure.include: '*'
+  endpoint.health.show-details: always
+
+  health:
+    circuitbreakers.enabled: true
+    ratelimiters.enabled: true
+
 springdoc:
   enable-native-support: true
   show-actuator: true
@@ -49,6 +57,7 @@ pcs:
   # Rates service
   rates:
     service.url: https://frankfurter.app
+
     cache.evict:
       cron: 0 1 16 * * MON-FRI
       zone: CET

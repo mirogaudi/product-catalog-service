@@ -32,7 +32,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
     private final Supplier<URI> ratesServiceUri;
     private final RestTemplate restTemplate;
 
-    @CircuitBreaker(name = "backendFrankfurter", fallbackMethod = "fallbackGetCurrencyExchangeRate")
+    @CircuitBreaker(name = "frankfurterRatesService", fallbackMethod = "fallbackGetCurrencyExchangeRate")
     @Cacheable(value = RATES_CACHE_NAME)
     @Override
     public BigDecimal getCurrencyExchangeRate(@NonNull Currency fromCurrency,

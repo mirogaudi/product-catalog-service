@@ -105,6 +105,10 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.github.resilience4j</groupId>
             <artifactId>resilience4j-spring-boot2</artifactId>
         </dependency>
@@ -114,6 +118,7 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- needed since lombok.extern.findbugs.addSuppressFBWarnings=true used -->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>annotations</artifactId>
@@ -155,6 +160,7 @@
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>io.github.resilience4j</groupId>
                 <artifactId>resilience4j-spring-boot2</artifactId>
@@ -166,7 +172,6 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
-            <!-- needed since lombok.extern.findbugs.addSuppressFBWarnings=true used -->
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>annotations</artifactId>
@@ -230,6 +235,7 @@
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                 </configuration>
             </plugin>
+
         </plugins>
         <pluginManagement>
             <plugins>
@@ -317,6 +323,7 @@
                     <artifactId>docker-maven-plugin</artifactId>
                     <version>${docker-plugin.version}</version>
                 </plugin>
+
             </plugins>
         </pluginManagement>
     </build>
