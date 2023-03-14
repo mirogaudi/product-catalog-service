@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.3</version>
+        <version>3.0.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -24,17 +24,16 @@
         <java.version>17</java.version>
 
         <flyway.version>9.15.1</flyway.version>
-        <h2.version>2.1.214</h2.version>
 
         <resilience4j.version>2.0.2</resilience4j.version>
 
         <lombok.version>1.18.26</lombok.version>
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
 
-        <springdoc-openapi.version>2.0.2</springdoc-openapi.version>
+        <springdoc-openapi.version>2.0.3</springdoc-openapi.version>
 
         <junit-jupiter.version>5.9.2</junit-jupiter.version>
-        <mockito.version>5.1.1</mockito.version>
+        <mockito.version>5.2.0</mockito.version>
 
         <checkstyle.version>10.8.0</checkstyle.version>
         <pmd.version>6.55.0</pmd.version>
@@ -154,11 +153,6 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
                 <version>${flyway.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>${h2.version}</version>
             </dependency>
 
             <dependency>
