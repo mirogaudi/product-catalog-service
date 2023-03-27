@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.4</version>
+        <version>3.0.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -30,7 +30,7 @@
         <lombok.version>1.18.26</lombok.version>
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
 
-        <springdoc-openapi.version>2.0.3</springdoc-openapi.version>
+        <springdoc-openapi.version>2.0.4</springdoc-openapi.version>
 
         <junit-jupiter.version>5.9.2</junit-jupiter.version>
         <mockito.version>5.2.0</mockito.version>
