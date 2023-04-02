@@ -30,7 +30,7 @@
         <lombok.version>1.18.26</lombok.version>
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
 
-        <springdoc-openapi.version>2.0.4</springdoc-openapi.version>
+        <springdoc-openapi.version>2.1.0</springdoc-openapi.version>
 
         <junit-jupiter.version>5.9.2</junit-jupiter.version>
         <mockito.version>5.2.0</mockito.version>
@@ -39,7 +39,7 @@
         <pmd.version>6.55.0</pmd.version>
         <spotbugs.version>4.7.3</spotbugs.version>
 
-        <surefire-plugin.version>3.0.0-M9</surefire-plugin.version>
+        <surefire-plugin.version>3.0.0</surefire-plugin.version>
         <site-plugin.version>4.0.0-M6</site-plugin.version>
         <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
 
