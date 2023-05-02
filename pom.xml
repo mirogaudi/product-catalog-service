@@ -49,7 +49,7 @@
         <spotbugs-plugin.version>4.7.3.4</spotbugs-plugin.version>
         <dependency-check-plugin.version>7.4.4</dependency-check-plugin.version>
 
-        <docker-plugin.version>0.42.0</docker-plugin.version>
+        <docker-plugin.version>0.42.1</docker-plugin.version>
 
         <require-maven.version>[3.6,)</require-maven.version>
         <require-java.version>[17.0,)</require-java.version>
