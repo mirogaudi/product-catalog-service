@@ -43,7 +43,7 @@
         <site-plugin.version>4.0.0-M7</site-plugin.version>
         <jacoco-plugin.version>0.8.10</jacoco-plugin.version>
 
-        <checkstyle-plugin.version>3.2.1</checkstyle-plugin.version>
+        <checkstyle-plugin.version>3.2.2</checkstyle-plugin.version>
         <pmd-plugin.version>3.20.0</pmd-plugin.version>
         <jxr-plugin.version>3.3.0</jxr-plugin.version>
         <spotbugs-plugin.version>4.7.3.4</spotbugs-plugin.version>
