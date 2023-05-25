@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.6</version>
+        <version>3.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -23,33 +23,33 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
 
-        <flyway.version>9.17.0</flyway.version>
+        <flyway.version>9.19.1</flyway.version>
 
         <resilience4j.version>2.0.2</resilience4j.version>
 
-        <lombok.version>1.18.26</lombok.version>
+        <lombok.version>1.18.28</lombok.version>
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
 
         <springdoc-openapi.version>2.1.0</springdoc-openapi.version>
 
-        <junit-jupiter.version>5.9.3</junit-jupiter.version>
+        <junit-jupiter.version>5.10.0-M1</junit-jupiter.version>
         <mockito.version>5.3.1</mockito.version>
 
-        <checkstyle.version>10.10.0</checkstyle.version>
+        <checkstyle.version>10.11.0</checkstyle.version>
         <pmd.version>6.55.0</pmd.version>
         <spotbugs.version>4.7.3</spotbugs.version>
 
-        <surefire-plugin.version>3.0.0</surefire-plugin.version>
-        <site-plugin.version>4.0.0-M7</site-plugin.version>
+        <surefire-plugin.version>3.1.0</surefire-plugin.version>
+        <site-plugin.version>4.0.0-M8</site-plugin.version>
         <jacoco-plugin.version>0.8.10</jacoco-plugin.version>
 
-        <checkstyle-plugin.version>3.2.2</checkstyle-plugin.version>
-        <pmd-plugin.version>3.20.0</pmd-plugin.version>
+        <checkstyle-plugin.version>3.3.0</checkstyle-plugin.version>
+        <pmd-plugin.version>3.21.0</pmd-plugin.version>
         <jxr-plugin.version>3.3.0</jxr-plugin.version>
         <spotbugs-plugin.version>4.7.3.4</spotbugs-plugin.version>
-        <dependency-check-plugin.version>7.4.4</dependency-check-plugin.version>
+        <dependency-check-plugin.version>8.2.1</dependency-check-plugin.version>
 
-        <docker-plugin.version>0.42.1</docker-plugin.version>
+        <docker-plugin.version>0.43.0</docker-plugin.version>
 
         <require-maven.version>[3.6,)</require-maven.version>
         <require-java.version>[17.0,)</require-java.version>
