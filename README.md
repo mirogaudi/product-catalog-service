@@ -153,7 +153,7 @@ $ ./mvnw clean package -Pcheckstyle,pmd,spotbugs
 #### Checkstyle
 
 Project uses [checkstyle.xml](checkstyle.xml) configuration based on customized
-Checkstyle's [google_checks.xml](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml).
+Checkstyle [google_checks.xml](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml).
 
 ```shell
 # Build with Maven wrapper checking with Checkstyle
