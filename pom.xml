@@ -25,14 +25,14 @@
 
         <flyway.version>9.19.3</flyway.version>
 
-        <resilience4j.version>2.0.2</resilience4j.version>
+        <resilience4j.version>2.1.0</resilience4j.version>
 
         <lombok.version>1.18.28</lombok.version>
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
 
         <springdoc-openapi.version>2.1.0</springdoc-openapi.version>
 
-        <junit-jupiter.version>5.10.0-M1</junit-jupiter.version>
+        <junit-jupiter.version>5.10.0-RC1</junit-jupiter.version>
         <mockito.version>5.4.0</mockito.version>
 
         <checkstyle.version>10.12.1</checkstyle.version>
@@ -149,12 +149,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-core</artifactId>
-                <version>${flyway.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>io.github.resilience4j</groupId>
                 <artifactId>resilience4j-spring-boot2</artifactId>
