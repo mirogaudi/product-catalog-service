@@ -40,7 +40,7 @@
         <spotbugs.version>4.7.3</spotbugs.version>
 
         <surefire-plugin.version>3.1.2</surefire-plugin.version>
-        <site-plugin.version>4.0.0-M8</site-plugin.version>
+        <site-plugin.version>4.0.0-M9</site-plugin.version>
         <jacoco-plugin.version>0.8.10</jacoco-plugin.version>
 
         <checkstyle-plugin.version>3.3.0</checkstyle-plugin.version>
