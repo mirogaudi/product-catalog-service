@@ -23,9 +23,9 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "category")
 @NoArgsConstructor
 @SuperBuilder
-@ToString(onlyExplicitlyIncluded = true, callSuper = true)
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true, callSuper = true)
 public class Category extends BaseEntity {
 
     @Column(name = "name", nullable = false, unique = true)
