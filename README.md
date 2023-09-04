@@ -198,7 +198,7 @@ $ ./mvnw wrapper:wrapper
 # Check for Maven plugins updates
 $ ./mvnw versions:display-plugin-updates
 
-# Check for Maven parent updates
+# Check for Maven parent (spring-boot-starter-parent) updates
 $ ./mvnw versions:display-parent-updates
 
 # Check for Maven property-linked dependencies updates
@@ -210,5 +210,6 @@ $ ./mvnw versions:display-dependency-updates
 
 ## TODO:
 
+- add http client calls
+- add semantic releases
 - use Micrometer
-- use Spring WebFlux
