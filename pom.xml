@@ -27,7 +27,7 @@
 
         <resilience4j.version>2.1.0</resilience4j.version>
 
-        <lombok.version>1.18.28</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
 
         <springdoc-openapi.version>2.2.0</springdoc-openapi.version>
