@@ -34,12 +34,10 @@ logging:
     root: info
 
 management:
-  endpoints.web.exposure.include: '*'
+  server.port: 9000
+  endpoints.web.exposure.include: "*"
   endpoint.health.show-details: always
-
-  health:
-    circuitbreakers.enabled: true
-    ratelimiters.enabled: true
+  health.defaults.enabled: true
 
 springdoc:
   show-actuator: true
