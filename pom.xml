@@ -37,7 +37,7 @@
 
         <checkstyle.version>10.12.4</checkstyle.version>
         <pmd.version>6.55.0</pmd.version>
-        <spotbugs.version>4.8.0</spotbugs.version>
+        <spotbugs.version>4.8.2</spotbugs.version>
 
         <surefire-plugin.version>3.2.1</surefire-plugin.version>
         <site-plugin.version>4.0.0-M12</site-plugin.version>
