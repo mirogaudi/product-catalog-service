@@ -193,7 +193,7 @@ Snyk [Test Results](https://snyk.io/test/github/mirogaudi/product-catalog-servic
 
 ```shell
 # Update Maven wrapper
-$ ./mvnw wrapper:wrapper
+$ mvn wrapper:wrapper -Dmaven=<a.b.c>
 
 # Check for Maven plugins updates
 $ ./mvnw versions:display-plugin-updates
