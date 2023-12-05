@@ -185,7 +185,7 @@ $ ./mvnw clean package -Powasp
 
 #### Snyk
 
-[![Snyk Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/mirogaudi/product-catalog-service)](https://snyk.io/test/github/mirogaudi/product-catalog-service)
+Snyk [Test Results](https://snyk.io/test/github/mirogaudi/product-catalog-service)
 
 ## Maintenance
 
