@@ -13,7 +13,7 @@ Application is a demo of a product catalog having simplified logic.
 
 ### Used technologies
 
-- Java 17
+- Java 21
 - Maven (wrapper)
 - Spring Boot
 - Spring Web MVC
