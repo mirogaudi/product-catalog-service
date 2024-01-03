@@ -1,6 +1,13 @@
+logging:
+  level:
+    root: info
+    org.springframework: error
+    mirogaudi.productcatalog: info
+
 spring:
   jpa:
     generate-ddl: false
+
     hibernate.ddl-auto: validate
 
     open-in-view: false
@@ -10,7 +17,7 @@ spring:
 
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:pcs
+    url: jdbc:h2:mem:pcs-test
     username: sa
     password: # empty
 
@@ -18,9 +25,9 @@ spring:
       maximum-pool-size: 5
       minimum-idle: 0
 
-logging:
-  level:
-    root: info
+springdoc:
+  swagger-ui:
+    enabled: false
 
 # Product catalog service (pcs)
 pcs:
@@ -30,6 +37,7 @@ pcs:
   # Rates service
   rates:
     service.url: https://frankfurter.app
+
     cache.evict:
       cron: 0 1 16 * * MON-FRI
       zone: CET
