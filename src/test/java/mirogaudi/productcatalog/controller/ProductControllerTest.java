@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProductControllerTest {
 
     private static final Long CATEGORY_ID = 1L;
-    private static final Category CATEGORY = category(CATEGORY_ID, "category");
+    private static final Category CATEGORY = Category.builder().id(CATEGORY_ID).name("category").build();
 
     private static final String API_PRODUCTS = "/api/v1/products";
 
@@ -207,13 +207,6 @@ class ProductControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
         verify(productService).delete(product.getId());
-    }
-
-    private static Category category(Long id, String name) {
-        return Category.builder()
-            .id(id)
-            .name(name)
-            .build();
     }
 
     private static Product product(Long id, String name, Category... categories) {
