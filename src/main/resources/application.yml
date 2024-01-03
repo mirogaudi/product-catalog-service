@@ -7,19 +7,21 @@ spring:
 
   jpa:
     generate-ddl: false
+
     hibernate.ddl-auto: none
 
-    open-in-view: false
-
     properties:
-      hibernate.connection.provider_disables_autocommit: true
+      hibernate:
+        connection.provider_disables_autocommit: true
+
+    open-in-view: false
 
   flyway:
     locations: classpath:db/migration
 
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:pcs
+    url: jdbc:h2:file:./target/db/pcs;AUTO_SERVER=TRUE
     username: sa
     password: # empty
 

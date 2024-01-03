@@ -130,7 +130,7 @@ $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/p
 ### View DB
 
 - H2 console [http://localhost:8080/pcs/h2-console](http://localhost:8080/pcs/h2-console)
-    - url: `jdbc:h2:mem:pcs`
+    - url: `jdbc:h2:file:./target/db/pcs;AUTO_SERVER=TRUE`
     - username: `sa`
     - password: `<empty>`
 
