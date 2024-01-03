@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.0</version>
+        <version>3.2.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -35,7 +35,7 @@
         <junit-jupiter.version>5.10.1</junit-jupiter.version>
         <mockito.version>5.8.0</mockito.version>
 
-        <checkstyle.version>10.12.6</checkstyle.version>
+        <checkstyle.version>10.12.7</checkstyle.version>
         <pmd.version>6.55.0</pmd.version>
         <spotbugs.version>4.8.3</spotbugs.version>
 
@@ -45,7 +45,7 @@
 
         <checkstyle-plugin.version>3.3.1</checkstyle-plugin.version>
         <pmd-plugin.version>3.21.2</pmd-plugin.version>
-        <jxr-plugin.version>3.3.1</jxr-plugin.version>
+        <jxr-plugin.version>3.3.2</jxr-plugin.version>
         <spotbugs-plugin.version>4.8.2.0</spotbugs-plugin.version>
         <dependency-check-plugin.version>9.0.7</dependency-check-plugin.version>
 
