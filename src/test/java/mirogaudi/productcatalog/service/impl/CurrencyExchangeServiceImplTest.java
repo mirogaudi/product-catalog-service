@@ -36,21 +36,21 @@ class CurrencyExchangeServiceImplTest {
     @NullSource
     void convert_null_amount(BigDecimal amount) {
         assertThrows(IllegalArgumentException.class,
-            () -> sut.convert(amount, USD, EUR));
+            () -> sut.convert(amount, USD, EUR).block());
     }
 
     @ParameterizedTest
     @NullSource
     void convert_null_fromCurrency(Currency fromCurrency) {
         assertThrows(IllegalArgumentException.class,
-            () -> sut.convert(ONE, fromCurrency, EUR));
+            () -> sut.convert(ONE, fromCurrency, EUR).block());
     }
 
     @ParameterizedTest
     @NullSource
     void convert_null_toCurrency(Currency toCurrency) {
         assertThrows(IllegalArgumentException.class,
-            () -> sut.convert(ONE, USD, toCurrency));
+            () -> sut.convert(ONE, USD, toCurrency).block());
     }
 
     @Test

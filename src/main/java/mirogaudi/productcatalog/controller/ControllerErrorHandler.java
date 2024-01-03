@@ -59,24 +59,27 @@ public class ControllerErrorHandler {
         return errorResponseEntity(INTERNAL_SERVER_ERROR, t);
     }
 
-    private ResponseEntity<Error> errorResponseEntity(HttpStatus status, Throwable t) {
+    private ResponseEntity<Error> errorResponseEntity(HttpStatus httpStatus, Throwable t) {
         Error error = new Error(
             LocalDateTime.now(),
-            status.value(),
-            status.getReasonPhrase(),
+            httpStatus.value(),
+            httpStatus.getReasonPhrase(),
             t.toString()
         );
 
         LOG.error("Error occurred: {}", error);
 
-        return ResponseEntity.status(status).body(error);
+        return ResponseEntity.status(httpStatus).body(error);
     }
 
-    private record Error(@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-                         LocalDateTime timestamp,
-                         int status,
-                         String error,
-                         String cause) {
+    /**
+     * A record containing error details.
+     */
+    public record Error(@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+                        LocalDateTime timestamp,
+                        int httpStatus,
+                        String error,
+                        String cause) {
     }
 
 }
