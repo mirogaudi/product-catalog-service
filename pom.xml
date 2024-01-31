@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.1</version>
+        <version>3.2.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -23,7 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>21</java.version>
 
-        <flyway.version>10.4.1</flyway.version>
+        <flyway.version>10.7.1</flyway.version>
 
         <resilience4j.version>2.2.0</resilience4j.version>
 
@@ -33,9 +33,9 @@
         <springdoc-openapi.version>2.3.0</springdoc-openapi.version>
 
         <junit-jupiter.version>5.10.1</junit-jupiter.version>
-        <mockito.version>5.8.0</mockito.version>
+        <mockito.version>5.10.0</mockito.version>
 
-        <checkstyle.version>10.12.7</checkstyle.version>
+        <checkstyle.version>10.13.0</checkstyle.version>
         <pmd.version>6.55.0</pmd.version>
         <spotbugs.version>4.8.3</spotbugs.version>
 
@@ -46,8 +46,8 @@
         <checkstyle-plugin.version>3.3.1</checkstyle-plugin.version>
         <pmd-plugin.version>3.21.2</pmd-plugin.version>
         <jxr-plugin.version>3.3.2</jxr-plugin.version>
-        <spotbugs-plugin.version>4.8.2.0</spotbugs-plugin.version>
-        <dependency-check-plugin.version>9.0.8</dependency-check-plugin.version>
+        <spotbugs-plugin.version>4.8.3.0</spotbugs-plugin.version>
+        <dependency-check-plugin.version>9.0.9</dependency-check-plugin.version>
 
         <docker-plugin.version>0.43.4</docker-plugin.version>
 
