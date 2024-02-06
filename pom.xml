@@ -14,24 +14,22 @@
     <artifactId>product-catalog-service</artifactId>
     <version>1.0.0</version>
 
+    <packaging>jar</packaging>
+
     <name>Product Catalog service</name>
     <description>Demo product catalog service</description>
 
-    <packaging>jar</packaging>
-
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <encoding>UTF-8</encoding>
+        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
 
         <java.version>21</java.version>
 
         <flyway.version>10.7.1</flyway.version>
-
         <resilience4j.version>2.2.0</resilience4j.version>
-
         <lombok.version>1.18.30</lombok.version>
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
-
         <springdoc-openapi.version>2.3.0</springdoc-openapi.version>
 
         <junit-jupiter.version>5.10.2</junit-jupiter.version>
@@ -44,18 +42,15 @@
         <surefire-plugin.version>3.2.5</surefire-plugin.version>
         <site-plugin.version>4.0.0-M13</site-plugin.version>
         <jacoco-plugin.version>0.8.11</jacoco-plugin.version>
-
         <checkstyle-plugin.version>3.3.1</checkstyle-plugin.version>
         <pmd-plugin.version>3.21.2</pmd-plugin.version>
         <jxr-plugin.version>3.3.2</jxr-plugin.version>
         <spotbugs-plugin.version>4.8.3.0</spotbugs-plugin.version>
         <dependency-check-plugin.version>9.0.9</dependency-check-plugin.version>
-
         <docker-plugin.version>0.43.4</docker-plugin.version>
 
         <require-maven.version>[3.9,)</require-maven.version>
         <require-java.version>[${java.version},)</require-java.version>
-
     </properties>
 
     <dependencies>
@@ -130,6 +125,7 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
 
+        <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -146,7 +142,6 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <dependencyManagement>
@@ -161,25 +156,23 @@
                 <artifactId>annotations</artifactId>
                 <version>${findbugs-annotations.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
                 <version>${flyway.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>io.github.resilience4j</groupId>
                 <artifactId>resilience4j-spring-boot2</artifactId>
                 <version>${resilience4j.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc-openapi.version}</version>
             </dependency>
 
+            <!-- test dependencies -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
@@ -199,28 +192,39 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>enforce</id>
+                        <id>enforce-versions</id>
                         <goals>
                             <goal>enforce</goal>
                         </goals>
-                        <phase>validate</phase>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>${require-maven.version}</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>${require-java.version}</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration combine.children="append">
-                    <fail>true</fail>
-                    <rules>
-                        <requireMavenVersion>
-                            <version>${require-maven.version}</version>
-                        </requireMavenVersion>
-                        <requireJavaVersion>
-                            <version>${require-java.version}</version>
-                        </requireJavaVersion>
-                    </rules>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <encoding>${encoding}</encoding>
+                    <failOnWarning>false</failOnWarning>
+                    <showWarnings>true</showWarnings>
+                    <compilerArgs>
+                        <arg>-Xlint:all,-options,-processing</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
@@ -231,7 +235,6 @@
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                 </configuration>
             </plugin>
-
         </plugins>
         <pluginManagement>
             <plugins>
@@ -245,6 +248,12 @@
                     <artifactId>maven-site-plugin</artifactId>
                     <version>${site-plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jxr-plugin</artifactId>
+                    <version>${jxr-plugin.version}</version>
+                </plugin>
+
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -262,11 +271,6 @@
                             <version>${checkstyle.version}</version>
                         </dependency>
                     </dependencies>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jxr-plugin</artifactId>
-                    <version>${jxr-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -313,13 +317,11 @@
                     <artifactId>dependency-check-maven</artifactId>
                     <version>${dependency-check-plugin.version}</version>
                 </plugin>
-
                 <plugin>
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
                     <version>${docker-plugin.version}</version>
                 </plugin>
-
             </plugins>
         </pluginManagement>
     </build>
@@ -359,7 +361,7 @@
                                 <goals>
                                     <goal>report</goal>
                                 </goals>
-                                <phase>package</phase>
+                                <phase>prepare-package</phase>
                             </execution>
                         </executions>
                     </plugin>
@@ -420,7 +422,7 @@
                                     <goal>check</goal>
                                     <goal>cpd-check</goal>
                                 </goals>
-                                <phase>package</phase>
+                                <phase>prepare-package</phase>
                             </execution>
                         </executions>
                     </plugin>
@@ -445,7 +447,7 @@
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
-                                <phase>package</phase>
+                                <phase>prepare-package</phase>
                             </execution>
                         </executions>
                     </plugin>
@@ -469,7 +471,7 @@
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
-                                <phase>package</phase>
+                                <phase>prepare-package</phase>
                             </execution>
                         </executions>
                     </plugin>
@@ -512,7 +514,6 @@
                 </plugins>
             </build>
         </profile>
-
     </profiles>
 
 </project>
