@@ -47,7 +47,7 @@
         <jxr-plugin.version>3.3.2</jxr-plugin.version>
         <spotbugs-plugin.version>4.8.3.0</spotbugs-plugin.version>
         <dependency-check-plugin.version>9.0.9</dependency-check-plugin.version>
-        <docker-plugin.version>0.43.4</docker-plugin.version>
+        <docker-plugin.version>0.44.0</docker-plugin.version>
 
         <require-maven.version>[3.9,)</require-maven.version>
         <require-java.version>[${java.version},)</require-java.version>
