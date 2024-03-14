@@ -197,5 +197,4 @@ $ ./mvnw versions:display-dependency-updates
 
 ## TODO:
 
-- add http client calls
 - add semantic releases and/or CHANGELOG.md https://keepachangelog.com/en/1.1.0/
