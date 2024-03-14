@@ -20,9 +20,9 @@
     <description>Demo product catalog service</description>
 
     <properties>
-        <encoding>UTF-8</encoding>
-        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
+        <project.encoding>UTF-8</project.encoding>
+        <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
 
         <java.version>21</java.version>
 
@@ -36,16 +36,17 @@
         <mockito.version>5.11.0</mockito.version>
 
         <checkstyle.version>10.14.1</checkstyle.version>
-        <pmd.version>6.55.0</pmd.version>
+        <pmd.version>7.0.0-rc4</pmd.version>
         <spotbugs.version>4.8.3</spotbugs.version>
+
+        <checkstyle-plugin.version>3.3.1</checkstyle-plugin.version>
+        <pmd-plugin.version>3.21.2</pmd-plugin.version>
+        <spotbugs-plugin.version>4.8.3.1</spotbugs-plugin.version>
 
         <surefire-plugin.version>3.2.5</surefire-plugin.version>
         <site-plugin.version>4.0.0-M13</site-plugin.version>
         <jacoco-plugin.version>0.8.11</jacoco-plugin.version>
-        <checkstyle-plugin.version>3.3.1</checkstyle-plugin.version>
-        <pmd-plugin.version>3.21.2</pmd-plugin.version>
         <jxr-plugin.version>3.3.2</jxr-plugin.version>
-        <spotbugs-plugin.version>4.8.3.1</spotbugs-plugin.version>
         <dependency-check-plugin.version>9.0.9</dependency-check-plugin.version>
         <docker-plugin.version>0.44.0</docker-plugin.version>
 
@@ -219,7 +220,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <encoding>${encoding}</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <failOnWarning>false</failOnWarning>
                     <showWarnings>true</showWarnings>
                     <compilerArgs>
@@ -277,6 +279,11 @@
                     <artifactId>maven-pmd-plugin</artifactId>
                     <version>${pmd-plugin.version}</version>
                     <dependencies>
+                        <dependency>
+                            <groupId>net.sourceforge.pmd</groupId>
+                            <artifactId>pmd-compat6</artifactId>
+                            <version>${pmd.version}</version>
+                        </dependency>
                         <dependency>
                             <groupId>net.sourceforge.pmd</groupId>
                             <artifactId>pmd-core</artifactId>
