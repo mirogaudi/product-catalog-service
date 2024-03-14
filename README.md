@@ -126,7 +126,7 @@ $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/p
 ### Code coverage
 
 ```shell
-# Build with Maven wrapper generating JaCoCo code coverage report
+# Build with Maven wrapper generating JaCoCo code coverage report and checking code coverage metrics
 $ ./mvnw clean package -Pcode-coverage
 ```
 
