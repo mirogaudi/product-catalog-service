@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
+        <version>3.2.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -26,17 +26,18 @@
 
         <java.version>21</java.version>
 
+        <lombok.version>1.18.32</lombok.version>
+        <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
+
         <flyway.version>10.10.0</flyway.version>
         <resilience4j.version>2.2.0</resilience4j.version>
-        <lombok.version>1.18.30</lombok.version>
-        <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
         <springdoc-openapi.version>2.4.0</springdoc-openapi.version>
 
         <junit-jupiter.version>5.10.2</junit-jupiter.version>
         <mockito.version>5.11.0</mockito.version>
 
-        <checkstyle.version>10.14.1</checkstyle.version>
-        <pmd.version>7.0.0-rc4</pmd.version>
+        <checkstyle.version>10.14.2</checkstyle.version>
+        <pmd.version>7.0.0</pmd.version>
         <spotbugs.version>4.8.3</spotbugs.version>
 
         <checkstyle-plugin.version>3.3.1</checkstyle-plugin.version>
@@ -47,7 +48,7 @@
         <site-plugin.version>4.0.0-M13</site-plugin.version>
         <jacoco-plugin.version>0.8.11</jacoco-plugin.version>
         <jxr-plugin.version>3.3.2</jxr-plugin.version>
-        <dependency-check-plugin.version>9.0.9</dependency-check-plugin.version>
+        <dependency-check-plugin.version>9.0.10</dependency-check-plugin.version>
         <docker-plugin.version>0.44.0</docker-plugin.version>
 
         <require-maven.version>[3.9,)</require-maven.version>
