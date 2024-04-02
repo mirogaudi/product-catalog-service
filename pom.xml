@@ -48,7 +48,7 @@
         <site-plugin.version>4.0.0-M13</site-plugin.version>
         <jacoco-plugin.version>0.8.11</jacoco-plugin.version>
         <jxr-plugin.version>3.3.2</jxr-plugin.version>
-        <dependency-check-plugin.version>9.0.10</dependency-check-plugin.version>
+        <dependency-check-plugin.version>9.1.0</dependency-check-plugin.version>
         <docker-plugin.version>0.44.0</docker-plugin.version>
 
         <require-maven.version>[3.9,)</require-maven.version>
