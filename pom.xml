@@ -33,19 +33,19 @@
         <resilience4j.version>2.2.0</resilience4j.version>
         <springdoc-openapi.version>2.5.0</springdoc-openapi.version>
 
-        <junit-jupiter.version>5.10.2</junit-jupiter.version>
-        <mockito.version>5.11.0</mockito.version>
+        <junit-jupiter.version>5.11.0-M1</junit-jupiter.version>
+        <mockito.version>5.12.0</mockito.version>
 
         <checkstyle.version>10.16.0</checkstyle.version>
         <pmd.version>7.1.0</pmd.version>
-        <spotbugs.version>4.8.4</spotbugs.version>
+        <spotbugs.version>4.8.5</spotbugs.version>
 
         <checkstyle-plugin.version>3.3.1</checkstyle-plugin.version>
         <pmd-plugin.version>3.22.0</pmd-plugin.version>
-        <spotbugs-plugin.version>4.8.4.0</spotbugs-plugin.version>
+        <spotbugs-plugin.version>4.8.5.0</spotbugs-plugin.version>
 
         <surefire-plugin.version>3.2.5</surefire-plugin.version>
-        <site-plugin.version>4.0.0-M13</site-plugin.version>
+        <site-plugin.version>4.0.0-M14</site-plugin.version>
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <jxr-plugin.version>3.3.2</jxr-plugin.version>
         <dependency-check-plugin.version>9.1.0</dependency-check-plugin.version>
