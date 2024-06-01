@@ -45,7 +45,7 @@
         <spotbugs-plugin.version>4.8.5.0</spotbugs-plugin.version>
 
         <surefire-plugin.version>3.2.5</surefire-plugin.version>
-        <site-plugin.version>4.0.0-M14</site-plugin.version>
+        <site-plugin.version>4.0.0-M15</site-plugin.version>
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <jxr-plugin.version>3.3.2</jxr-plugin.version>
         <dependency-check-plugin.version>9.1.0</dependency-check-plugin.version>
