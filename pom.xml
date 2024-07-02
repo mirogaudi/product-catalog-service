@@ -31,7 +31,7 @@
 
         <flyway.version>10.14.0</flyway.version>
         <resilience4j.version>2.2.0</resilience4j.version>
-        <springdoc-openapi.version>2.5.0</springdoc-openapi.version>
+        <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
 
         <junit-jupiter.version>5.11.0-M2</junit-jupiter.version>
         <mockito.version>5.12.0</mockito.version>
