@@ -44,7 +44,7 @@
         <pmd-plugin.version>3.24.0</pmd-plugin.version>
         <spotbugs-plugin.version>4.8.6.2</spotbugs-plugin.version>
 
-        <surefire-plugin.version>3.4.0</surefire-plugin.version>
+        <surefire-plugin.version>3.5.0</surefire-plugin.version>
         <site-plugin.version>4.0.0-M16</site-plugin.version>
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <jxr-plugin.version>3.5.0</jxr-plugin.version>
