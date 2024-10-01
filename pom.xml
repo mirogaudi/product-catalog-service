@@ -49,7 +49,7 @@
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <jxr-plugin.version>3.5.0</jxr-plugin.version>
         <dependency-check-plugin.version>10.0.4</dependency-check-plugin.version>
-        <docker-plugin.version>0.45.0</docker-plugin.version>
+        <docker-plugin.version>0.45.1</docker-plugin.version>
 
         <require-maven.version>[3.9,)</require-maven.version>
         <require-java.version>[${java.version},)</require-java.version>
