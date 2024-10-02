@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 import static mirogaudi.productcatalog.config.CacheConfig.RATES_CACHE_NAME;
 
 /**
- * Connector for the Frankfurter currency exchange rates service (<a href="https://www.frankfurter.app">https://www.frankfurter.app</a>).
+ * Connector for the Frankfurter (https://frankfurter.dev) currency exchange rates service.
  */
 @Component
 @RequiredArgsConstructor(onConstructor_ = {@Lazy})
@@ -38,11 +38,12 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
     public BigDecimal getCurrencyExchangeRate(@NonNull Currency fromCurrency,
                                               @NonNull Currency toCurrency) {
         try {
-            // see "https://www.frankfurter.app/docs/#latest"
+            // uses currency conversion API. To test run in console:
+            // $ FROM='USD' TO='EUR'; curl -s "https://api.frankfurter.app/latest?base=${FROM}&symbols=${TO}"
             String url = UriComponentsBuilder.fromUri(ratesServiceUri.get())
                 .path("latest")
-                .queryParam("from", fromCurrency.getCurrencyCode())
-                .queryParam("to", toCurrency.getCurrencyCode())
+                .queryParam("base", fromCurrency.getCurrencyCode())
+                .queryParam("symbols", toCurrency.getCurrencyCode())
                 .toUriString();
 
             FrankfurterRates response = restTemplate.getForObject(url, FrankfurterRates.class);

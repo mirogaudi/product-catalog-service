@@ -46,7 +46,7 @@ Application is a demo of a product catalog having simplified logic.
 
 - Application implements CRUD operations for Categories and Products
 - Category and Product services are `@Transactional` to avoid race condition
-- Application gets currency exchange rates from Frankfurter [https://frankfurter.app](https://frankfurter.app)
+- Application gets currency exchange rates from Frankfurter [https://frankfurter.dev](https://frankfurter.dev)
     - Frankfurter REST API is called via Spring `RestTemplate` and decorated with Resilience4j `CircuitBreaker`
 - Rates are cached with `Caffeine` during a period of their validity
     - Cache eviction is scheduled to `16:01 CET MON-FRI`
