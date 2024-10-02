@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.3</version>
+        <version>3.3.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -29,27 +29,27 @@
         <lombok.version>1.18.34</lombok.version>
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
 
-        <flyway.version>10.17.2</flyway.version>
+        <flyway.version>10.18.2</flyway.version>
         <resilience4j.version>2.2.0</resilience4j.version>
         <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
 
-        <junit-jupiter.version>5.11.0</junit-jupiter.version>
-        <mockito.version>5.13.0</mockito.version>
+        <junit-jupiter.version>5.11.1</junit-jupiter.version>
+        <mockito.version>5.14.1</mockito.version>
 
-        <checkstyle.version>10.18.1</checkstyle.version>
+        <checkstyle.version>10.18.2</checkstyle.version>
         <pmd.version>7.2.0</pmd.version>
         <spotbugs.version>4.8.6</spotbugs.version>
 
         <checkstyle-plugin.version>3.5.0</checkstyle-plugin.version>
         <pmd-plugin.version>3.25.0</pmd-plugin.version>
-        <spotbugs-plugin.version>4.8.6.2</spotbugs-plugin.version>
+        <spotbugs-plugin.version>4.8.6.4</spotbugs-plugin.version>
 
         <surefire-plugin.version>3.5.0</surefire-plugin.version>
         <site-plugin.version>4.0.0-M16</site-plugin.version>
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <jxr-plugin.version>3.5.0</jxr-plugin.version>
         <dependency-check-plugin.version>10.0.4</dependency-check-plugin.version>
-        <docker-plugin.version>0.45.0</docker-plugin.version>
+        <docker-plugin.version>0.45.1</docker-plugin.version>
 
         <require-maven.version>[3.9,)</require-maven.version>
         <require-java.version>[${java.version},)</require-java.version>
