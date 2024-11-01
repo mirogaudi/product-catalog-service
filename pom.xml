@@ -34,7 +34,7 @@
         <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
 
         <junit-jupiter.version>5.11.1</junit-jupiter.version>
-        <mockito.version>5.14.1</mockito.version>
+        <mockito.version>5.14.2</mockito.version>
 
         <checkstyle.version>10.18.2</checkstyle.version>
         <pmd.version>7.2.0</pmd.version>
