@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>3.4.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -26,23 +26,23 @@
 
         <java.version>21</java.version>
 
-        <lombok.version>1.18.34</lombok.version>
+        <lombok.version>1.18.36</lombok.version>
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
 
-        <flyway.version>10.20.1</flyway.version>
+        <flyway.version>11.0.0</flyway.version>
         <resilience4j.version>2.2.0</resilience4j.version>
-        <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
+        <springdoc-openapi.version>2.7.0</springdoc-openapi.version>
 
         <junit-jupiter.version>5.11.3</junit-jupiter.version>
         <mockito.version>5.14.2</mockito.version>
 
-        <checkstyle.version>10.20.0</checkstyle.version>
+        <checkstyle.version>10.20.1</checkstyle.version>
         <pmd.version>7.2.0</pmd.version>
         <spotbugs.version>4.8.6</spotbugs.version>
 
         <checkstyle-plugin.version>3.6.0</checkstyle-plugin.version>
         <pmd-plugin.version>3.26.0</pmd-plugin.version>
-        <spotbugs-plugin.version>4.8.6.5</spotbugs-plugin.version>
+        <spotbugs-plugin.version>4.8.6.6</spotbugs-plugin.version>
 
         <surefire-plugin.version>3.5.2</surefire-plugin.version>
         <site-plugin.version>4.0.0-M16</site-plugin.version>
