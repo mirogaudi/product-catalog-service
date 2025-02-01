@@ -29,7 +29,7 @@
         <lombok.version>1.18.36</lombok.version>
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
 
-        <flyway.version>11.1.0</flyway.version>
+        <flyway.version>11.3.0</flyway.version>
         <resilience4j.version>2.2.0</resilience4j.version>
         <springdoc-openapi.version>2.7.0</springdoc-openapi.version>
 
