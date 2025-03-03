@@ -38,7 +38,7 @@
 
         <checkstyle.version>10.21.3</checkstyle.version>
         <pmd.version>7.10.0</pmd.version>
-        <spotbugs.version>4.9.1</spotbugs.version>
+        <spotbugs.version>4.9.2</spotbugs.version>
 
         <checkstyle-plugin.version>3.6.0</checkstyle-plugin.version>
         <pmd-plugin.version>3.26.0</pmd-plugin.version>
