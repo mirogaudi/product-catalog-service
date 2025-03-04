@@ -98,7 +98,7 @@ $ ./mvnw clean package -Pdocker
 
 ```shell
 # Run with Java
-$ java -jar target/product-catalog-service-*.jar
+$ java -jar target/product-catalog-service-1.0.0.jar
 
 # Run with Maven wrapper (via Spring Boot plugin)
 $ ./mvnw spring-boot:run
@@ -112,7 +112,9 @@ $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/p
 ### View and try API
 
 - OpenAPI docs: [http://localhost:8080/pcs/v3/api-docs](http://localhost:8080/pcs/v3/api-docs)
+- Actuator: [http://localhost:9000/actuator](http://localhost:9000/actuator)
 - Swagger UI: [http://localhost:8080/pcs/swagger-ui/index.html](http://localhost:8080/pcs/swagger-ui/index.html)
+- Swagger UI (x-actuator): [http://localhost:8080/pcs/swagger-ui/index.html?urls.primaryName=x-actuator](http://localhost:8080/pcs/swagger-ui/index.html?urls.primaryName=x-actuator)
 
 ### View DB
 
