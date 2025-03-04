@@ -26,6 +26,9 @@ jobs:
       - name: Build with Maven wrapper generating code coverage report
         run: ./mvnw -B package -Pcode-coverage
 
+      - name: Build with Maven wrapper checking code with CheckStyle, PMD and SpotBugs
+        run: ./mvnw -B package -Pcheckstyle,pmd,spotbugs -DskipTests
+
       - name: Generate JaCoCo badges
         uses: cicirello/jacoco-badge-generator@v2
         with:

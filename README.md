@@ -141,7 +141,7 @@ $ ./mvnw clean package -Pcode-coverage
 
 ```shell
 # Build with Maven wrapper performing static code analysis
-$ ./mvnw clean package -Pcheckstyle,pmd,spotbugs
+$ ./mvnw clean package -Pcheckstyle,pmd,spotbugs -DskipTests
 ```
 
 #### Checkstyle
