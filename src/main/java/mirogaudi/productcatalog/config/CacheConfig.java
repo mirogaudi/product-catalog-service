@@ -1,5 +1,6 @@
 package mirogaudi.productcatalog.config;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.EnableCaching;
@@ -18,7 +19,9 @@ public class CacheConfig {
 
     @Bean
     public CacheManager cacheManager() {
-        return new CaffeineCacheManager(RATES_CACHE_NAME);
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager(RATES_CACHE_NAME);
+        cacheManager.setCaffeine(Caffeine.newBuilder().recordStats());
+        return cacheManager;
     }
 
     @Scheduled(
