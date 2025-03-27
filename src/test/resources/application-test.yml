@@ -6,11 +6,9 @@ logging:
 
 spring:
   jpa:
-    generate-ddl: false
-
-    hibernate.ddl-auto: validate
-
     open-in-view: false
+    generate-ddl: false
+    hibernate.ddl-auto: validate
 
   flyway:
     locations: classpath:db/migration
@@ -20,7 +18,6 @@ spring:
     url: jdbc:h2:mem:pcs-test
     username: sa
     password: # empty
-
     hikari:
       maximum-pool-size: 5
       minimum-idle: 0
@@ -33,11 +30,9 @@ springdoc:
 pcs:
   # Base currency
   base-currency-code: EUR
-
   # Rates service
   rates:
     service.url: https://api.frankfurter.app
-
     cache.evict:
       cron: 0 1 16 * * MON-FRI
       zone: CET
