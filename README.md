@@ -77,7 +77,7 @@ Application uses H2 DB.
 
 ### Configuration
 
-See configuration in `pcs:` section of [application.yml](src/main/resources/application.yml)
+See application specific configuration in `pcs:` section of [application.yml](src/main/resources/application.yml)
 
 ## Getting started
 
@@ -114,12 +114,17 @@ $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/p
 
 - Or just run `ProductCatalogServiceApplication` in an IDE
 
-### View and try API
+### View and try Application API
 
 - OpenAPI docs: [http://localhost:8080/pcs/v3/api-docs](http://localhost:8080/pcs/v3/api-docs)
-- Actuator: [http://localhost:9000/actuator](http://localhost:9000/actuator)
 - Swagger UI: [http://localhost:8080/pcs/swagger-ui/index.html](http://localhost:8080/pcs/swagger-ui/index.html)
-- Swagger UI (x-actuator): [http://localhost:8080/pcs/swagger-ui/index.html?urls.primaryName=x-actuator](http://localhost:8080/pcs/swagger-ui/index.html?urls.primaryName=x-actuator)
+- HTTP client: [request-categories.http](http-requests/request-categories.http), [request-products.http](http-requests/request-products.http)
+
+#### Spring Boot Actuator
+
+- Actuator: [http://localhost:9000/actuator](http://localhost:9000/actuator)
+- Swagger UI: [http://localhost:8080/pcs/swagger-ui/index.html?urls.primaryName=x-actuator](http://localhost:8080/pcs/swagger-ui/index.html?urls.primaryName=x-actuator)
+- HTTP client: [request-actuator.http](http-requests/request-actuator.http)
 
 ### View DB
 
