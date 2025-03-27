@@ -16,12 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -36,22 +36,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
-        List<Product> list = new ArrayList<>();
-        for (Product product : productRepository.findAll()) {
-            // initialize lazy relations if spring.jpa.open-in-view=false
-            Hibernate.initialize(product.getCategoryIds());
-            list.add(product);
-        }
-        return list;
+        Iterable<Product> products = productRepository.findAll();
+        // initialize lazy relations if spring.jpa.open-in-view=false
+        products.forEach(product -> Hibernate.initialize(product.getCategories()));
+        return StreamSupport.stream(products.spliterator(), false).toList();
     }
 
     @Override
     public Product find(@NonNull Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
-        productOptional.ifPresent(product ->
-            // initialize lazy relations if spring.jpa.open-in-view=false
-            Hibernate.initialize(product.getCategoryIds())
-        );
+        // initialize lazy relations if spring.jpa.open-in-view=false
+        productOptional.ifPresent(product -> Hibernate.initialize(product.getCategories()));
         return productOptional.orElse(null);
     }
 
