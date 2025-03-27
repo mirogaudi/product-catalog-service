@@ -9,17 +9,19 @@ import mirogaudi.productcatalog.repository.ProductRepository;
 import mirogaudi.productcatalog.service.CategoryService;
 import mirogaudi.productcatalog.service.CurrencyExchangeService;
 import mirogaudi.productcatalog.service.ProductService;
+import org.hibernate.Hibernate;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
-import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -34,13 +36,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
-        return StreamSupport.stream(productRepository.findAll().spliterator(), false)
-            .toList();
+        List<Product> list = new ArrayList<>();
+        for (Product product : productRepository.findAll()) {
+            // initialize lazy relations if spring.jpa.open-in-view=false
+            Hibernate.initialize(product.getCategoryIds());
+            list.add(product);
+        }
+        return list;
     }
 
     @Override
     public Product find(@NonNull Long id) {
-        return productRepository.findById(id).orElse(null);
+        Optional<Product> productOptional = productRepository.findById(id);
+        productOptional.ifPresent(product ->
+            // initialize lazy relations if spring.jpa.open-in-view=false
+            Hibernate.initialize(product.getCategoryIds())
+        );
+        return productOptional.orElse(null);
     }
 
     @Override
