@@ -46,7 +46,7 @@
 
         <surefire-plugin.version>3.5.3</surefire-plugin.version>
         <site-plugin.version>4.0.0-M16</site-plugin.version>
-        <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
+        <jacoco-plugin.version>0.8.13</jacoco-plugin.version>
         <jxr-plugin.version>3.6.0</jxr-plugin.version>
         <owasp-dependency-check-plugin.version>12.1.0</owasp-dependency-check-plugin.version>
         <docker-plugin.version>0.45.1</docker-plugin.version>
