@@ -3,6 +3,9 @@
 
 name: Java_CI_with_Maven
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [ master ]
