@@ -190,16 +190,22 @@ Snyk [Test Results](https://snyk.io/test/github/mirogaudi/product-catalog-servic
 
 ### Update dependencies
 
-Dependencies are to be updated automatically with Renovate/Dependabot or could be updated manually:
+Dependencies are to be updated automatically with Renovate/Dependabot or could be updated manually.
+
+#### Update Maven Wrapper
 
 ```shell
-# Update Maven wrapper
+# Update Maven wrapper to use Maven a.b.c 
 $ mvn wrapper:wrapper -Dmaven=<a.b.c>
+```
 
+#### Check for new versions with `versions-maven-plugin`
+
+```shell
 # Check for Maven plugins updates
 $ ./mvnw versions:display-plugin-updates
 
-# Check for Maven parent (spring-boot-starter-parent) updates
+# Check for Maven parent updates
 $ ./mvnw versions:display-parent-updates
 
 # Check for Maven property-linked dependencies updates
@@ -207,6 +213,13 @@ $ ./mvnw versions:display-property-updates
 
 # Check for Maven dependencies updates
 $ ./mvnw versions:display-dependency-updates
+```
+
+To ignore case-insensitive `alpha`, `beta`, `dev`, `milestone` and `release candidate` versions in checks above add the following D-parameter:
+`maven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?'`
+
+```shell
+$ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' versions:<goal>
 ```
 
 ## TODO:
