@@ -42,7 +42,7 @@
 
         <checkstyle-plugin.version>3.6.0</checkstyle-plugin.version>
         <pmd-plugin.version>3.26.0</pmd-plugin.version>
-        <spotbugs-plugin.version>4.9.3.0</spotbugs-plugin.version>
+        <spotbugs-plugin.version>4.9.3.1</spotbugs-plugin.version>
 
         <surefire-plugin.version>3.5.3</surefire-plugin.version>
         <site-plugin.version>4.0.0-M16</site-plugin.version>
