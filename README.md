@@ -14,7 +14,7 @@ Application is a demo of a product catalog having simplified logic.
 ### Used technologies
 
 - Java 21
-- Maven (wrapper)
+- Maven 4 (wrapper)
 - Spring Boot
 - Spring Web MVC
 - Spring Cache (Caffeine)
@@ -85,7 +85,7 @@ See application specific configuration in `pcs:` section of [application.yml](sr
 
 ```shell
 # Build with Maven wrapper
-$ ./mvnw clean package
+$ ./mvnw package
 ```
 
 ### Docker build
@@ -96,7 +96,7 @@ $ docker build -t mirogaudi/product-catalog-service:1.0.0 .
 $ docker tag mirogaudi/product-catalog-service:1.0.0 mirogaudi/product-catalog-service:latest
 
 # Build docker image with Maven wrapper (via Docker plugin)
-$ ./mvnw clean package -Pdocker -DskipTests
+$ ./mvnw package -Pdocker -DskipTests
 ```
 
 ### Run
@@ -139,14 +139,14 @@ $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/p
 
 ```shell
 # Build with Maven wrapper generating JaCoCo code coverage report and checking code coverage metrics
-$ ./mvnw clean package -Pcode-coverage
+$ ./mvnw package -Pcode-coverage
 ```
 
 ### Static code analysis
 
 ```shell
 # Build with Maven wrapper performing static code analysis
-$ ./mvnw clean package -Pcheckstyle,pmd,spotbugs -DskipTests
+$ ./mvnw package -Pcheckstyle,pmd,spotbugs -DskipTests
 ```
 
 #### Checkstyle
@@ -156,21 +156,21 @@ Checkstyle [google_checks.xml](https://github.com/checkstyle/checkstyle/blob/mas
 
 ```shell
 # Build with Maven wrapper checking with Checkstyle
-$ ./mvnw clean validate -Pcheckstyle -DskipTests
+$ ./mvnw validate -Pcheckstyle -DskipTests
 ```
 
 #### PMD
 
 ```shell
 # Build with Maven wrapper checking with PMD
-$ ./mvnw clean package -Ppmd -DskipTests
+$ ./mvnw package -Ppmd -DskipTests
 ```
 
 #### SpotBugs
 
 ```shell
 # Build with Maven wrapper checking with SpotBugs
-$ ./mvnw clean package -Pspotbugs -DskipTests
+$ ./mvnw package -Pspotbugs -DskipTests
 ```
 
 ### Dependencies vulnerabilities
@@ -179,7 +179,7 @@ $ ./mvnw clean package -Pspotbugs -DskipTests
 
 ```shell
 # Build with Maven wrapper generating OWASP dependency vulnerability report
-$ ./mvnw clean package -Powasp -DskipTests
+$ ./mvnw package -Powasp -DskipTests
 ```
 
 #### Snyk
