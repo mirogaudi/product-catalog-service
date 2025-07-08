@@ -12,6 +12,8 @@ management:
       allowed-methods: "*"
   endpoint.health.show-details: always
   health.defaults.enabled: true
+  endpoint.sbom:
+    application.location: classpath:META-INF/sbom/application.cdx.json
 
 logging:
   level:
