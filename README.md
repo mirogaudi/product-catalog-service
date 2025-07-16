@@ -15,6 +15,7 @@ Application is a demo of a product catalog having simplified logic.
 
 - Java 21
 - Maven 4 (wrapper)
+- Maven BuildTime Profiler Extension
 - Spring Boot
 - Spring Web MVC
 - Spring Cache (Caffeine)
