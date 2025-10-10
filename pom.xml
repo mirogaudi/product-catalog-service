@@ -250,25 +250,6 @@
                     <argLine>@{argLine} -Xshare:off</argLine>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.cyclonedx</groupId>
-                <artifactId>cyclonedx-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>makeAggregateBom</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <projectType>application</projectType>
-                            <outputDirectory>${project.build.outputDirectory}/META-INF/sbom</outputDirectory>
-                            <outputName>application.cdx</outputName>
-                            <outputFormat>json</outputFormat>
-                            <skipAttach>true</skipAttach>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
 
         <pluginManagement>
@@ -287,11 +268,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jxr-plugin</artifactId>
                     <version>${jxr-plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.cyclonedx</groupId>
-                    <artifactId>cyclonedx-maven-plugin</artifactId>
-                    <version>${cyclonedx-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
@@ -343,6 +319,11 @@
                     <groupId>org.owasp</groupId>
                     <artifactId>dependency-check-maven</artifactId>
                     <version>${owasp-dependency-check-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.cyclonedx</groupId>
+                    <artifactId>cyclonedx-maven-plugin</artifactId>
+                    <version>${cyclonedx-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>io.fabric8</groupId>
@@ -528,6 +509,33 @@
                                     <goal>check</goal>
                                 </goals>
                                 <phase>before:package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>sbom</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.cyclonedx</groupId>
+                        <artifactId>cyclonedx-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>makeAggregateBom</goal>
+                                </goals>
+                                <phase>generate-resources</phase>
+                                <configuration>
+                                    <projectType>application</projectType>
+                                    <outputDirectory>${project.build.outputDirectory}/META-INF/sbom</outputDirectory>
+                                    <outputName>application.cdx</outputName>
+                                    <outputFormat>json</outputFormat>
+                                    <skipAttach>true</skipAttach>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
