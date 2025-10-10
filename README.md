@@ -15,7 +15,7 @@ Application is a demo of a product catalog having simplified logic.
 
 - Java 21
 - Maven 4 (wrapper)
-- Maven BuildTime Profiler Extension
+- [Maven BuildTime Profiler Extension](https://github.com/khmarbaise/maven-buildtime-profiler)
 - Spring Boot
 - Spring Web MVC
 - Spring Cache (Caffeine)
