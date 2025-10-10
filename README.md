@@ -30,6 +30,8 @@ Application is a demo of a product catalog having simplified logic.
 - JUnit Jupiter
 - Mockito
 - JaCoCo
+- CycloneDX SBOM
+- OWASP
 
 #### Misc
 
@@ -88,6 +90,11 @@ See application specific configuration in `pcs:` section of [application.yml](sr
 # Build with Maven wrapper
 $ ./mvnw package
 ```
+
+#### Maven BuildTime Profiler Extension
+
+By default, the profiler extension is deactivated using `-Dmaven-build-time-profiler.disabled` parameter in [maven.config](./.mvn/maven.config).
+To activate the profiler extension for all maven builds just comment this parameter out.
 
 ### Docker build
 
@@ -174,6 +181,17 @@ $ ./mvnw package -Ppmd -DskipTests
 $ ./mvnw package -Pspotbugs -DskipTests
 ```
 
+### Software Bill of Materials (SBOM)
+
+#### CycloneDX SBOM
+
+```shell
+# Build with Maven wrapper generating CycloneDX SBOM
+$ ./mvnw package -Psbom -DskipTests
+```
+
+Generated SBOM: [./target/classes/META-INF/sbom/application.cdx.json](./target/classes/META-INF/sbom/application.cdx.json)
+
 ### Dependencies vulnerabilities
 
 #### OWASP
@@ -185,7 +203,7 @@ $ ./mvnw package -Powasp -DskipTests
 
 #### Snyk
 
-Snyk [Test Results](https://snyk.io/test/github/mirogaudi/product-catalog-service)
+App analysis at snyk.io: [Snyk Test Results](https://snyk.io/test/github/mirogaudi/product-catalog-service)
 
 ## Maintenance
 
