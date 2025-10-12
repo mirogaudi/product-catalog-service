@@ -40,8 +40,9 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
     public BigDecimal getCurrencyExchangeRate(@NonNull Currency fromCurrency,
                                               @NonNull Currency toCurrency) {
         try {
-            // uses currency conversion API. To test run in console:
-            // $ FROM='USD' TO='EUR'; curl -s "https://api.frankfurter.app/latest?base=${FROM}&symbols=${TO}"
+            // uses currency conversion API.
+            // for a quick test run in terminal:
+            // FROM='USD' TO='EUR'; curl -s "https://api.frankfurter.app/latest?base=${FROM}&symbols=${TO}"
             String url = UriComponentsBuilder.fromUri(ratesServiceUri.get())
                 .path("latest")
                 .queryParam("base", fromCurrency.getCurrencyCode())
