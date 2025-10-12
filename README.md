@@ -13,9 +13,9 @@ Application is a demo of a product catalog having simplified logic.
 
 ### Used technologies
 
-- Java 21
+- Java 25
 - Maven 4 (wrapper)
-- [Maven BuildTime Profiler Extension](https://github.com/khmarbaise/maven-buildtime-profiler)
+- Maven BuildTime Profiler Extension
 - Spring Boot
 - Spring Web MVC
 - Spring Cache (Caffeine)
@@ -99,23 +99,36 @@ To activate the profiler extension for all maven builds just comment this parame
 ### Docker build
 
 ```shell
-# Build and tag docker image with Docker (requires artifacts to be already built)
+# Build and tag docker image with Docker
+# Firstly build artifact required by Docker with Maven Wrapper
+$ ./mvnw package -DskipTests
+# Secondly build with Docker
 $ docker build -t mirogaudi/product-catalog-service:1.0.0 .
 $ docker tag mirogaudi/product-catalog-service:1.0.0 mirogaudi/product-catalog-service:latest
 
-# Build docker image with Maven wrapper (via Docker plugin)
+# Or build docker image with Maven wrapper via Docker plugin
 $ ./mvnw package -Pdocker -DskipTests
 ```
 
 ### Run
 
+#### Run with Java
+
 ```shell
 # Run with Java
 $ java -jar target/product-catalog-service-1.0.0.jar
+```
 
+#### Run with Maven
+
+```shell
 # Run with Maven wrapper (via Spring Boot plugin)
 $ ./mvnw spring-boot:run
+```
 
+#### Run with Docker
+
+```shell
 # Run with Docker
 $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/product-catalog-service:latest
 ```
@@ -190,7 +203,12 @@ $ ./mvnw package -Pspotbugs -DskipTests
 $ ./mvnw package -Psbom -DskipTests
 ```
 
-Generated SBOM: [./target/classes/META-INF/sbom/application.cdx.json](./target/classes/META-INF/sbom/application.cdx.json)
+Generated SBOM can be reviewed:
+
+- as file [./target/classes/META-INF/sbom/application.cdx.json](./target/classes/META-INF/sbom/application.cdx.json)
+- or via SBOM Actuator Endpoint [http://localhost:9000/actuator/sbom/application](http://localhost:9000/actuator/sbom/application)
+
+  (Just rerun Application with [Java](#run-with-java) or [Maven](#run-with-maven))
 
 ### Dependencies vulnerabilities
 
@@ -203,7 +221,7 @@ $ ./mvnw package -Powasp -DskipTests
 
 #### Snyk
 
-App analysis at snyk.io: [Snyk Test Results](https://snyk.io/test/github/mirogaudi/product-catalog-service)
+Snyk analysis can be viewed at snyk.io: [Snyk Test Results](https://snyk.io/test/github/mirogaudi/product-catalog-service)
 
 ## Maintenance
 
