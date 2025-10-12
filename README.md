@@ -99,14 +99,14 @@ To activate the profiler extension for all maven builds just comment this parame
 ### Docker build
 
 ```shell
-# Build and tag docker image with Docker
+# Build and tag Docker image with Docker
 # Firstly build artifact required by Docker with Maven Wrapper
 $ ./mvnw package -DskipTests
 # Secondly build with Docker
 $ docker build -t mirogaudi/product-catalog-service:1.0.0 .
 $ docker tag mirogaudi/product-catalog-service:1.0.0 mirogaudi/product-catalog-service:latest
 
-# Or build docker image with Maven wrapper via Docker plugin
+# Or build Docker image with Maven wrapper via Docker plugin
 $ ./mvnw package -Pdocker -DskipTests
 ```
 
@@ -133,7 +133,9 @@ $ ./mvnw spring-boot:run
 $ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/product-catalog-service:latest
 ```
 
-- Or just run `ProductCatalogServiceApplication` in an IDE
+#### Run in IDE
+
+Just run in IDE: [ProductCatalogServiceApplication.java](./src/main/java/mirogaudi/productcatalog/ProductCatalogServiceApplication.java)
 
 ### View and try Application API
 
