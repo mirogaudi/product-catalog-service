@@ -261,4 +261,4 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
 
 ## TODO:
 
-- add semantic releases and/or CHANGELOG.md https://keepachangelog.com/en/1.1.0/
+- add semantic releases and/or CHANGELOG.md https://keepachangelog.com/
