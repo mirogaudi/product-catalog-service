@@ -6,5 +6,10 @@
     ":automergeMinor",
     ":automergePr",
     ":automergeRequireAllStatusChecks"
-  ]
+  ],
+  "maven": {
+    "managerFilePatterns": [
+      "^pom\\.xml$"
+    ]
+  }
 }
