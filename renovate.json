@@ -7,9 +7,13 @@
     ":automergePr",
     ":automergeRequireAllStatusChecks"
   ],
-  "maven": {
-    "managerFilePatterns": [
-      "^pom\\.xml$"
-    ]
-  }
+  "customManagers": [
+    {
+      "managerFilePatterns": [
+        "^pom\\.xml$"
+      ],
+      "datasourceTemplate": "maven",
+      "versioningTemplate": "maven"
+    }
+  ]
 }
