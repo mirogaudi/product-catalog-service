@@ -60,7 +60,7 @@
         <jacoco-plugin.version>0.8.14</jacoco-plugin.version>
         <jxr-plugin.version>3.6.0</jxr-plugin.version>
         <owasp-dependency-check-plugin.version>12.1.8</owasp-dependency-check-plugin.version>
-        <docker-plugin.version>0.46.0</docker-plugin.version>
+        <docker-plugin.version>0.47.0</docker-plugin.version>
 
         <!-- required for later replacement of argLine -->
         <argLine/>
