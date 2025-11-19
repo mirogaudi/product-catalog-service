@@ -93,8 +93,8 @@ $ ./mvnw package
 
 #### Maven BuildTime Profiler Extension
 
-By default, the profiler extension is deactivated using `-Dmaven-build-time-profiler.disabled` parameter in [maven.config](./.mvn/maven.config).
-To activate the profiler extension for all maven builds just comment this parameter out.
+The BuildTime Profiler Extension is activated by default. To deactivate the profiler extension for all maven builds just
+uncomment the parameter `-Dmaven-build-time-profiler.disabled` in [maven.config](./.mvn/maven.config).
 
 ### Docker build
 
