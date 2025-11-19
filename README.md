@@ -158,17 +158,10 @@ Just run in IDE: [ProductCatalogServiceApplication.java](./src/main/java/mirogau
 
 ## Code quality
 
-### Code coverage
-
-```shell
-# Build with Maven wrapper generating JaCoCo code coverage report and checking code coverage metrics
-$ ./mvnw package -Pcode-coverage
-```
-
 ### Static code analysis
 
 ```shell
-# Build with Maven wrapper performing static code analysis
+# Build performing static code analysis
 $ ./mvnw package -Pcheckstyle,pmd,spotbugs -DskipTests
 ```
 
@@ -178,22 +171,29 @@ Project uses [checkstyle.xml](checkstyle.xml) configuration based on customized
 Checkstyle [google_checks.xml](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml).
 
 ```shell
-# Build with Maven wrapper checking with Checkstyle
+# Build checking with Checkstyle
 $ ./mvnw validate -Pcheckstyle -DskipTests
 ```
 
 #### PMD
 
 ```shell
-# Build with Maven wrapper checking with PMD
+# Build checking with PMD
 $ ./mvnw package -Ppmd -DskipTests
 ```
 
 #### SpotBugs
 
 ```shell
-# Build with Maven wrapper checking with SpotBugs
+# Build checking with SpotBugs
 $ ./mvnw package -Pspotbugs -DskipTests
+```
+
+### Code coverage
+
+```shell
+# Build generating JaCoCo code coverage report and checking code coverage metrics
+$ ./mvnw package -Pcode-coverage
 ```
 
 ### Software Bill of Materials (SBOM)
@@ -201,7 +201,7 @@ $ ./mvnw package -Pspotbugs -DskipTests
 #### CycloneDX SBOM
 
 ```shell
-# Build with Maven wrapper generating CycloneDX SBOM
+# Build generating CycloneDX SBOM
 $ ./mvnw package -Psbom -DskipTests
 ```
 
@@ -217,7 +217,7 @@ Generated SBOM can be reviewed:
 #### OWASP
 
 ```shell
-# Build with Maven wrapper generating OWASP dependency vulnerability report
+# Build generating OWASP dependency vulnerability report
 $ ./mvnw package -Powasp -DskipTests
 ```
 
