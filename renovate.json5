@@ -8,12 +8,12 @@
     ":automergeRequireAllStatusChecks"
   ],
   "schedule": [
-    // Weekly schedule on Fridays before 4 AM
-    "* 0-3 * * 5"
+    // Weekly schedule on Fridays 00:00–07:59
+    "* 0-7 * * 5"
   ],
   automergeSchedule: [
-    // Weekly schedule on Fridays after 4 AM and before 8 AM
-    "* 4-7 * * 5"
+    // Weekly schedule on Fridays 08:00–11:59
+    "* 8-11 * * 5"
   ],
   "timezone": "Europe/Berlin"
 }
