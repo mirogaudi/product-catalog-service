@@ -263,4 +263,17 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
 
 ## TODO:
 
+- update to SB 4.0
 - add semantic releases and/or CHANGELOG.md https://keepachangelog.com/
+- clean up:
+  - Use WebClient or declarative web call instead of RestTemplate
+  - Use Flyway with maven plugin instead of dev app props
+  - check if all transactions are valid and using proxy classes
+  - check cache test
+  - Circuit Breaker -> use https://spring.io/guides/gs/cloud-circuit-breaker, test it
+  - configure logback
+  - Use Rest Assured for integration testing
+  - test db with integration testing
+  - add price history
+
+- add PATCH call to update price
