@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM eclipse-temurin:25.0.1_8-jdk
+FROM eclipse-temurin:25.0.2_10-jdk
 LABEL org.opencontainers.image.authors="mirogaudi" \
     org.opencontainers.image.url="https://github.com/mirogaudi/product-catalog-service"
 VOLUME /tmp
