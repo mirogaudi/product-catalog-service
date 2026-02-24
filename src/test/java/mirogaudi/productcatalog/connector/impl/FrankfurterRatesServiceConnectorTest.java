@@ -32,8 +32,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class FrankfurterRatesServiceConnectorTest {
 
-    private static final String SERVICE_URL = "https://service";
-    private static final String SERVICE_PATH = SERVICE_URL + "/v1/latest";
+    private static final String SERVICE_URL = "https://service/v1/latest";
 
     @Mock
     private Supplier<URI> ratesServiceUri;
@@ -68,7 +67,7 @@ class FrankfurterRatesServiceConnectorTest {
         BigDecimal actualRate = sut.getCurrencyExchangeRate(USD, EUR);
         assertEquals(expectedRate, actualRate.doubleValue());
 
-        verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(FrankfurterRates.class));
+        verify(restTemplate).getForObject(startsWith(SERVICE_URL), eq(FrankfurterRates.class));
         verify(ratesServiceUri).get();
     }
 
@@ -83,7 +82,7 @@ class FrankfurterRatesServiceConnectorTest {
             () -> sut.getCurrencyExchangeRate(USD, EUR)
         );
 
-        verify(restTemplate).getForObject(startsWith(SERVICE_PATH), eq(FrankfurterRates.class));
+        verify(restTemplate).getForObject(startsWith(SERVICE_URL), eq(FrankfurterRates.class));
         verify(ratesServiceUri).get();
     }
 
