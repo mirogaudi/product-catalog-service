@@ -263,17 +263,21 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
 
 ## TODO:
 
-- update to SB 4.0
-- add semantic releases and/or CHANGELOG.md https://keepachangelog.com/
+- update:
+    - SB to v4
+    - flywaydb to v12
+    - springdoc-openapi to v3
 - clean up:
-  - Use WebClient or declarative web call instead of RestTemplate
-  - Use Flyway with maven plugin instead of dev app props
-  - check if all transactions are valid and using proxy classes
-  - check cache test
-  - Circuit Breaker -> use https://spring.io/guides/gs/cloud-circuit-breaker, test it
-  - configure logback
-  - Use Rest Assured for integration testing
-  - test db with integration testing
-  - add price history
-
-- add PATCH call to update price
+    - use Flyway with maven plugin instead of dev app props
+    - test db with integration testing
+    - check if all transactions are valid and using proxy classes
+    - use WebClient or declarative web call instead of RestTemplate
+    - check cache test
+    - use https://spring.io/guides/gs/cloud-circuit-breaker for Circuit Breaker
+        - test it
+    - use logback
+    - use Rest Assured for integration testing
+- add semantic releases and/or CHANGELOG.md https://keepachangelog.com/
+- implement:
+    - add PATCH call to update price
+    - add price history
