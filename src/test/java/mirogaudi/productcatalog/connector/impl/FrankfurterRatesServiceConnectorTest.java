@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 class FrankfurterRatesServiceConnectorTest {
 
     private static final String SERVICE_URL = "https://service";
-    private static final String SERVICE_PATH = SERVICE_URL + "/latest";
+    private static final String SERVICE_PATH = SERVICE_URL + "/v1/latest";
 
     @Mock
     private Supplier<URI> ratesServiceUri;

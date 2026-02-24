@@ -42,9 +42,9 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
         try {
             // uses currency conversion API.
             // for a quick test run in terminal:
-            // FROM='USD' TO='EUR'; curl -s "https://api.frankfurter.app/latest?base=${FROM}&symbols=${TO}"
+            // FROM='USD' TO='EUR'; curl -s "https://api.frankfurter.dev/v1/latest?base=${FROM}&symbols=${TO}"
             String url = UriComponentsBuilder.fromUri(ratesServiceUri.get())
-                .path("latest")
+                .path("/v1/latest")
                 .queryParam("base", fromCurrency.getCurrencyCode())
                 .queryParam("symbols", toCurrency.getCurrencyCode())
                 .toUriString();

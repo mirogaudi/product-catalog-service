@@ -60,7 +60,7 @@ pcs:
   base-currency-code: EUR
   # Rates service
   rates:
-    service.url: https://api.frankfurter.app
+    service.url: https://api.frankfurter.dev
     cache.evict:
       cron: 0 1 16 * * MON-FRI
       zone: CET
