@@ -277,7 +277,8 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
         - test it
     - use logback
     - use Rest Assured for integration testing
-- add semantic releases and/or CHANGELOG.md https://keepachangelog.com/
+- use conventional commits https://www.conventionalcommits.org/
+- add semantic releases (https://semver.org/) and/or CHANGELOG.md https://keepachangelog.com/
 - implement:
     - add PATCH call to update price
     - add price history
