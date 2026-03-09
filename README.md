@@ -264,7 +264,7 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
 ## TODO:
 
 - update:
-    - SB to v4
+    - SB to v4 (https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide)
     - flywaydb to v12
     - springdoc-openapi to v3
 - clean up:
