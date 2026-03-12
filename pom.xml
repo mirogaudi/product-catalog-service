@@ -36,7 +36,7 @@
         <require-maven.version>[4.0.0-rc-5,)</require-maven.version>
         <require-java.version>[${java.version},)</require-java.version>
 
-        <lombok.version>1.18.42</lombok.version>
+        <lombok.version>1.18.44</lombok.version>
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
 
         <flyway.version>11.20.3</flyway.version>
