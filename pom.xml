@@ -40,7 +40,7 @@
         <findbugs-annotations.version>3.0.1u2</findbugs-annotations.version>
 
         <resilience4j.version>2.3.0</resilience4j.version>
-        <springdoc-openapi.version>3.0.1</springdoc-openapi.version>
+        <springdoc-openapi.version>3.0.2</springdoc-openapi.version>
 
         <junit-jupiter.version>6.0.3</junit-jupiter.version>
         <mockito.version>5.23.0</mockito.version>
