@@ -196,13 +196,6 @@
                 <artifactId>mockito-junit-jupiter</artifactId>
                 <version>${mockito.version}</version>
             </dependency>
-
-            <!-- TODO (Maven 4): delete as soon as not needed! -->
-            <dependency>
-                <groupId>org.apache.maven.plugin-tools</groupId>
-                <artifactId>maven-plugin-annotations</artifactId>
-                <version>3.15.2</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 

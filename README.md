@@ -263,11 +263,19 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
 
 ## TODO:
 
-- update:
-    - SB to v4 (https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide)
-    - flywaydb to v12
-    - springdoc-openapi to v3
 - clean up:
+    - check TODOs in pom.xml
+      - Caffeine
+      - Flyway
+      - reactor-core
+      - resilience4j-spring-boot2
+      - findbugs.annotations -> spotbugs-annotations
+      - springdoc-openapi
+      - junit-jupiter
+    - JPA Buddy -> regenerate equals & hashcode
+    - check all checkstyle, pmd and spotbugs suppressions -> delete if not needed
+    - fix Flyway warning: 
+      - [WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support-bb87771ae5bae2ab251a2af4aa0f96bc1f95a8e2 (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
     - use Flyway with maven plugin instead of dev app props
     - test db with integration testing
     - check if all transactions are valid and using proxy classes
