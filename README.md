@@ -167,7 +167,8 @@ $ ./mvnw package -Pcheckstyle,pmd,spotbugs -DskipTests
 
 #### Checkstyle
 
-Project uses Google Checkstyle configuration 'google_checks.xml' shipped with the Checkstyle Plugin.
+Project uses the Sun Microsystems definition of Checkstyle configuration (`sun_checks.xml`) shipped with the Checkstyle Plugin.
+Custom Checkstyle suppressions are defined in [checkstyle_suppressions.xml](./checkstyle_suppressions.xml).
 
 ```shell
 # Build checking with Checkstyle
@@ -264,17 +265,15 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
 
 - clean up:
     - check TODOs in pom.xml
-      - Caffeine
-      - Flyway
-      - reactor-core
-      - resilience4j-spring-boot2
-      - findbugs.annotations -> spotbugs-annotations
-      - springdoc-openapi
-      - junit-jupiter
-    - JPA Buddy -> regenerate equals & hashcode
-    - check all checkstyle, pmd and spotbugs suppressions -> delete if not needed
-    - fix Flyway warning: 
-      - [WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support-bb87771ae5bae2ab251a2af4aa0f96bc1f95a8e2 (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+        - Caffeine
+        - Flyway
+        - reactor-core
+        - resilience4j-spring-boot2
+        - springdoc-openapi
+        - junit-jupiter
+    - Fix/suppress all checkstyle issues
+    - fix Flyway warning:
+        - [WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support-bb87771ae5bae2ab251a2af4aa0f96bc1f95a8e2 (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
     - use Flyway with maven plugin instead of dev app props
     - test db with integration testing
     - check if all transactions are valid and using proxy classes

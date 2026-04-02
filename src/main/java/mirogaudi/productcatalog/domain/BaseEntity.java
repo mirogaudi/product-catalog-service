@@ -43,10 +43,16 @@ public class BaseEntity {
             return false;
         }
 
-        Class<?> oEffectiveClass = o instanceof HibernateProxy oHibernateProxy ?
-            oHibernateProxy.getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy thisHibernateProxy ?
-            thisHibernateProxy.getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        Class<?> oEffectiveClass = o instanceof HibernateProxy oHibernateProxy
+            ?
+            oHibernateProxy.getHibernateLazyInitializer().getPersistentClass()
+            :
+            o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy thisHibernateProxy
+            ?
+            thisHibernateProxy.getHibernateLazyInitializer().getPersistentClass()
+            :
+            this.getClass();
         if (thisEffectiveClass != oEffectiveClass) {
             return false;
         }
@@ -57,8 +63,11 @@ public class BaseEntity {
 
     @Override
     public int hashCode() {
-        return this instanceof HibernateProxy hibernateProxy ?
-            hibernateProxy.getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+        return this instanceof HibernateProxy hibernateProxy
+            ?
+            hibernateProxy.getHibernateLazyInitializer().getPersistentClass().hashCode()
+            :
+            getClass().hashCode();
     }
 
 }

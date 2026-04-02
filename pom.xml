@@ -410,8 +410,9 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
                         <configuration>
-                            <!-- Use predefined Google configuration shipped with the plugin -->
-                            <configLocation>google_checks.xml</configLocation>
+                            <!-- Use predefined configuration shipped with the plugin -->
+                            <configLocation>sun_checks.xml</configLocation>
+                            <suppressionsLocation>${project.rootDirectory}/checkstyle_suppressions.xml</suppressionsLocation>
                             <failsOnError>true</failsOnError>
                             <consoleOutput>true</consoleOutput>
                         </configuration>
