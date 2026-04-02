@@ -167,8 +167,7 @@ $ ./mvnw package -Pcheckstyle,pmd,spotbugs -DskipTests
 
 #### Checkstyle
 
-Project uses [checkstyle.xml](checkstyle.xml) configuration based on customized
-Checkstyle [google_checks.xml](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml).
+Project uses Google Checkstyle configuration 'google_checks.xml' shipped with the Checkstyle Plugin.
 
 ```shell
 # Build checking with Checkstyle
