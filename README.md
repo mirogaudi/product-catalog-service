@@ -271,7 +271,6 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
         - resilience4j-spring-boot2
         - springdoc-openapi
         - junit-jupiter
-    - Fix/suppress all checkstyle issues
     - fix Flyway warning:
         - [WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support-bb87771ae5bae2ab251a2af4aa0f96bc1f95a8e2 (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
     - use Flyway with maven plugin instead of dev app props

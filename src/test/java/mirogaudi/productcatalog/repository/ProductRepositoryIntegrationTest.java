@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -78,7 +79,7 @@ class ProductRepositoryIntegrationTest {
         product.setCurrency(EUR.getCurrencyCode());
 
         Optional<Category> categoryOptional = categoryRepository.findById(1L);
-        categoryOptional.ifPresent(category -> product.setCategories(List.of(category)));
+        categoryOptional.ifPresent(category -> product.setCategories(new ArrayList<>(List.of(category))));
 
         Set<Product> set = Set.of(product);
 

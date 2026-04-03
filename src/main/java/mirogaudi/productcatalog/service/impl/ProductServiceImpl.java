@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
@@ -106,14 +107,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private List<Category> findCategories(Set<Long> categoryIds) {
-        return categoryIds.stream()
-            .map(id -> {
-                Category category = categoryService.find(id);
-                Assert.state(category != null, String.format(
-                    "Category with id '%d' not found", id));
-                return category;
-            })
-            .toList();
+        List<Category> categories = new ArrayList<>();
+
+        categoryIds.forEach(id -> {
+            Category category = categoryService.find(id);
+            Assert.state(category != null, String.format(
+                "Category with id '%d' not found", id));
+            categories.add(category);
+        });
+
+        return categories;
     }
 
     @Override

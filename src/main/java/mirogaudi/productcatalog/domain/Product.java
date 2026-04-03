@@ -89,13 +89,6 @@ public class Product extends BaseEntity {
             .toList();
     }
 
-    /**
-     * Sets categories converting given immutable category list into mutable one to meet Hibernate expectations.
-     */
-    public void setCategories(List<Category> categories) {
-        this.categories = new ArrayList<>(categories);
-    }
-
     @Override
     public final boolean equals(Object o) {
         return super.equals(o);
