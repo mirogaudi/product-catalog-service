@@ -57,7 +57,7 @@ Application is a demo of a product catalog having simplified logic.
 - Application gets currency exchange rates from Frankfurter [https://frankfurter.dev](https://frankfurter.dev)
     - Frankfurter REST API is called via Spring `RestTemplate` and decorated with Resilience4j `CircuitBreaker`
 - Rates are cached with `Caffeine` during a period of their validity
-    - Cache eviction is scheduled to `16:01 CET MON-FRI`
+    - Cache eviction is scheduled to `16:01 CET every Monday till Friday`
 
 ### Database
 
@@ -124,6 +124,8 @@ $ java -jar target/product-catalog-service-1.0.0.jar
 ```shell
 # Run with Maven wrapper (via Spring Boot plugin)
 $ ./mvnw spring-boot:run
+# Run with 'dev' profile
+$ ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 #### Run with Docker
@@ -265,11 +267,9 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
 
 - clean up:
     - check TODOs in pom.xml
-        - Caffeine
         - Flyway
         - reactor-core
         - resilience4j-spring-boot2
-        - springdoc-openapi
         - junit-jupiter
     - fix Flyway warning:
         - [WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support-bb87771ae5bae2ab251a2af4aa0f96bc1f95a8e2 (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
@@ -277,7 +277,6 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
     - test db with integration testing
     - check if all transactions are valid and using proxy classes
     - use WebClient or declarative web call instead of RestTemplate
-    - check cache test
     - use https://spring.io/guides/gs/cloud-circuit-breaker for Circuit Breaker
         - test it
     - use logback

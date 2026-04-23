@@ -1,12 +1,12 @@
 logging:
   level:
     root: info
-    org.springframework: warn
+    org.springframework: info
     mirogaudi.productcatalog: debug
 
 spring:
   jpa:
-    generate-ddl: true
+    show_sql: true
     hibernate.ddl-auto: create-drop
     properties:
       jakarta.persistence.schema-generation:
@@ -16,7 +16,6 @@ spring:
           create-target: target/classes/db/create_schema.sql
       hibernate:
         format_sql: true
-        show_sql: true
         generate_statistics: true
 
   datasource:

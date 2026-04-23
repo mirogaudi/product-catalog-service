@@ -1,14 +1,24 @@
+server:
+  port: 8080
+  servlet.context-path: /pcs
+
+management:
+  enabled: false
+
 logging:
   level:
     root: info
-    org.springframework: error
+    org.springframework: warn
     mirogaudi.productcatalog: info
 
 spring:
+  application.name: product-catalog-service
   jpa:
     open-in-view: false
-    generate-ddl: false
     hibernate.ddl-auto: validate
+    properties:
+      hibernate:
+        connection.provider_disables_autocommit: true
 
   flyway:
     locations: classpath:db/migration
@@ -19,8 +29,12 @@ spring:
     username: sa
     password: # empty
     hikari:
+      auto-commit: false
       maximum-pool-size: 5
       minimum-idle: 0
+
+  h2.console:
+    enabled: false
 
 springdoc:
   swagger-ui:
@@ -34,5 +48,6 @@ pcs:
   rates:
     service.url: https://api.frankfurter.dev/v1/latest
     cache.evict:
-      cron: 0 1 16 * * MON-FRI
+      # Run at 16:01 CET every Monday till Friday
+      cron: 0 1 16 ? * MON-FRI
       zone: CET

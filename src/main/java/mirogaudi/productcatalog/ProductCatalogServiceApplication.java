@@ -9,7 +9,7 @@ public class ProductCatalogServiceApplication {
 
     // use lombok.Generated to exclude from code coverage calculation
     @Generated
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(ProductCatalogServiceApplication.class, args);
     }
 
