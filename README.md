@@ -72,7 +72,7 @@ Application DB stores categorized products:
 DB migration is done with Flyway using scripts:
 
 - [V1__create_schema.sql](src/main/resources/db/migration/V1__create_schema.sql)
-    - initial script `target/classes/db/create_schema.sql` is generated with Spring Data JPA when starting
+    - initial script `target/classes/db/generated_create_schema.sql` is generated with Spring Data JPA when starting
       application with `dev` profile (for details see [application-dev.yml](src/main/resources/application-dev.yml))
 - [V2__insert_data.sql](src/main/resources/db/migration/V2__insert_data.sql)
 
@@ -267,13 +267,9 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
 
 - clean up:
     - check TODOs in pom.xml
-        - Flyway
         - reactor-core
         - resilience4j-spring-boot2
         - junit-jupiter
-    - fix Flyway warning:
-        - [WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support-bb87771ae5bae2ab251a2af4aa0f96bc1f95a8e2 (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
-    - use Flyway with maven plugin instead of dev app props
     - test db with integration testing
     - check if all transactions are valid and using proxy classes
     - use WebClient or declarative web call instead of RestTemplate
