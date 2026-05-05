@@ -29,6 +29,7 @@ Application is a demo of a product catalog having simplified logic.
 - OpenAPI 3 & Swagger UI (springdoc-openapi)
 - JUnit Jupiter
 - Mockito
+- Checkstyle, PMD, SpotBugs
 - JaCoCo
 - CycloneDX SBOM
 - OWASP

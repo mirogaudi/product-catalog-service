@@ -30,8 +30,6 @@ spring:
     password: # empty
     hikari:
       auto-commit: false
-      maximum-pool-size: 5
-      minimum-idle: 0
 
   h2.console:
     enabled: false
