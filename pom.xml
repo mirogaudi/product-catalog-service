@@ -555,9 +555,7 @@
                                     <build>
                                         <dockerFile>${project.rootDirectory}/Dockerfile</dockerFile>
                                         <args>
-                                            <JAR_FILE>
-                                                ${project.rootDirectory}/target/${project.build.finalName}.jar
-                                            </JAR_FILE>
+                                            <APP_VERSION>${project.version}</APP_VERSION>
                                         </args>
                                         <tags>${project.version},latest</tags>
                                         <cleanup>remove</cleanup>

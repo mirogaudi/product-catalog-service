@@ -3,7 +3,7 @@ server:
   servlet.context-path: /pcs
 
 management:
-  server.port: 9000
+  server.port: 8080
   endpoints.web:
     exposure.include: "*"
     # allow to call actuator from Swagger UI running on a different (application) port

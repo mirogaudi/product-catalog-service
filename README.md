@@ -104,7 +104,7 @@ uncomment the parameter `-Dmaven-build-time-profiler.disabled` in [maven.config]
 # Firstly build artifact required by Docker with Maven Wrapper
 $ ./mvnw package -DskipTests
 # Secondly build with Docker
-$ docker build -t mirogaudi/product-catalog-service:1.0.0 .
+$ docker build --build-arg APP_VERSION=1.0.0 -t mirogaudi/product-catalog-service:1.0.0 .
 $ docker tag mirogaudi/product-catalog-service:1.0.0 mirogaudi/product-catalog-service:latest
 
 # Or build Docker image with Maven wrapper via Docker plugin
@@ -148,7 +148,7 @@ Just run in IDE: [ProductCatalogServiceApplication.java](./src/main/java/mirogau
 
 #### Spring Boot Actuator
 
-- Actuator: [http://localhost:9000/actuator](http://localhost:9000/actuator)
+- Actuator: [http://localhost:8080/pcs/actuator](http://localhost:8080/pcs/actuator)
 - Swagger UI: [http://localhost:8080/pcs/swagger-ui/index.html?urls.primaryName=x-actuator](http://localhost:8080/pcs/swagger-ui/index.html?urls.primaryName=x-actuator)
 - HTTP client: [request-actuator.http](http-requests/request-actuator.http)
 
@@ -211,7 +211,7 @@ $ ./mvnw package -Psbom -DskipTests
 Generated SBOM can be reviewed:
 
 - as file [./target/classes/META-INF/sbom/application.cdx.json](./target/classes/META-INF/sbom/application.cdx.json)
-- or via SBOM Actuator Endpoint [http://localhost:9000/actuator/sbom/application](http://localhost:9000/actuator/sbom/application)
+- or via SBOM Actuator Endpoint [http://localhost:8080/pcs/actuator/sbom/application](http://localhost:8080/pcs/actuator/sbom/application)
 
   (Just rerun Application with [Java](#run-with-java) or [Maven](#run-with-maven))
 
