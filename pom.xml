@@ -43,7 +43,7 @@
         <junit-jupiter.version>6.0.3</junit-jupiter.version>
         <mockito.version>5.23.0</mockito.version>
 
-        <checkstyle.version>13.4.1</checkstyle.version>
+        <checkstyle.version>13.4.2</checkstyle.version>
         <pmd.version>7.24.0</pmd.version>
         <spotbugs.version>4.9.8</spotbugs.version>
 
@@ -56,7 +56,7 @@
         <spotbugs-plugin.version>4.9.8.3</spotbugs-plugin.version>
 
         <cyclonedx-maven-plugin.version>2.9.1</cyclonedx-maven-plugin.version>
-        <owasp-dependency-check-plugin.version>12.2.1</owasp-dependency-check-plugin.version>
+        <owasp-dependency-check-plugin.version>12.2.2</owasp-dependency-check-plugin.version>
         <docker-plugin.version>0.48.1</docker-plugin.version>
 
         <!-- required for later replacement of argLine -->
