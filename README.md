@@ -133,7 +133,7 @@ $ ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 
 ```shell
 # Run with Docker
-$ docker run -it -d --rm --name product-catalog-service -p 8080:8080 mirogaudi/product-catalog-service:latest
+$ docker run -it -d --rm --name product-catalog-service -p 8080:8080 -p 9000:9000 mirogaudi/product-catalog-service:latest
 ```
 
 #### Run in IDE
@@ -148,7 +148,7 @@ Just run in IDE: [ProductCatalogServiceApplication.java](./src/main/java/mirogau
 
 #### Spring Boot Actuator
 
-- Actuator: [http://localhost:8080/pcs/actuator](http://localhost:8080/pcs/actuator)
+- Actuator: [http://localhost:9000/actuator](http://localhost:9000/actuator)
 - Swagger UI: [http://localhost:8080/pcs/swagger-ui/index.html?urls.primaryName=x-actuator](http://localhost:8080/pcs/swagger-ui/index.html?urls.primaryName=x-actuator)
 - HTTP client: [request-actuator.http](http-requests/request-actuator.http)
 
@@ -208,10 +208,10 @@ $ ./mvnw package -Pcode-coverage
 $ ./mvnw package -Psbom -DskipTests
 ```
 
-Generated SBOM can be reviewed:
+Generated SBOM can then be viewed:
 
 - as file [./target/classes/META-INF/sbom/application.cdx.json](./target/classes/META-INF/sbom/application.cdx.json)
-- or via SBOM Actuator Endpoint [http://localhost:8080/pcs/actuator/sbom/application](http://localhost:8080/pcs/actuator/sbom/application)
+- or via SBOM Actuator Endpoint [http://localhost:9000/actuator/sbom/application](http://localhost:9000/actuator/sbom/application)
 
   (Just rerun Application with [Java](#run-with-java) or [Maven](#run-with-maven))
 
