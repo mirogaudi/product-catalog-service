@@ -17,9 +17,12 @@ management:
     application.location: optional:classpath:META-INF/sbom/application.cdx.json
 
 logging:
+  file:
+    name: logs/application.log
   level:
     root: info
     org.springframework: warn
+    org.hibernate: warn
     mirogaudi.productcatalog: info
 
 spring:

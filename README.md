@@ -268,7 +268,6 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
 
 - clean up:
     - check TODOs in pom.xml
-        - reactor-core
         - resilience4j-spring-boot2
         - junit-jupiter
     - test db with integration testing
@@ -276,7 +275,6 @@ $ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' ver
     - use WebClient or declarative web call instead of RestTemplate
     - use https://spring.io/guides/gs/cloud-circuit-breaker for Circuit Breaker
         - test it
-    - use logback
     - use Rest Assured for integration testing
 - use conventional commits https://www.conventionalcommits.org/
 - add semantic releases (https://semver.org/) and/or CHANGELOG.md https://keepachangelog.com/

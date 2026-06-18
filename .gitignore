@@ -8,5 +8,8 @@ out/
 ### Maven ###
 target/
 
+### Logs ###
+logs/
+
 ### Other ###
-/.sdkmanrc
+.sdkmanrc
