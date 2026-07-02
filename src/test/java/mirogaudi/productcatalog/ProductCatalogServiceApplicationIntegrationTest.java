@@ -2,6 +2,7 @@ package mirogaudi.productcatalog;
 
 import io.github.resilience4j.common.circuitbreaker.configuration.CircuitBreakerConfigCustomizer;
 import io.swagger.v3.oas.models.OpenAPI;
+import mirogaudi.productcatalog.client.FrankfurterRatesService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,11 +20,10 @@ class ProductCatalogServiceApplicationIntegrationTest {
     @Test
     void verifyContext() {
         assertNotNull(context.getBean("baseCurrency"));
-        assertNotNull(context.getBean("ratesServiceUri"));
-        assertNotNull(context.getBean("restTemplate"));
 
         assertNotNull(context.getBean(CacheManager.class));
         assertNotNull(context.getBean(CircuitBreakerConfigCustomizer.class));
+        assertNotNull(context.getBean(FrankfurterRatesService.class));
         assertNotNull(context.getBean(OpenAPI.class));
     }
 

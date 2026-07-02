@@ -27,6 +27,14 @@ logging:
 
 spring:
   application.name: product-catalog-service
+
+  http:
+    serviceclient:
+      rates:
+        base-url: https://api.frankfurter.dev
+        connect-timeout: 2s
+        read-timeout: 2s
+
   jpa:
     open-in-view: false
     hibernate.ddl-auto: none
@@ -61,9 +69,7 @@ pcs:
   # Base currency
   base-currency-code: EUR
   # Rates service
-  rates:
-    service.url: https://api.frankfurter.dev/v1/latest
-    cache.evict:
-      # Run at 16:01 CET every Monday till Friday
-      cron: 0 1 16 ? * MON-FRI
-      zone: CET
+  rates-cache-evict:
+    # Run at 16:01 CET every Monday till Friday
+    cron: 0 1 16 ? * MON-FRI
+    zone: CET

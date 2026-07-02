@@ -11,7 +11,8 @@ import static mirogaudi.productcatalog.testhelper.Currencies.USD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest(classes = {ProductCatalogServiceApplication.class}, properties = {"pcs.rates.service.url=https://invalid.url"})
+@SpringBootTest(classes = {ProductCatalogServiceApplication.class},
+    properties = {"spring.http.serviceclient.rates.base-url=https://invalid.url"})
 class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
 
     @Autowired
@@ -21,7 +22,7 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
     void getCurrencyExchangeRate() {
         ConnectorRuntimeException exception = assertThrows(ConnectorRuntimeException.class,
             () -> ratesServiceConnector.getCurrencyExchangeRate(USD, EUR));
-        assertEquals("Circuit breaker fallback called trying to obtain USD to EUR rate from rates service.",
+        assertEquals("Circuit breaker fallback called obtaining exchange rate (USD -> EUR) from rates service",
             exception.getMessage());
     }
 

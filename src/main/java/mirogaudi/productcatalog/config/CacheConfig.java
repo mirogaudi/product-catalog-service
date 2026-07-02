@@ -37,8 +37,8 @@ public class CacheConfig {
     }
 
     @Scheduled(
-        cron = "${pcs.rates.cache.evict.cron}",
-        zone = "${pcs.rates.cache.evict.zone}"
+        cron = "${pcs.rates-cache-evict.cron}",
+        zone = "${pcs.rates-cache-evict.zone}"
     )
     @CacheEvict(value = RATES_CACHE_NAME, allEntries = true)
     public void evictRatesCache() {

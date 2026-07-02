@@ -4,20 +4,16 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mirogaudi.productcatalog.client.FrankfurterRatesService;
 import mirogaudi.productcatalog.connector.ConnectorRuntimeException;
 import mirogaudi.productcatalog.connector.RatesServiceConnector;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
-import java.net.URI;
 import java.util.Currency;
-import java.util.Map;
-import java.util.function.Supplier;
 
 import static mirogaudi.productcatalog.config.CacheConfig.RATES_CACHE_NAME;
 
@@ -29,8 +25,7 @@ import static mirogaudi.productcatalog.config.CacheConfig.RATES_CACHE_NAME;
 @Slf4j
 public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
 
-    private final Supplier<URI> ratesServiceUri;
-    private final RestTemplate restTemplate;
+    private final FrankfurterRatesService ratesService;
 
     @CircuitBreaker(name = "frankfurterRatesService", fallbackMethod = "fallbackGetCurrencyExchangeRate")
     @Cacheable(
@@ -41,31 +36,22 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
     public BigDecimal getCurrencyExchangeRate(@NonNull Currency fromCurrency,
                                               @NonNull Currency toCurrency) {
         try {
-            LOG.debug("Fetching exchange rate: {} to {}", fromCurrency, toCurrency);
+            LOG.debug("Fetching exchange rate ({} -> {}) from rates service...", fromCurrency, toCurrency);
 
-            // for API details see https://frankfurter.dev/
-            String url = UriComponentsBuilder.fromUri(ratesServiceUri.get())
-                // TODO move params to properties
-                .queryParam("base", fromCurrency.getCurrencyCode())
-                .queryParam("symbols", toCurrency.getCurrencyCode())
-                .toUriString();
+            FrankfurterRatesService.Rate[] rates = ratesService.getRates(fromCurrency.getCurrencyCode(), toCurrency.getCurrencyCode());
+            Assert.state(rates != null && rates.length > 0, String.format(
+                "No exchange rate (%s -> %s) obtained from rates service",
+                fromCurrency, toCurrency
+            ));
 
-            FrankfurterRates response = restTemplate.getForObject(url, FrankfurterRates.class);
-            Assert.state(response != null, String.format(
-                "No response obtained calling rates service API: %s", url));
+            FrankfurterRatesService.Rate rate = rates[0];
+            LOG.info("Obtained exchange rate ({} -> {}) from rates service: {}", fromCurrency, toCurrency, rate);
 
-            Double rate = response.rates().get(toCurrency);
-            Assert.state(rate != null, String.format(
-                "No %s to %s rate obtained calling rates service API.",
-                fromCurrency, toCurrency));
-
-            LOG.info("Obtained exchange rate {} to {}: {}", fromCurrency, toCurrency, BigDecimal.valueOf(rate));
-
-            return BigDecimal.valueOf(rate);
+            return BigDecimal.valueOf(rate.rate());
         } catch (Exception e) {
-            LOG.error("Failed to obtain {} to {} rate from rates service.", fromCurrency, toCurrency);
+            LOG.error("Failed to obtain exchange rate ({} -> {}) from rates service", fromCurrency, toCurrency);
             throw new ConnectorRuntimeException(String.format(
-                "Failed to obtain %s to %s rate from rates service.",
+                "Failed to obtain exchange rate (%s -> %s) from rates service",
                 fromCurrency, toCurrency
             ), e);
         }
@@ -76,13 +62,9 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
                                                        Currency toCurrency,
                                                        Throwable throwable) {
         throw new ConnectorRuntimeException(String.format(
-            "Circuit breaker fallback called trying to obtain %s to %s rate from rates service.",
+            "Circuit breaker fallback called obtaining exchange rate (%s -> %s) from rates service",
             fromCurrency, toCurrency
         ), throwable);
-    }
-
-    record FrankfurterRates(Currency base,
-                            Map<Currency, Double> rates) {
     }
 
 }
