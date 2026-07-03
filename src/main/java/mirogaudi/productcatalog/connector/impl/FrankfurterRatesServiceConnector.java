@@ -27,7 +27,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
 
     private final FrankfurterRatesService ratesService;
 
-    @CircuitBreaker(name = "frankfurterRatesService", fallbackMethod = "fallbackGetCurrencyExchangeRate")
+    @CircuitBreaker(name = "frankfurter-rates-service", fallbackMethod = "getCurrencyExchangeRateFallback")
     @Cacheable(
         value = RATES_CACHE_NAME,
         key = "#fromCurrency.currencyCode + '-' + #toCurrency.currencyCode"
@@ -58,7 +58,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
     }
 
     @SuppressWarnings("PMD.UnusedPrivateMethod") // method is used by circuit breaker
-    private BigDecimal fallbackGetCurrencyExchangeRate(Currency fromCurrency,
+    private BigDecimal getCurrencyExchangeRateFallback(Currency fromCurrency,
                                                        Currency toCurrency,
                                                        Throwable throwable) {
         throw new ConnectorRuntimeException(String.format(

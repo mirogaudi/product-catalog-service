@@ -37,7 +37,7 @@
         <require-maven.version>[4.0.0-rc-5,)</require-maven.version>
 
         <lombok.version>1.18.46</lombok.version>
-        <resilience4j.version>2.3.0</resilience4j.version>
+        <spring-cloud.version>2025.1.2</spring-cloud.version>
         <springdoc-openapi.version>3.0.3</springdoc-openapi.version>
 
         <junit-jupiter.version>6.1.2</junit-jupiter.version>
@@ -82,6 +82,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
@@ -113,10 +118,6 @@
             <artifactId>reactor-core</artifactId>
             <version>3.8.6</version>
         </dependency>
-        <dependency>
-            <groupId>io.github.resilience4j</groupId>
-            <artifactId>resilience4j-spring-boot2</artifactId>
-        </dependency> <!-- TODO check! -->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -159,20 +160,23 @@
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
-        </dependency> <!-- TODO check! -->
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.resilience4j</groupId>
-                <artifactId>resilience4j-spring-boot2</artifactId>
-                <version>${resilience4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
@@ -417,7 +421,9 @@
                         <configuration>
                             <!-- Use predefined configuration shipped with the plugin -->
                             <configLocation>sun_checks.xml</configLocation>
-                            <suppressionsLocation>${project.rootDirectory}/checkstyle_suppressions.xml</suppressionsLocation>
+                            <suppressionsLocation>
+                                ${project.rootDirectory}/checkstyle_suppressions.xml
+                            </suppressionsLocation>
                             <failsOnError>true</failsOnError>
                             <consoleOutput>true</consoleOutput>
                         </configuration>
