@@ -35,9 +35,9 @@ class CategoryServiceImplTest {
         when(categoryRepository.findAll()).thenReturn(List.of());
 
         var categories = sut.findAll();
+        assertTrue(categories.isEmpty());
 
         verify(categoryRepository).findAll();
-        assertTrue(categories.isEmpty());
     }
 
     @Test
@@ -48,9 +48,9 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(id)).thenReturn(Optional.of(expectedCategory));
 
         Category category = sut.find(id);
+        assertEquals(expectedCategory, category);
 
         verify(categoryRepository).findById(id);
-        assertEquals(expectedCategory, category);
     }
 
     @ParameterizedTest
@@ -70,9 +70,9 @@ class CategoryServiceImplTest {
         when(categoryRepository.save(any())).thenReturn(expectedCategory);
 
         Category createdCategory = sut.create("name", parentId);
+        assertEquals(expectedCategory, createdCategory);
 
         verify(categoryRepository).save(any());
-        assertEquals(expectedCategory, createdCategory);
     }
 
     @Test
@@ -81,9 +81,9 @@ class CategoryServiceImplTest {
         when(categoryRepository.save(any())).thenReturn(expectedCategory);
 
         Category createdCategory = sut.create("name", null);
+        assertEquals(expectedCategory, createdCategory);
 
         verify(categoryRepository).save(any());
-        assertEquals(expectedCategory, createdCategory);
     }
 
     @ParameterizedTest
@@ -116,9 +116,9 @@ class CategoryServiceImplTest {
         when(categoryRepository.save(any())).thenReturn(expectedCategory);
 
         Category updatedCategory = sut.update(id, "name", parentId);
+        assertEquals(expectedCategory, updatedCategory);
 
         verify(categoryRepository).save(any());
-        assertEquals(expectedCategory, updatedCategory);
     }
 
     @ParameterizedTest
