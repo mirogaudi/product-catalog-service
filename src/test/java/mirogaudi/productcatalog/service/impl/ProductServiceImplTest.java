@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -53,9 +52,9 @@ class ProductServiceImplTest {
         when(productRepository.findAll()).thenReturn(List.of());
 
         var products = sut.findAll();
+        assertTrue(products.isEmpty());
 
         verify(productRepository).findAll();
-        assertTrue(products.isEmpty());
     }
 
     @Test
@@ -65,9 +64,9 @@ class ProductServiceImplTest {
         when(productRepository.findById(id)).thenReturn(Optional.of(expectedProduct));
 
         Product product = sut.find(id);
+        assertEquals(expectedProduct, product);
 
         verify(productRepository).findById(id);
-        assertEquals(expectedProduct, product);
     }
 
     @ParameterizedTest
@@ -85,16 +84,16 @@ class ProductServiceImplTest {
         when(categoryService.find(categoryId)).thenReturn(category());
 
         BigDecimal originalPrice = TEN;
-        when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(Mono.fromCallable(() -> ONE));
+        when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(ONE);
 
         Product expectedProduct = product();
         when(productRepository.save(any())).thenReturn(expectedProduct);
 
         Product createdProduct = sut.create("name", originalPrice, USD, Set.of(categoryId));
+        assertEquals(expectedProduct, createdProduct);
 
         verify(currencyExchangeService).convert(originalPrice, USD, EUR);
         verify(productRepository).save(any());
-        assertEquals(expectedProduct, createdProduct);
     }
 
     @Test
@@ -102,7 +101,7 @@ class ProductServiceImplTest {
         when(baseCurrency.get()).thenReturn(EUR);
 
         BigDecimal originalPrice = TEN;
-        when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(Mono.fromCallable(() -> null));
+        when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(null);
 
         Set<Long> categories = Set.of();
 
@@ -170,16 +169,16 @@ class ProductServiceImplTest {
         when(categoryService.find(categoryId)).thenReturn(category());
 
         BigDecimal originalPrice = TEN;
-        when(currencyExchangeService.convert(originalPrice, EUR, EUR)).thenReturn(Mono.fromCallable(() -> TEN));
+        when(currencyExchangeService.convert(originalPrice, EUR, EUR)).thenReturn(TEN);
 
         Product expectedProduct = product();
         when(productRepository.save(any())).thenReturn(expectedProduct);
 
         Product updatedProduct = sut.update(id, "name", originalPrice, EUR, Set.of(categoryId));
+        assertEquals(expectedProduct, updatedProduct);
 
         verify(currencyExchangeService).convert(originalPrice, EUR, EUR);
         verify(productRepository).save(any());
-        assertEquals(expectedProduct, updatedProduct);
     }
 
     @Test
@@ -191,7 +190,7 @@ class ProductServiceImplTest {
         when(productRepository.findById(id)).thenReturn(Optional.of(product));
 
         BigDecimal originalPrice = TEN;
-        when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(Mono.fromCallable(() -> null));
+        when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(null);
 
         Set<Long> categories = Set.of();
 

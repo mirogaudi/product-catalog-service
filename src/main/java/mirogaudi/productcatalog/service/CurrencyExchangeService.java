@@ -1,8 +1,6 @@
 package mirogaudi.productcatalog.service;
 
 
-import reactor.core.publisher.Mono;
-
 import java.math.BigDecimal;
 import java.util.Currency;
 
@@ -19,8 +17,8 @@ public interface CurrencyExchangeService {
      * @param toCurrency   target currency
      * @return converted amount
      */
-    Mono<BigDecimal> convert(BigDecimal amount,
-                             Currency fromCurrency,
-                             Currency toCurrency);
+    BigDecimal convert(BigDecimal amount,
+                       Currency fromCurrency,
+                       Currency toCurrency);
 
 }

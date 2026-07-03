@@ -9,7 +9,6 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -17,6 +16,7 @@ import java.util.Currency;
 import static java.math.BigDecimal.ONE;
 import static mirogaudi.productcatalog.testhelper.Currencies.EUR;
 import static mirogaudi.productcatalog.testhelper.Currencies.USD;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -36,21 +36,21 @@ class CurrencyExchangeServiceImplTest {
     @NullSource
     void convert_null_amount(BigDecimal amount) {
         assertThrows(IllegalArgumentException.class,
-            () -> sut.convert(amount, USD, EUR).block());
+            () -> sut.convert(amount, USD, EUR));
     }
 
     @ParameterizedTest
     @NullSource
     void convert_null_fromCurrency(Currency fromCurrency) {
         assertThrows(IllegalArgumentException.class,
-            () -> sut.convert(ONE, fromCurrency, EUR).block());
+            () -> sut.convert(ONE, fromCurrency, EUR));
     }
 
     @ParameterizedTest
     @NullSource
     void convert_null_toCurrency(Currency toCurrency) {
         assertThrows(IllegalArgumentException.class,
-            () -> sut.convert(ONE, USD, toCurrency).block());
+            () -> sut.convert(ONE, USD, toCurrency));
     }
 
     @Test
@@ -58,10 +58,8 @@ class CurrencyExchangeServiceImplTest {
         BigDecimal amount = BigDecimal.valueOf(100.00);
         Currency currency = EUR;
 
-        StepVerifier.create(sut.convert(amount, currency, currency))
-            .expectSubscription()
-            .expectNextMatches(convertedAmount -> amount.compareTo(convertedAmount) == 0)
-            .verifyComplete();
+        BigDecimal convertedAmount = sut.convert(amount, currency, currency);
+        assertEquals(0, amount.compareTo(convertedAmount));
 
         verifyNoInteractions(ratesServiceConnector);
     }
@@ -74,10 +72,8 @@ class CurrencyExchangeServiceImplTest {
 
         when(ratesServiceConnector.getCurrencyExchangeRate(USD, EUR)).thenReturn(rate);
 
-        StepVerifier.create(sut.convert(amount, USD, EUR))
-            .expectSubscription()
-            .expectNextMatches(convertedAmount -> expectedConvertedAmount.compareTo(convertedAmount) == 0)
-            .verifyComplete();
+        BigDecimal convertedAmount = sut.convert(amount, USD, EUR);
+        assertEquals(0, expectedConvertedAmount.compareTo(convertedAmount));
 
         verify(ratesServiceConnector).getCurrencyExchangeRate(USD, EUR);
     }
@@ -87,8 +83,8 @@ class CurrencyExchangeServiceImplTest {
         when(ratesServiceConnector.getCurrencyExchangeRate(any(Currency.class), any(Currency.class)))
             .thenThrow(new ConnectorRuntimeException("ConnectorRuntimeException", new Exception()));
 
-        StepVerifier.create(sut.convert(ONE, USD, EUR))
-            .verifyError(ConnectorRuntimeException.class);
+        assertThrows(ConnectorRuntimeException.class,
+            () -> sut.convert(ONE, USD, EUR));
 
         verify(ratesServiceConnector).getCurrencyExchangeRate(USD, EUR);
     }

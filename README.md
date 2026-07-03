@@ -22,7 +22,6 @@ Application is a demo of a product catalog having simplified logic.
 - Spring Data JPA
 - Flyway DB migration tool
 - H2 DB
-- Project Reactor
 - Resilience4j
 - Lombok
 - Docker
