@@ -21,12 +21,17 @@ class ProductCatalogServiceApplicationIntegrationTest {
     private ApplicationContext context;
 
     @Test
-    void verifyContext() {
+    void contextLoads() {
+        // app config
         assertNotNull(context.getBean("baseCurrency"));
 
-        assertNotNull(context.getBean(CacheManager.class));
-        assertNotNull(context.getBean(CircuitBreakerFactory.class));
+        // http service client config
         assertNotNull(context.getBean(FrankfurterRatesService.class));
+        // cache config
+        assertNotNull(context.getBean(CacheManager.class));
+        // circuit breaker config
+        assertNotNull(context.getBean(CircuitBreakerFactory.class));
+        // open api config
         assertNotNull(context.getBean(OpenAPI.class));
     }
 

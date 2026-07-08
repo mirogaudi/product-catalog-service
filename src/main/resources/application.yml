@@ -64,11 +64,15 @@ resilience4j:
   circuitbreaker:
     instances:
       cb-frankfurter-rates-service:
+        # for details see https://resilience4j.readme.io/docs/circuitbreaker
         registerHealthIndicator: true
-        slidingWindowSize: 5
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
         failureRateThreshold: 50
-        waitDurationInOpenState: 10s
+        waitDurationInOpenState: 2s
         permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
 
 springdoc:
   swagger-ui:

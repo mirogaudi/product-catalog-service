@@ -3,7 +3,6 @@ package mirogaudi.productcatalog.connector.impl;
 import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import mirogaudi.productcatalog.ProductCatalogServiceApplication;
 import mirogaudi.productcatalog.testhelper.Currencies;
-import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static mirogaudi.productcatalog.config.CacheConfig.RATES_CACHE_NAME;
 import static mirogaudi.productcatalog.testhelper.Currencies.EUR;
@@ -32,9 +32,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class FrankfurterRatesServiceConnectorCacheIntegrationTest {
 
     @Autowired
-    private FrankfurterRatesServiceConnector sut;
-    @Autowired
     private CacheManager cacheManager;
+
+    @Autowired
+    private FrankfurterRatesServiceConnector ratesServiceConnector;
 
     @BeforeEach
     void setUp() {
@@ -56,7 +57,7 @@ class FrankfurterRatesServiceConnectorCacheIntegrationTest {
         // rate is not in the cache before the call
         assertNull(ratesCache.get(key));
 
-        BigDecimal rate = sut.getExchangeRate(fromCurrency, toCurrency);
+        BigDecimal rate = ratesServiceConnector.getExchangeRate(fromCurrency, toCurrency);
         assertNotNull(rate);
 
         // rate is in the cache after the call
@@ -67,9 +68,9 @@ class FrankfurterRatesServiceConnectorCacheIntegrationTest {
 
     @Test
     void getCurrencyExchangeRate_CacheStats() {
-        sut.getExchangeRate(USD, EUR);
-        sut.getExchangeRate(USD, EUR);
-        sut.getExchangeRate(USD, EUR);
+        IntStream.range(0, 3).forEach(_ ->
+            ratesServiceConnector.getExchangeRate(USD, EUR)
+        );
 
         Cache ratesCache = getRatesCache();
         assertNotNull(ratesCache);
@@ -79,7 +80,7 @@ class FrankfurterRatesServiceConnectorCacheIntegrationTest {
         assertEquals(2, stats.hitCount());
     }
 
-    private @Nullable Cache getRatesCache() {
+    private Cache getRatesCache() {
         return cacheManager.getCache(RATES_CACHE_NAME);
     }
 
