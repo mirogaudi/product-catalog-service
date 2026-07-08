@@ -1,7 +1,3 @@
-server:
-  port: 8080
-  servlet.context-path: /pcs
-
 management:
   enabled: false
 
@@ -9,60 +5,19 @@ logging:
   level:
     root: info
     org.springframework: warn
-    org.hibernate: warn
+    org.hibernate: info
     mirogaudi.productcatalog: info
 
 spring:
-  application.name: product-catalog-service
-
-  http:
-    serviceclient:
-      frankfurter-rates-service:
-        base-url: https://api.frankfurter.dev
-        connect-timeout: 2s
-        read-timeout: 2s
-
   jpa:
-    open-in-view: false
     hibernate.ddl-auto: validate
-    properties:
-      hibernate:
-        connection.provider_disables_autocommit: true
-
-  flyway:
-    locations: classpath:db/migration
 
   datasource:
-    driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:pcs-test
-    username: sa
-    password: # empty
-    hikari:
-      auto-commit: false
 
   h2.console:
     enabled: false
 
-resilience4j:
-  circuitbreaker:
-    instances:
-      cb-frankfurter-rates-service:
-        registerHealthIndicator: true
-        slidingWindowSize: 5
-        failureRateThreshold: 50
-        waitDurationInOpenState: 10s
-        permittedNumberOfCallsInHalfOpenState: 3
-
 springdoc:
   swagger-ui:
     enabled: false
-
-# Product catalog service (pcs)
-pcs:
-  # Base currency
-  base-currency-code: EUR
-  # Rates service
-  rates-cache-evict:
-    # Run at 16:01 CET every Monday till Friday
-    cron: 0 1 16 ? * MON-FRI
-    zone: CET
