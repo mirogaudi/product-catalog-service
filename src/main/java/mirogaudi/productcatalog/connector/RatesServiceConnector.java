@@ -15,7 +15,7 @@ public interface RatesServiceConnector {
      * @param toCurrency   target currency
      * @return currency exchange rate
      */
-    BigDecimal getCurrencyExchangeRate(Currency fromCurrency,
-                                       Currency toCurrency);
+    BigDecimal getExchangeRate(Currency fromCurrency,
+                               Currency toCurrency);
 
 }

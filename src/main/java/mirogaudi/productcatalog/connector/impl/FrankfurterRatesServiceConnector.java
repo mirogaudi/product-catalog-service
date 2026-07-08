@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mirogaudi.productcatalog.client.FrankfurterRatesService;
+import mirogaudi.productcatalog.client.FrankfurterRatesService.Rate;
 import mirogaudi.productcatalog.connector.ConnectorRuntimeException;
 import mirogaudi.productcatalog.connector.RatesServiceConnector;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,44 +28,43 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
 
     private final FrankfurterRatesService ratesService;
 
-    @CircuitBreaker(name = "frankfurter-rates-service", fallbackMethod = "getCurrencyExchangeRateFallback")
     @Cacheable(
         value = RATES_CACHE_NAME,
         key = "#fromCurrency.currencyCode + '-' + #toCurrency.currencyCode"
     )
+    @CircuitBreaker(name = "cb-frankfurter-rates-service", fallbackMethod = "getExchangeRateFallback")
     @Override
-    public BigDecimal getCurrencyExchangeRate(@NonNull Currency fromCurrency,
-                                              @NonNull Currency toCurrency) {
-        try {
-            LOG.debug("Fetching exchange rate ({} -> {}) from rates service...", fromCurrency, toCurrency);
+    public BigDecimal getExchangeRate(@NonNull Currency fromCurrency,
+                                      @NonNull Currency toCurrency) {
+        LOG.debug("Fetching exchange rate ({} -> {}) from rates service...", fromCurrency, toCurrency);
 
-            FrankfurterRatesService.Rate[] rates = ratesService.getRates(fromCurrency.getCurrencyCode(), toCurrency.getCurrencyCode());
-            Assert.state(rates != null && rates.length > 0, String.format(
-                "No exchange rate (%s -> %s) obtained from rates service",
-                fromCurrency, toCurrency
-            ));
+        Rate[] rates = ratesService.getRates(fromCurrency.getCurrencyCode(), toCurrency.getCurrencyCode());
+        Assert.state(rates != null && rates.length > 0, String.format(
+            "No exchange rate (%s -> %s) obtained from rates service", fromCurrency, toCurrency));
+        Rate rate = rates[0];
+        LOG.info("Obtained exchange rate ({} -> {}) from rates service: {}", fromCurrency, toCurrency, rate);
 
-            FrankfurterRatesService.Rate rate = rates[0];
-            LOG.info("Obtained exchange rate ({} -> {}) from rates service: {}", fromCurrency, toCurrency, rate);
-
-            return BigDecimal.valueOf(rate.rate());
-        } catch (Exception e) {
-            LOG.error("Failed to obtain exchange rate ({} -> {}) from rates service", fromCurrency, toCurrency);
-            throw new ConnectorRuntimeException(String.format(
-                "Failed to obtain exchange rate (%s -> %s) from rates service",
-                fromCurrency, toCurrency
-            ), e);
-        }
+        return BigDecimal.valueOf(rate.rate());
     }
 
-    @SuppressWarnings("PMD.UnusedPrivateMethod") // method is used by circuit breaker
-    private BigDecimal getCurrencyExchangeRateFallback(Currency fromCurrency,
-                                                       Currency toCurrency,
-                                                       Throwable throwable) {
-        throw new ConnectorRuntimeException(String.format(
-            "Circuit breaker fallback called obtaining exchange rate (%s -> %s) from rates service",
-            fromCurrency, toCurrency
-        ), throwable);
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
+    private BigDecimal getExchangeRateFallback(Currency fromCurrency,
+                                               Currency toCurrency,
+                                               IllegalStateException e) {
+        String message = String.format(
+            "CircuitBreaker: No exchange rate (%s -> %s) obtained from rates service", fromCurrency, toCurrency);
+        LOG.error(message);
+        throw new ConnectorRuntimeException(message, e);
+    }
+
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
+    private BigDecimal getExchangeRateFallback(Currency fromCurrency,
+                                               Currency toCurrency,
+                                               Throwable t) {
+        String message = String.format(
+            "CircuitBreaker: Failed to obtain exchange rate (%s -> %s) from rates service", fromCurrency, toCurrency);
+        LOG.error(message);
+        throw new ConnectorRuntimeException(message, t);
     }
 
 }

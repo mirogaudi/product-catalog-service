@@ -70,23 +70,23 @@ class CurrencyExchangeServiceImplTest {
         BigDecimal rate = BigDecimal.valueOf(0.83382);
         BigDecimal expectedConvertedAmount = BigDecimal.valueOf(83.382);
 
-        when(ratesServiceConnector.getCurrencyExchangeRate(USD, EUR)).thenReturn(rate);
+        when(ratesServiceConnector.getExchangeRate(USD, EUR)).thenReturn(rate);
 
         BigDecimal convertedAmount = sut.convert(amount, USD, EUR);
         assertEquals(0, expectedConvertedAmount.compareTo(convertedAmount));
 
-        verify(ratesServiceConnector).getCurrencyExchangeRate(USD, EUR);
+        verify(ratesServiceConnector).getExchangeRate(USD, EUR);
     }
 
     @Test
     void convert_not_ok() {
-        when(ratesServiceConnector.getCurrencyExchangeRate(any(Currency.class), any(Currency.class)))
+        when(ratesServiceConnector.getExchangeRate(any(Currency.class), any(Currency.class)))
             .thenThrow(new ConnectorRuntimeException("ConnectorRuntimeException", new Exception()));
 
         assertThrows(ConnectorRuntimeException.class,
             () -> sut.convert(ONE, USD, EUR));
 
-        verify(ratesServiceConnector).getCurrencyExchangeRate(USD, EUR);
+        verify(ratesServiceConnector).getExchangeRate(USD, EUR);
     }
 
 }

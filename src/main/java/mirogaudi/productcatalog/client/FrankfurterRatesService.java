@@ -14,7 +14,7 @@ public interface FrankfurterRatesService {
     record Rate(@JsonFormat(pattern = "yyyy-MM-dd") LocalDate date,
                 String base,
                 String quote,
-                Double rate) {
+                double rate) {
     }
 
     @GetExchange

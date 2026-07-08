@@ -1,10 +1,11 @@
 package mirogaudi.productcatalog.connector.impl;
 
 import mirogaudi.productcatalog.client.FrankfurterRatesService;
-import mirogaudi.productcatalog.connector.ConnectorRuntimeException;
+import mirogaudi.productcatalog.client.FrankfurterRatesService.Rate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -37,30 +38,54 @@ class FrankfurterRatesServiceConnectorTest {
     @NullSource
     void getCurrencyExchangeRate_null_fromCurrency(Currency fromCurrency) {
         assertThrows(IllegalArgumentException.class,
-            () -> sut.getCurrencyExchangeRate(fromCurrency, EUR));
+            () -> sut.getExchangeRate(fromCurrency, EUR));
     }
 
     @ParameterizedTest
     @NullSource
     void getCurrencyExchangeRate_null_toCurrency(Currency toCurrency) {
         assertThrows(IllegalArgumentException.class,
-            () -> sut.getCurrencyExchangeRate(USD, toCurrency));
+            () -> sut.getExchangeRate(USD, toCurrency));
     }
 
     @Test
     void getCurrencyExchangeRate_ok() {
-        double expectedRate = Double.parseDouble("0.89952");
-        FrankfurterRatesService.Rate rate = new FrankfurterRatesService.Rate(
+        double expectedRate = 0.89952d;
+        Rate rate = new Rate(
             LocalDate.of(2026, Month.JULY, 2),
             USD.getCurrencyCode(),
             EUR.getCurrencyCode(),
             expectedRate
         );
         when(ratesService.getRates(anyString(), anyString()))
-            .thenReturn(new FrankfurterRatesService.Rate[]{rate});
+            .thenReturn(new Rate[]{rate});
 
-        BigDecimal actualRate = sut.getCurrencyExchangeRate(USD, EUR);
+        BigDecimal actualRate = sut.getExchangeRate(USD, EUR);
         assertEquals(expectedRate, actualRate.doubleValue());
+
+        verify(ratesService).getRates(USD.getCurrencyCode(), EUR.getCurrencyCode());
+    }
+
+    @ParameterizedTest
+    @NullSource
+    void getCurrencyExchangeRate_not_ok_null(Rate[] response) {
+        when(ratesService.getRates(anyString(), anyString()))
+            .thenReturn(response);
+
+        assertThrows(IllegalStateException.class,
+            () -> sut.getExchangeRate(USD, EUR));
+
+        verify(ratesService).getRates(USD.getCurrencyCode(), EUR.getCurrencyCode());
+    }
+
+    @ParameterizedTest
+    @EmptySource
+    void getCurrencyExchangeRate_not_ok_empty(Rate[] response) {
+        when(ratesService.getRates(anyString(), anyString()))
+            .thenReturn(response);
+
+        assertThrows(IllegalStateException.class,
+            () -> sut.getExchangeRate(USD, EUR));
 
         verify(ratesService).getRates(USD.getCurrencyCode(), EUR.getCurrencyCode());
     }
@@ -70,9 +95,8 @@ class FrankfurterRatesServiceConnectorTest {
         when(ratesService.getRates(anyString(), anyString()))
             .thenThrow(new RestClientException("error"));
 
-        assertThrows(ConnectorRuntimeException.class,
-            () -> sut.getCurrencyExchangeRate(USD, EUR)
-        );
+        assertThrows(RestClientException.class,
+            () -> sut.getExchangeRate(USD, EUR));
 
         verify(ratesService).getRates(USD.getCurrencyCode(), EUR.getCurrencyCode());
     }

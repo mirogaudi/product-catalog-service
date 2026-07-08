@@ -24,7 +24,7 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
             return amount;
         }
 
-        return amount.multiply(ratesServiceConnector.getCurrencyExchangeRate(fromCurrency, toCurrency));
+        return amount.multiply(ratesServiceConnector.getExchangeRate(fromCurrency, toCurrency));
     }
 
 }

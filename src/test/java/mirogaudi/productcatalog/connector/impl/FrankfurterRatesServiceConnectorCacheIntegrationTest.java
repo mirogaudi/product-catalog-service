@@ -25,7 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@SpringBootTest(classes = {ProductCatalogServiceApplication.class})
+@SpringBootTest(classes = {ProductCatalogServiceApplication.class},
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class FrankfurterRatesServiceConnectorCacheIntegrationTest {
 
     @Autowired
@@ -53,7 +54,7 @@ class FrankfurterRatesServiceConnectorCacheIntegrationTest {
         // rate is not in the cache before the call
         assertNull(ratesCache.get(key));
 
-        BigDecimal rate = sut.getCurrencyExchangeRate(fromCurrency, toCurrency);
+        BigDecimal rate = sut.getExchangeRate(fromCurrency, toCurrency);
         assertNotNull(rate);
 
         // rate is in the cache after the call
@@ -64,9 +65,9 @@ class FrankfurterRatesServiceConnectorCacheIntegrationTest {
 
     @Test
     void getCurrencyExchangeRate_CacheStats() {
-        sut.getCurrencyExchangeRate(USD, EUR);
-        sut.getCurrencyExchangeRate(USD, EUR);
-        sut.getCurrencyExchangeRate(USD, EUR);
+        sut.getExchangeRate(USD, EUR);
+        sut.getExchangeRate(USD, EUR);
+        sut.getExchangeRate(USD, EUR);
 
         Cache ratesCache = getRatesCache();
         assertNotNull(ratesCache);
