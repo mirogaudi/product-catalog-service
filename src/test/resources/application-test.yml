@@ -17,7 +17,7 @@ spring:
 
   http:
     serviceclient:
-      rates:
+      frankfurter-rates-service:
         base-url: https://api.frankfurter.dev
         connect-timeout: 2s
         read-timeout: 2s
@@ -46,7 +46,7 @@ spring:
 resilience4j:
   circuitbreaker:
     instances:
-      frankfurter-rates-service:
+      cb-frankfurter-rates-service:
         registerHealthIndicator: true
         slidingWindowSize: 5
         failureRateThreshold: 50

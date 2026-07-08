@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import static org.springframework.http.HttpStatus.BAD_GATEWAY;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -61,7 +62,7 @@ public class ControllerErrorHandler {
 
     private ResponseEntity<Error> errorResponseEntity(HttpStatus httpStatus, Throwable t) {
         Error error = new Error(
-            LocalDateTime.now(),
+            LocalDateTime.now(ZoneId.systemDefault()),
             httpStatus.value(),
             httpStatus.getReasonPhrase(),
             t.toString()

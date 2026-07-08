@@ -5,6 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.service.registry.ImportHttpServices;
 
 @Configuration(proxyBeanMethods = false)
-@ImportHttpServices(group = "rates", types = {FrankfurterRatesService.class})
+@ImportHttpServices(group = "frankfurter-rates-service", types = {FrankfurterRatesService.class})
 public class HttpServiceConfig {
 }
