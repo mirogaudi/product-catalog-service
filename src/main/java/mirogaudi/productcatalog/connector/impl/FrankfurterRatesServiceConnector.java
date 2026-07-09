@@ -1,5 +1,6 @@
 package mirogaudi.productcatalog.connector.impl;
 
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -60,9 +61,20 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
     @SuppressWarnings("PMD.UnusedPrivateMethod")
     private BigDecimal getExchangeRateFallback(Currency fromCurrency,
                                                Currency toCurrency,
+                                               CallNotPermittedException e) {
+        String message = String.format(
+            "CircuitBreaker is OPEN: Refused to obtain exchange rate (%s -> %s) from rates service",
+            fromCurrency, toCurrency);
+        LOG.error(message);
+        throw new ConnectorRuntimeException(message, e);
+    }
+
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
+    private BigDecimal getExchangeRateFallback(Currency fromCurrency,
+                                               Currency toCurrency,
                                                Throwable t) {
         String message = String.format(
-            "CircuitBreaker: Failed to obtain exchange rate (%s -> %s) from rates service", fromCurrency, toCurrency);
+            "CircuitBreaker: Failed to obtain exchange rate (%s -> %s) from rates service. Cause: %s", fromCurrency, toCurrency, t.getCause());
         LOG.error(message);
         throw new ConnectorRuntimeException(message, t);
     }
