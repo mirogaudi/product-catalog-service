@@ -71,8 +71,8 @@ resilience4j:
         minimumNumberOfCalls: 5
         failureRateThreshold: 50
         waitDurationInOpenState: 2s
-        permittedNumberOfCallsInHalfOpenState: 3
         automaticTransitionFromOpenToHalfOpenEnabled: true
+        permittedNumberOfCallsInHalfOpenState: 3
 
 springdoc:
   swagger-ui:
@@ -83,10 +83,10 @@ springdoc:
 
 # Product catalog service (pcs)
 pcs:
-  # Base currency
   base-currency-code: EUR
-  # Rates service
-  rates-cache-evict:
-    # Run at 16:01 CET every Monday till Friday
-    cron: 0 1 16 ? * MON-FRI
-    zone: CET
+  cache:
+    enabled: true
+    rates-cache.evict:
+        # Run at 16:01 CET every Monday till Friday
+        cron: 0 1 16 ? * MON-FRI
+        zone: CET
