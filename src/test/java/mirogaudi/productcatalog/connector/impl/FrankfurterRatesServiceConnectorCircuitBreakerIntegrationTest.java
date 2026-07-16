@@ -22,7 +22,6 @@ import org.wiremock.spring.EnableWireMock;
 import org.wiremock.spring.InjectWireMock;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -30,6 +29,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.SlidingWindowType.COUNT_BASED;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static mirogaudi.productcatalog.testhelper.Currencies.EUR;
 import static mirogaudi.productcatalog.testhelper.Currencies.USD;
 import static org.awaitility.Awaitility.await;
@@ -126,7 +126,7 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
                     assertEquals(CircuitBreaker.State.OPEN, getCircuitBreaker().getState());
 
                     // wait till circuit breaker half-opens -> see waitDurationInOpenState, automaticTransitionFromOpenToHalfOpenEnabled
-                    await().atLeast(Duration.ofSeconds(2))
+                    await().atLeast(1500, MILLISECONDS).and().atMost(2500, MILLISECONDS)
                         .until(() -> CircuitBreaker.State.HALF_OPEN.equals(getCircuitBreaker().getState()));
                 }
             } else if (repetition <= 8) { // 6th to 8th call -> see permittedNumberOfCallsInHalfOpenState
@@ -179,7 +179,7 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
                     assertEquals(CircuitBreaker.State.OPEN, getCircuitBreaker().getState());
 
                     // wait till circuit breaker half-opens -> see waitDurationInOpenState, automaticTransitionFromOpenToHalfOpenEnabled
-                    await().atLeast(Duration.ofSeconds(2))
+                    await().atLeast(1500, MILLISECONDS).and().atMost(2500, MILLISECONDS)
                         .until(() -> CircuitBreaker.State.HALF_OPEN.equals(getCircuitBreaker().getState()));
                 }
             } else if (repetition <= 8) { // 6th to 8th call -> see permittedNumberOfCallsInHalfOpenState
