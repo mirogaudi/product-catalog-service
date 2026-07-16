@@ -61,6 +61,10 @@ spring:
     path: /h2-console
 
 resilience4j:
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 2s
   circuitbreaker:
     instances:
       cb-frankfurter-rates-service:
@@ -87,6 +91,6 @@ pcs:
   cache:
     enabled: true
     rates-cache.evict:
-        # Run at 16:01 CET every Monday till Friday
-        cron: 0 1 16 ? * MON-FRI
-        zone: CET
+      # Run at 16:01 CET every Monday till Friday
+      cron: 0 1 16 ? * MON-FRI
+      zone: CET
