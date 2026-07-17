@@ -255,6 +255,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                    <!-- by default includes inter alia **/*Test.java -->
+                    <excludes>
+                        <exclude>**/*IntegrationTest.java</exclude>
+                    </excludes>
                     <failIfNoTests>true</failIfNoTests>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <argLine>@{argLine} -Xshare:off</argLine>
@@ -267,6 +271,11 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
                     <version>${surefire-plugin.version}</version>
                 </plugin>
                 <plugin>
@@ -341,28 +350,125 @@
 
     <profiles>
         <profile>
-            <id>code-coverage</id>
-            <reporting>
+            <id>checkstyle</id>
+            <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <reportSets>
-                            <reportSet>
-                                <reports>
-                                    <report>report</report>
-                                </reports>
-                            </reportSet>
-                        </reportSets>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <configuration>
+                            <!-- Use predefined configuration shipped with the plugin -->
+                            <configLocation>sun_checks.xml</configLocation>
+                            <suppressionsLocation>
+                                ${project.rootDirectory}/checkstyle_suppressions.xml
+                            </suppressionsLocation>
+                            <failsOnError>true</failsOnError>
+                            <consoleOutput>true</consoleOutput>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>check</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
-            </reporting>
+            </build>
+        </profile>
+
+        <profile>
+            <id>pmd</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <configuration>
+                            <failOnViolation>true</failOnViolation>
+                            <printFailingErrors>true</printFailingErrors>
+                            <analysisCache>true</analysisCache>
+                            <linkXRef>false</linkXRef>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>check</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                    <goal>cpd-check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>spotbugs</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <configuration>
+                            <failOnError>true</failOnError>
+                            <threshold>medium</threshold>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>check</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>integration-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <!-- by default includes inter alia **/*IT.java etc-->
+                            <includes>
+                                <include>**/*IntegrationTest.java</include>
+                            </includes>
+                            <failIfNoTests>true</failIfNoTests>
+                            <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>code-coverage</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <executions>
+                            <!-- unit tests -->
                             <execution>
                                 <id>prepare-agent</id>
                                 <goals>
@@ -371,17 +477,62 @@
                             </execution>
                             <execution>
                                 <id>report</id>
+                                <phase>after:test</phase>
                                 <goals>
                                     <goal>report</goal>
                                 </goals>
-                                <phase>before:package[100]</phase>
+                            </execution>
+                            <!-- integration tests -->
+                            <execution>
+                                <id>prepare-agent-integration</id>
+                                <goals>
+                                    <goal>prepare-agent-integration</goal>
+                                </goals>
                             </execution>
                             <execution>
+                                <id>report-integration</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>report-integration</goal>
+                                </goals>
+                            </execution>
+                            <!-- merge results -->
+                            <execution>
+                                <id>merge-results</id>
+                                <phase>before:verify</phase>
+                                <goals>
+                                    <goal>merge</goal>
+                                </goals>
+                                <configuration>
+                                    <fileSets>
+                                        <fileSet>
+                                            <directory>${project.build.directory}</directory>
+                                            <includes>
+                                                <include>*.exec</include>
+                                            </includes>
+                                        </fileSet>
+                                    </fileSets>
+                                    <destFile>${project.build.directory}/jacoco-merged.exec</destFile>
+                                </configuration>
+                            </execution>
+                            <!-- merged report -->
+                            <execution>
+                                <id>merged-report</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <configuration>
+                                    <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
+                                </configuration>
+                            </execution>
+
+                            <execution>
                                 <id>check</id>
+                                <phase>verify</phase>
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
-                                <phase>before:package[200]</phase>
                                 <configuration>
                                     <excludes>
                                         <exclude>**/config/*</exclude>
@@ -412,88 +563,25 @@
         </profile>
 
         <profile>
-            <id>checkstyle</id>
+            <id>sbom</id>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-checkstyle-plugin</artifactId>
-                        <configuration>
-                            <!-- Use predefined configuration shipped with the plugin -->
-                            <configLocation>sun_checks.xml</configLocation>
-                            <suppressionsLocation>
-                                ${project.rootDirectory}/checkstyle_suppressions.xml
-                            </suppressionsLocation>
-                            <failsOnError>true</failsOnError>
-                            <consoleOutput>true</consoleOutput>
-                        </configuration>
+                        <groupId>org.cyclonedx</groupId>
+                        <artifactId>cyclonedx-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>check</id>
+                                <phase>generate-resources</phase>
                                 <goals>
-                                    <goal>check</goal>
+                                    <goal>makeAggregateBom</goal>
                                 </goals>
-                                <phase>validate</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>pmd</id>
-            <reporting>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jxr-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </reporting>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-pmd-plugin</artifactId>
-                        <configuration>
-                            <failOnViolation>true</failOnViolation>
-                            <printFailingErrors>true</printFailingErrors>
-                            <analysisCache>true</analysisCache>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>check</id>
-                                <goals>
-                                    <goal>check</goal>
-                                    <goal>cpd-check</goal>
-                                </goals>
-                                <phase>before:package</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>spotbugs</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.spotbugs</groupId>
-                        <artifactId>spotbugs-maven-plugin</artifactId>
-                        <configuration>
-                            <failOnError>true</failOnError>
-                            <threshold>medium</threshold>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>check</id>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                                <phase>before:package</phase>
+                                <configuration>
+                                    <projectType>application</projectType>
+                                    <outputDirectory>${project.build.outputDirectory}/META-INF/sbom</outputDirectory>
+                                    <outputName>application.cdx</outputName>
+                                    <outputFormat>json</outputFormat>
+                                    <skipAttach>true</skipAttach>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -514,37 +602,10 @@
                         <executions>
                             <execution>
                                 <id>check</id>
+                                <phase>verify</phase>
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
-                                <phase>before:package</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>sbom</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.cyclonedx</groupId>
-                        <artifactId>cyclonedx-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>makeAggregateBom</goal>
-                                </goals>
-                                <phase>generate-resources</phase>
-                                <configuration>
-                                    <projectType>application</projectType>
-                                    <outputDirectory>${project.build.outputDirectory}/META-INF/sbom</outputDirectory>
-                                    <outputName>application.cdx</outputName>
-                                    <outputFormat>json</outputFormat>
-                                    <skipAttach>true</skipAttach>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -577,10 +638,10 @@
                         <executions>
                             <execution>
                                 <id>build</id>
+                                <phase>package</phase>
                                 <goals>
                                     <goal>build</goal>
                                 </goals>
-                                <phase>after:package</phase>
                             </execution>
                         </executions>
                     </plugin>

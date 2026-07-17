@@ -16,16 +16,16 @@ Application is a demo of a product catalog having simplified logic.
 - Java 25
 - Maven 4 (wrapper)
 - Maven BuildTime Profiler Extension
+- Lombok
 - Spring Boot 4
 - Spring Web MVC
+- Spring Cloud Circuit Breaker (Resilience4j)
 - Spring Cache (Caffeine)
 - Spring Data JPA
 - Flyway DB migration tool
 - H2 DB
-- Resilience4j
-- Lombok
-- Docker
 - OpenAPI 3 & Swagger UI (springdoc-openapi)
+- Docker
 - JUnit Jupiter
 - Mockito
 - Checkstyle, PMD, SpotBugs
@@ -82,8 +82,11 @@ See application specific configuration in `pcs:` section of [application.yml](sr
 ### Maven build
 
 ```shell
-# Build with Maven wrapper
+# Build with Maven wrapper running unit tests
 $ ./mvnw package
+
+# Build with Maven wrapper running unit and integration tests
+$ ./mvnw verify -Pintegration-test
 ```
 
 #### Maven BuildTime Profiler Extension
@@ -158,7 +161,7 @@ Just run in IDE: [ProductCatalogServiceApplication.java](./src/main/java/mirogau
 
 ```shell
 # Build performing static code analysis
-$ ./mvnw package -Pcheckstyle,pmd,spotbugs -DskipTests
+$ ./mvnw verify -Pcheckstyle,pmd,spotbugs -DskipTests
 ```
 
 #### Checkstyle
@@ -174,21 +177,21 @@ $ ./mvnw validate -Pcheckstyle -DskipTests
 
 ```shell
 # Build checking with PMD
-$ ./mvnw package -Ppmd -DskipTests
+$ ./mvnw verify -Ppmd -DskipTests
 ```
 
 #### SpotBugs
 
 ```shell
 # Build checking with SpotBugs
-$ ./mvnw package -Pspotbugs -DskipTests
+$ ./mvnw verify -Pspotbugs -DskipTests
 ```
 
 ### Code coverage
 
 ```shell
-# Build generating JaCoCo code coverage report and checking code coverage metrics
-$ ./mvnw package -Pcode-coverage
+# Build generating JaCoCo code coverage report (unit and integration tests) and checking code coverage metrics
+$ ./mvnw verify -Pintegration-test -Pcode-coverage
 ```
 
 ### Software Bill of Materials (SBOM)
@@ -197,7 +200,7 @@ $ ./mvnw package -Pcode-coverage
 
 ```shell
 # Build generating CycloneDX SBOM
-$ ./mvnw package -Psbom -DskipTests
+$ ./mvnw verify -Psbom -DskipTests
 ```
 
 Generated SBOM can then be viewed:
@@ -213,7 +216,7 @@ Generated SBOM can then be viewed:
 
 ```shell
 # Build generating OWASP dependency vulnerability report
-$ ./mvnw package -Powasp -DskipTests
+$ ./mvnw verify -Powasp -DskipTests
 ```
 
 #### Snyk
@@ -253,19 +256,15 @@ To ignore case-insensitive `alpha`, `beta`, `dev`, `milestone` and `release cand
 `maven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?'`
 
 ```shell
-$ ./mvnw -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?' versions:<goal>
+$ ./mvnw versions:<goal> -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?'
 ```
 
 ## TODO:
 
 - clean up:
-    - check TODOs in pom.xml
-        - resilience4j-spring-boot2
     - test db with integration testing
     - test/fix n+1 JPA problem
     - check if all transactions are valid and using proxy classes
-    - use https://spring.io/guides/gs/cloud-circuit-breaker for Circuit Breaker
-        - test it
     - use Rest Assured for integration testing
 - use conventional commits https://www.conventionalcommits.org/
 - add semantic releases (https://semver.org/) and/or CHANGELOG.md https://keepachangelog.com/

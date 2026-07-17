@@ -26,8 +26,8 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Build with Maven wrapper performing static code analysis and generating code coverage report
-        run: ./mvnw -B package -Pcheckstyle,pmd,spotbugs -Pcode-coverage
+      - name: Build with Maven wrapper running unit and integration tests, performing static code analysis and generating code coverage report
+        run: ./mvnw verify -Pcheckstyle,pmd,spotbugs -Pintegration-test -Pcode-coverage
 
       - name: Generate JaCoCo badges
         uses: cicirello/jacoco-badge-generator@v2
