@@ -27,7 +27,7 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven wrapper running unit and integration tests, performing static code analysis and generating code coverage report
-        run: ./mvnw verify -Pcheckstyle,pmd,spotbugs -Pintegration-test -Pcode-coverage
+        run: ./mvnw -B verify -Pcheckstyle,pmd,spotbugs -Pintegration-test -Pcode-coverage
 
       - name: Generate JaCoCo badges
         uses: cicirello/jacoco-badge-generator@v2

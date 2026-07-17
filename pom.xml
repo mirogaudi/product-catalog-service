@@ -468,7 +468,6 @@
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <executions>
-                            <!-- unit tests -->
                             <execution>
                                 <id>prepare-agent</id>
                                 <goals>
@@ -476,30 +475,14 @@
                                 </goals>
                             </execution>
                             <execution>
-                                <id>report</id>
-                                <phase>after:test</phase>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                            </execution>
-                            <!-- integration tests -->
-                            <execution>
                                 <id>prepare-agent-integration</id>
                                 <goals>
                                     <goal>prepare-agent-integration</goal>
                                 </goals>
                             </execution>
                             <execution>
-                                <id>report-integration</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>report-integration</goal>
-                                </goals>
-                            </execution>
-                            <!-- merge results -->
-                            <execution>
                                 <id>merge-results</id>
-                                <phase>before:verify</phase>
+                                <phase>verify</phase>
                                 <goals>
                                     <goal>merge</goal>
                                 </goals>
@@ -515,7 +498,6 @@
                                     <destFile>${project.build.directory}/jacoco-merged.exec</destFile>
                                 </configuration>
                             </execution>
-                            <!-- merged report -->
                             <execution>
                                 <id>merged-report</id>
                                 <phase>verify</phase>
