@@ -153,7 +153,7 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
     @ParameterizedTest
     // 408 (Request Timeout), 429 (Too Many Requests),
     // 500 (Internal Server Error), 502 (Bad Gateway), 503 (Service Unavailable), 504 (Gateway Timeout)
-    // TODO check TimeoutException related to 429 and 503 and TimeLimiter
+    // TODO check/disable retries related to 429 and 503
     @ValueSource(ints = {408, 429, 500, 502, 503, 504})
     void getCurrencyExchangeRate_not_ok_server_error(int status) {
         mockFrankfurterRatesService.stubFor(get(urlPathEqualTo("/v2/rates"))

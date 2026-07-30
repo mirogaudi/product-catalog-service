@@ -262,9 +262,12 @@ $ ./mvnw versions:<goal> -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)
 ## TODO:
 
 - clean up:
+    - test evictRatesCache
+    - Resilience4j: check/disable retries related to 429 and 503
     - test db with integration testing
     - test/fix n+1 JPA problem
     - check if all transactions are valid and using proxy classes
+    - use Java Records with Spring Data JPA
     - use Rest Assured for integration testing
 - use conventional commits https://www.conventionalcommits.org/
 - add semantic releases (https://semver.org/) and/or CHANGELOG.md https://keepachangelog.com/
