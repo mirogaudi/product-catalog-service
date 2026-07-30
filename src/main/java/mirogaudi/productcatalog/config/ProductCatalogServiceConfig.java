@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Currency;
 import java.util.function.Supplier;
 
-@Configuration(proxyBeanMethods = false)
+@Configuration
 public class ProductCatalogServiceConfig {
 
     @Value("${pcs.base-currency-code:EUR}")
