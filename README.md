@@ -24,6 +24,7 @@ Application is a demo of a product catalog having simplified logic.
 - Spring Data JPA
 - Flyway DB migration tool
 - H2 DB
+- Logback
 - OpenAPI 3 & Swagger UI (springdoc-openapi)
 - Docker
 - JUnit Jupiter
@@ -157,6 +158,10 @@ Just run in IDE: [ProductCatalogServiceApplication.java](./src/main/java/mirogau
 
 ## Code quality
 
+### Code style
+
+Code style is set using [.editorconfig](.editorconfig) file.
+
 ### Static code analysis
 
 ```shell
@@ -262,7 +267,7 @@ $ ./mvnw versions:<goal> -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)
 ## TODO:
 
 - clean up:
-    - move getExchangeRate(Currency fromCurrency, Currency toCurrency) to CurrencyExchangeService and make it Cached
+    - move getExchangeRate (Currency fromCurrency, Currency toCurrency) to CurrencyExchangeService and make it Cached
     - test evictRatesCache
     - Resilience4j: check/disable retries related to 429 and 503
     - test db with integration testing
