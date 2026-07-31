@@ -275,6 +275,7 @@ $ ./mvnw versions:<goal> -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)
     - check if all transactions are valid and using proxy classes
     - use Java Records with Spring Data JPA
     - use Rest Assured for integration testing
+    - use lightweight base docker image alternative to eclipse-temurin:25.0.3_9-jdk
 - use conventional commits https://www.conventionalcommits.org/
 - add semantic releases (https://semver.org/) and/or CHANGELOG.md https://keepachangelog.com/
 - implement:
