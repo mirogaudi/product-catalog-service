@@ -238,7 +238,7 @@ Dependencies are to be updated automatically with Renovate/Dependabot or could b
 
 ```shell
 # Update Maven wrapper to use Maven a.b.c 
-$ mvn wrapper:wrapper -Dmaven=<a.b.c>
+$ ./mvnw wrapper:wrapper -Dmaven=<a.b.c>
 ```
 
 #### Check for new versions with `versions-maven-plugin`
