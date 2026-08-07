@@ -57,7 +57,7 @@
         <jacoco-plugin.version>0.8.15</jacoco-plugin.version>
 
         <cyclonedx-maven-plugin.version>2.9.3</cyclonedx-maven-plugin.version>
-        <owasp-dependency-check-plugin.version>12.2.2</owasp-dependency-check-plugin.version>
+        <owasp-dependency-check-plugin.version>13.0.0</owasp-dependency-check-plugin.version>
         <docker-plugin.version>0.48.1</docker-plugin.version>
 
         <!-- required for later replacement of argLine -->
