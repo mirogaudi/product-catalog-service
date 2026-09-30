@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -131,6 +132,17 @@ class ProductServiceImplTest {
     }
 
     @ParameterizedTest
+    @ValueSource(longs = {-1, 0})
+    void create_negative_or_zero_originalPrice(long value) {
+        BigDecimal originalPrice = BigDecimal.valueOf(value);
+
+        var categoryIds = Set.of(1L);
+
+        assertThrows(IllegalArgumentException.class,
+            () -> sut.create("name", originalPrice, USD, categoryIds));
+    }
+
+    @ParameterizedTest
     @NullSource
     void create_null_originalCurrency(Currency originalCurrency) {
         var categoryIds = Set.of(1L);
@@ -233,6 +245,17 @@ class ProductServiceImplTest {
     @ParameterizedTest
     @NullSource
     void update_null_originalPrice(BigDecimal originalPrice) {
+        var categoryIds = Set.of(1L);
+
+        assertThrows(IllegalArgumentException.class,
+            () -> sut.update(1L, "name", originalPrice, USD, categoryIds));
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {-1, 0})
+    void update_negative_or_zero_originalPrice(long value) {
+        BigDecimal originalPrice = BigDecimal.valueOf(value);
+
         var categoryIds = Set.of(1L);
 
         assertThrows(IllegalArgumentException.class,

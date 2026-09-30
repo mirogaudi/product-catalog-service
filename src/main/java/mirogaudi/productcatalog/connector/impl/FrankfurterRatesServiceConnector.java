@@ -10,7 +10,6 @@ import mirogaudi.productcatalog.client.FrankfurterRatesService.Rate;
 import mirogaudi.productcatalog.connector.ConnectorRuntimeException;
 import mirogaudi.productcatalog.connector.RatesServiceConnector;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -23,7 +22,7 @@ import static mirogaudi.productcatalog.config.CacheConfig.RATES_CACHE_NAME;
  * Connector for the <a href="https://frankfurter.dev">frankfurter.dev</a> currency exchange rates service.
  */
 @Component
-@RequiredArgsConstructor(onConstructor_ = {@Lazy})
+@RequiredArgsConstructor
 @Slf4j
 public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
 

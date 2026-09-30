@@ -9,7 +9,6 @@ import mirogaudi.productcatalog.service.CategoryService;
 import mirogaudi.productcatalog.service.CurrencyExchangeService;
 import mirogaudi.productcatalog.service.ProductService;
 import org.hibernate.Hibernate;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -25,7 +24,7 @@ import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor_ = {@Lazy})
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final Supplier<Currency> baseCurrency;
@@ -54,6 +53,8 @@ public class ProductServiceImpl implements ProductService {
                           @NonNull BigDecimal originalPrice,
                           @NonNull Currency originalCurrency,
                           @NonNull Set<Long> categoryIds) {
+        Assert.isTrue(originalPrice.signum() > 0, "Price must be positive");
+
         Product product = new Product();
 
         return save(
@@ -70,6 +71,8 @@ public class ProductServiceImpl implements ProductService {
                           @NonNull BigDecimal originalPrice,
                           @NonNull Currency originalCurrency,
                           @NonNull Set<Long> categoryIds) {
+        Assert.isTrue(originalPrice.signum() > 0, "Price must be positive");
+
         Product product = find(id);
         Assert.state(product != null, String.format(
             "Product with id '%d' not found", id));
@@ -97,7 +100,7 @@ public class ProductServiceImpl implements ProductService {
 
         BigDecimal price = currencyExchangeService.convert(originalPrice, originalCurrency, currency);
         Assert.state(price != null, String.format(
-            "No price got converting original price '%s' from '%s' to '%s'",
+            "Failed to convert original price '%s' from '%s' to '%s'",
             originalPrice, originalCurrency, currency));
 
         product.setPrice(price);

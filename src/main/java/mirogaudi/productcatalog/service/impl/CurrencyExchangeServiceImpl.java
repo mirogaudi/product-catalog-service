@@ -4,14 +4,14 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import mirogaudi.productcatalog.connector.RatesServiceConnector;
 import mirogaudi.productcatalog.service.CurrencyExchangeService;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.util.Currency;
 
 @Service
-@RequiredArgsConstructor(onConstructor_ = {@Lazy})
+@RequiredArgsConstructor
 public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
 
     private final RatesServiceConnector ratesServiceConnector;
@@ -20,6 +20,9 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
     public BigDecimal convert(@NonNull BigDecimal amount,
                               @NonNull Currency fromCurrency,
                               @NonNull Currency toCurrency) {
+
+        Assert.isTrue(amount.signum() > 0, "Amount must be positive");
+
         if (fromCurrency.equals(toCurrency)) {
             return amount;
         }

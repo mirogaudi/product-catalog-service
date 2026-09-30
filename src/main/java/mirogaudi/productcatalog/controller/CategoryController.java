@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import mirogaudi.productcatalog.domain.Category;
 import mirogaudi.productcatalog.service.CategoryService;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +28,7 @@ import java.util.List;
 @RequestMapping("/api/v1/categories")
 @Tag(name = "Categories")
 @Validated
-@RequiredArgsConstructor(onConstructor_ = {@Lazy})
+@RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;

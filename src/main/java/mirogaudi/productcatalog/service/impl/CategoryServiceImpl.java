@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import mirogaudi.productcatalog.domain.Category;
 import mirogaudi.productcatalog.repository.CategoryRepository;
 import mirogaudi.productcatalog.service.CategoryService;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -15,7 +14,7 @@ import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor_ = {@Lazy})
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -58,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category parent = null;
         if (parentId != null) {
             Assert.isTrue(!parentId.equals(category.getId()), String.format(
-                "Parent category id '%d' is invalid: category can not be a parent for itself", parentId));
+                "Parent category id '%d' is invalid: category can not be a parent of itself", parentId));
             parent = find(parentId);
             Assert.state(parent != null, String.format(
                 "Parent category with id '%d' not found", parentId));

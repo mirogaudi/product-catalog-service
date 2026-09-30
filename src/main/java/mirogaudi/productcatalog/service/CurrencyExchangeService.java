@@ -21,5 +21,4 @@ public interface CurrencyExchangeService {
                        Currency fromCurrency,
                        Currency toCurrency);
 
-    // TODO move here getExchangeRate(Currency fromCurrency, Currency toCurrency) and make it Cached
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,6 +36,15 @@ class CurrencyExchangeServiceImplTest {
     @ParameterizedTest
     @NullSource
     void convert_null_amount(BigDecimal amount) {
+        assertThrows(IllegalArgumentException.class,
+            () -> sut.convert(amount, USD, EUR));
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {-1, 0})
+    void convert_negative_or_zero_amount(long value) {
+        BigDecimal amount = BigDecimal.valueOf(value);
+
         assertThrows(IllegalArgumentException.class,
             () -> sut.convert(amount, USD, EUR));
     }

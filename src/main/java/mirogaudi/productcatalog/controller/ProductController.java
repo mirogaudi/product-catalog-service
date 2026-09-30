@@ -3,11 +3,11 @@ package mirogaudi.productcatalog.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import mirogaudi.productcatalog.domain.Product;
 import mirogaudi.productcatalog.service.ProductService;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +33,7 @@ import java.util.Set;
 @RequestMapping("/api/v1/products")
 @Tag(name = "Products")
 @Validated
-@RequiredArgsConstructor(onConstructor_ = {@Lazy})
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
@@ -95,7 +95,7 @@ public class ProductController {
         @RequestParam @Size(min = 3, max = 256) String name,
 
         @Parameter(description = "Product original price")
-        @RequestParam BigDecimal originalPrice,
+        @RequestParam @Positive BigDecimal originalPrice,
 
         @Parameter(description = "Product original currency ISO code",
             schema = @Schema(allowableValues = {"EUR", "USD", "CNY", "KRW", "JPY"}))
