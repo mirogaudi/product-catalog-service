@@ -64,7 +64,7 @@ resilience4j:
   timelimiter:
     configs:
       default:
-        timeoutDuration: 2s
+        timeoutDuration: 5s
   circuitbreaker:
     instances:
       cb-frankfurter-rates-service:
@@ -88,6 +88,7 @@ springdoc:
 # Product catalog service (pcs)
 pcs:
   base-currency-code: EUR
+  api.version: 1.0.0
   cache:
     enabled: true
     rates-cache.evict:
