@@ -63,6 +63,7 @@ spring:
     path: /h2-console
 
 resilience4j.circuitbreaker:
+  circuitbreakerAspectOrder: 1
   instances:
     cb-frankfurter:
       # for details see https://resilience4j.readme.io/docs/circuitbreaker
@@ -75,11 +76,17 @@ resilience4j.circuitbreaker:
       automaticTransitionFromOpenToHalfOpenEnabled: true
       permittedNumberOfCallsInHalfOpenState: 3
 
-resilience4j.timelimiter:
-  configs:
-    default:
-      timeoutDuration: 5s
-      cancelRunningFuture: true
+resilience4j.retry:
+  retryAspectOrder: 2
+  instances:
+    retry-frankfurter:
+      maxAttempts: 2
+      waitDuration: 100ms
+      retryExceptions:
+        # 429
+        - org.springframework.web.client.HttpClientErrorException$TooManyRequests
+        # 503
+        - org.springframework.web.client.HttpServerErrorException$ServiceUnavailable
 
 springdoc:
   swagger-ui:

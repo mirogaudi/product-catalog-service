@@ -2,6 +2,7 @@ package mirogaudi.productcatalog.connector.impl;
 
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
         value = RATES_CACHE_NAME,
         key = "#fromCurrency.currencyCode + '-' + #toCurrency.currencyCode"
     )
+    @Retry(name = "retry-frankfurter")
     @CircuitBreaker(name = "cb-frankfurter", fallbackMethod = "getExchangeRateFallback")
     @Override
     public BigDecimal getExchangeRate(@NonNull Currency fromCurrency,

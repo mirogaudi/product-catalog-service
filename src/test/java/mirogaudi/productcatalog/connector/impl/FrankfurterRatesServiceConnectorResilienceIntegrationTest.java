@@ -7,7 +7,6 @@ import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import mirogaudi.productcatalog.ProductCatalogServiceApplication;
 import mirogaudi.productcatalog.client.FrankfurterRatesService;
 import mirogaudi.productcatalog.connector.ConnectorRuntimeException;
-import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,6 +22,7 @@ import org.wiremock.spring.EnableWireMock;
 import org.wiremock.spring.InjectWireMock;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -53,7 +53,7 @@ import static org.mockito.Mockito.verify;
 @EnableWireMock({
     @ConfigureWireMock(name = "mock-frankfurter", port = 7777) // set wiremock port
 })
-class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
+class FrankfurterRatesServiceConnectorResilienceIntegrationTest {
 
     @InjectWireMock("mock-frankfurter")
     static WireMockServer mockFrankfurterRatesService;
@@ -160,11 +160,11 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
         // server errors
         500, 502, 503, 504
     })
-    void getCurrencyExchangeRate_not_ok_http_error(int status) {
+    void getCurrencyExchangeRate_not_ok_http_error(int httpStatus) {
         mockFrankfurterRatesService.stubFor(get(urlPathEqualTo("/v2/rates"))
             .withQueryParam("base", equalTo(USD.getCurrencyCode()))
             .withQueryParam("quotes", equalTo(EUR.getCurrencyCode()))
-            .willReturn(aResponse().withStatus(status)));
+            .willReturn(aResponse().withStatus(httpStatus)));
 
         assertEquals(COUNT_BASED, getCircuitBreaker().getCircuitBreakerConfig().getSlidingWindowType());
 
@@ -209,10 +209,15 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
         }
 
         // ratesService should be called if circuit breaker opened or half-opened -> see minimumNumberOfCalls, permittedNumberOfCallsInHalfOpenState
-        verify(ratesService, times(8)).getRates(USD.getCurrencyCode(), EUR.getCurrencyCode());
+        int numberOfInvocations = 8;
+        // multiply by attempts in case of retries -> see retryExceptions, maxAttempts
+        if (List.of(429, 503).contains(httpStatus)) {
+            numberOfInvocations = numberOfInvocations * 2;
+        }
+        verify(ratesService, times(numberOfInvocations)).getRates(USD.getCurrencyCode(), EUR.getCurrencyCode());
     }
 
-    private @NonNull CircuitBreaker getCircuitBreaker() {
+    private CircuitBreaker getCircuitBreaker() {
         return circuitBreakerRegistry.circuitBreaker("cb-frankfurter");
     }
 }
