@@ -267,17 +267,14 @@ $ ./mvnw versions:<goal> -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)
 ## TODO:
 
 - clean up:
-    - move getExchangeRate (Currency fromCurrency, Currency toCurrency) to CurrencyExchangeService and make it Cached
     - test evictRatesCache
-    - Resilience4j: check/disable retries related to 429 and 503
+    - Resilience4j: add retry to 429 / 503
     - test db with integration testing
     - test/fix n+1 JPA problem
     - check if all transactions are valid and using proxy classes
     - use Java Records with Spring Data JPA
     - use Rest Assured for integration testing
     - use lightweight base docker image alternative to eclipse-temurin:25.0.3_9-jdk
-- use conventional commits https://www.conventionalcommits.org/
-- add semantic releases (https://semver.org/) and/or CHANGELOG.md https://keepachangelog.com/
 - implement:
     - add PATCH call to update price
     - add price history

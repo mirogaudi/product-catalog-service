@@ -32,8 +32,10 @@ spring:
   application.name: product-catalog-service
 
   http:
+    clients:
+      imperative.factory: jdk
     serviceclient:
-      frankfurter-rates-service:
+      frankfurter:
         base-url: https://api.frankfurter.dev
         connect-timeout: 2s
         read-timeout: 2s
@@ -62,7 +64,7 @@ spring:
 
 resilience4j.circuitbreaker:
   instances:
-    cb-frankfurter-rates-service:
+    cb-frankfurter:
       # for details see https://resilience4j.readme.io/docs/circuitbreaker
       registerHealthIndicator: true
       slidingWindowType: COUNT_BASED

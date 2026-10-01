@@ -34,7 +34,7 @@ class ProductCatalogServiceApplicationIntegrationTest {
         // resilience4j
         CircuitBreakerRegistry circuitBreakerRegistry = context.getBean(CircuitBreakerRegistry.class);
         assertNotNull(circuitBreakerRegistry);
-        assertNotNull(circuitBreakerRegistry.circuitBreaker("cb-frankfurter-rates-service"));
+        assertNotNull(circuitBreakerRegistry.circuitBreaker("cb-frankfurter"));
 
         // swagger
         assertNotNull(context.getBean(OpenAPI.class));

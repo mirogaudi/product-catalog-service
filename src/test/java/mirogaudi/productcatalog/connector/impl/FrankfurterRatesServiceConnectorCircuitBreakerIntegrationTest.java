@@ -46,16 +46,16 @@ import static org.mockito.Mockito.verify;
 @ActiveProfiles("test")
 @TestPropertySource(properties = {
     // replace the upstream service base URL with the wiremock URL
-    "spring.http.serviceclient.frankfurter-rates-service.base-url=http://localhost:7777",
+    "spring.http.serviceclient.frankfurter.base-url=http://localhost:7777",
     // disable caching
     "pcs.cache.enabled=false"
 })
 @EnableWireMock({
-    @ConfigureWireMock(name = "mock-frankfurter-rates-service", port = 7777) // set wiremock port
+    @ConfigureWireMock(name = "mock-frankfurter", port = 7777) // set wiremock port
 })
 class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
 
-    @InjectWireMock("mock-frankfurter-rates-service")
+    @InjectWireMock("mock-frankfurter")
     static WireMockServer mockFrankfurterRatesService;
 
     @MockitoSpyBean
@@ -213,6 +213,6 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
     }
 
     private @NonNull CircuitBreaker getCircuitBreaker() {
-        return circuitBreakerRegistry.circuitBreaker("cb-frankfurter-rates-service");
+        return circuitBreakerRegistry.circuitBreaker("cb-frankfurter");
     }
 }
