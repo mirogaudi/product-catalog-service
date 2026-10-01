@@ -50,7 +50,7 @@ class FrankfurterRatesServiceConnectorTest {
 
     @Test
     void getCurrencyExchangeRate_ok() {
-        double expectedRate = 0.89952d;
+        BigDecimal expectedRate = BigDecimal.valueOf(0.89952);
         Rate rate = new Rate(
             LocalDate.of(2026, Month.JULY, 2),
             USD.getCurrencyCode(),
@@ -61,26 +61,15 @@ class FrankfurterRatesServiceConnectorTest {
             .thenReturn(new Rate[]{rate});
 
         BigDecimal actualRate = sut.getExchangeRate(USD, EUR);
-        assertEquals(expectedRate, actualRate.doubleValue());
+        assertEquals(expectedRate, actualRate);
 
         verify(ratesService).getRates(USD.getCurrencyCode(), EUR.getCurrencyCode());
     }
 
     @ParameterizedTest
     @NullSource
-    void getCurrencyExchangeRate_not_ok_null(Rate[] response) {
-        when(ratesService.getRates(anyString(), anyString()))
-            .thenReturn(response);
-
-        assertThrows(IllegalStateException.class,
-            () -> sut.getExchangeRate(USD, EUR));
-
-        verify(ratesService).getRates(USD.getCurrencyCode(), EUR.getCurrencyCode());
-    }
-
-    @ParameterizedTest
     @EmptySource
-    void getCurrencyExchangeRate_not_ok_empty(Rate[] response) {
+    void getCurrencyExchangeRate_not_ok_null(Rate[] response) {
         when(ratesService.getRates(anyString(), anyString()))
             .thenReturn(response);
 

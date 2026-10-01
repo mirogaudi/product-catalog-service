@@ -44,7 +44,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
         Rate rate = rates[0];
         LOG.info("Obtained exchange rate ({} -> {}) from rates service: {}", fromCurrency, toCurrency, rate);
 
-        return BigDecimal.valueOf(rate.rate());
+        return rate.rate();
     }
 
     @SuppressWarnings("PMD.UnusedPrivateMethod")
@@ -73,8 +73,8 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
                                                Currency toCurrency,
                                                Throwable t) {
         String message = String.format(
-            "CircuitBreaker: Failed to obtain exchange rate (%s -> %s) from rates service. Cause: %s", fromCurrency, toCurrency, t.getCause());
-        LOG.error(message);
+            "CircuitBreaker: Failed to obtain exchange rate (%s -> %s) from rates service", fromCurrency, toCurrency);
+        LOG.error(message, t);
         throw new ConnectorRuntimeException(message, t);
     }
 

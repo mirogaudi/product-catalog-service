@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 // For API details See https://frankfurter.dev/
@@ -14,7 +15,7 @@ public interface FrankfurterRatesService {
     record Rate(@JsonFormat(pattern = "yyyy-MM-dd") LocalDate date,
                 String base,
                 String quote,
-                double rate) {
+                BigDecimal rate) {
     }
 
     @GetExchange

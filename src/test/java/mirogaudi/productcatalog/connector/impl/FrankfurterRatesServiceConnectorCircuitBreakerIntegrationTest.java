@@ -90,7 +90,7 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
                 """)));
 
         BigDecimal currencyExchangeRate = ratesServiceConnector.getExchangeRate(USD, EUR);
-        assertEquals(0.87483d, currencyExchangeRate.doubleValue());
+        assertEquals(BigDecimal.valueOf(0.87483), currencyExchangeRate);
 
         assertEquals(CircuitBreaker.State.CLOSED, getCircuitBreaker().getState());
 
@@ -171,7 +171,7 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
             if (repetition <= 5) { // 1st to 5th call -> see minimumNumberOfCalls
                 assertInstanceOf(Throwable.class, e.getCause());
                 assertTrue(e.getMessage().startsWith(
-                    "CircuitBreaker: Failed to obtain exchange rate (USD -> EUR) from rates service. Cause: "));
+                    "CircuitBreaker: Failed to obtain exchange rate (USD -> EUR) from rates service"));
 
                 if (repetition < 5) {
                     assertEquals(CircuitBreaker.State.CLOSED, getCircuitBreaker().getState());
@@ -185,7 +185,7 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
             } else if (repetition <= 8) { // 6th to 8th call -> see permittedNumberOfCallsInHalfOpenState
                 assertInstanceOf(Throwable.class, e.getCause());
                 assertTrue(e.getMessage().startsWith(
-                    "CircuitBreaker: Failed to obtain exchange rate (USD -> EUR) from rates service. Cause: "));
+                    "CircuitBreaker: Failed to obtain exchange rate (USD -> EUR) from rates service"));
 
                 if (repetition < 8) {
                     assertEquals(CircuitBreaker.State.HALF_OPEN, getCircuitBreaker().getState());
