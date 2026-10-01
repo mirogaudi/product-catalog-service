@@ -390,6 +390,7 @@
                             <printFailingErrors>true</printFailingErrors>
                             <analysisCache>true</analysisCache>
                             <linkXRef>false</linkXRef>
+                            <targetJdk>${java.version}</targetJdk>
                         </configuration>
                         <executions>
                             <execution>

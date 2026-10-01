@@ -78,12 +78,12 @@ class CurrencyExchangeServiceImplTest {
     void convert_ok() {
         BigDecimal amount = BigDecimal.valueOf(100.00);
         BigDecimal rate = BigDecimal.valueOf(0.83382);
-        BigDecimal expectedConvertedAmount = BigDecimal.valueOf(83.382);
+        BigDecimal expectedConvertedRoundedAmount = BigDecimal.valueOf(83.38);
 
         when(ratesServiceConnector.getExchangeRate(USD, EUR)).thenReturn(rate);
 
         BigDecimal convertedAmount = sut.convert(amount, USD, EUR);
-        assertEquals(0, expectedConvertedAmount.compareTo(convertedAmount));
+        assertEquals(0, expectedConvertedRoundedAmount.compareTo(convertedAmount));
 
         verify(ratesServiceConnector).getExchangeRate(USD, EUR);
     }

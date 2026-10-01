@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Currency;
 
 @Service
@@ -27,7 +28,8 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
             return amount;
         }
 
-        return amount.multiply(ratesServiceConnector.getExchangeRate(fromCurrency, toCurrency));
+        return amount.multiply(ratesServiceConnector.getExchangeRate(fromCurrency, toCurrency))
+            .setScale(toCurrency.getDefaultFractionDigits(), RoundingMode.HALF_EVEN);
     }
 
 }
