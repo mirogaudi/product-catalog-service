@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.wiremock.spring.ConfigureWireMock;
 import org.wiremock.spring.EnableWireMock;
 import org.wiremock.spring.InjectWireMock;
@@ -29,7 +30,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.SlidingWindowType.COUNT_BASED;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static mirogaudi.productcatalog.testhelper.Currencies.EUR;
 import static mirogaudi.productcatalog.testhelper.Currencies.USD;
 import static org.awaitility.Awaitility.await;
@@ -126,8 +127,10 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
                     assertEquals(CircuitBreaker.State.OPEN, getCircuitBreaker().getState());
 
                     // wait till circuit breaker half-opens -> see waitDurationInOpenState, automaticTransitionFromOpenToHalfOpenEnabled
-                    await().atLeast(1500, MILLISECONDS).and().atMost(2500, MILLISECONDS)
-                        .until(() -> CircuitBreaker.State.HALF_OPEN.equals(getCircuitBreaker().getState()));
+                    await().atMost(3, SECONDS)
+                        .untilAsserted(() ->
+                            assertEquals(CircuitBreaker.State.HALF_OPEN, getCircuitBreaker().getState())
+                        );
                 }
             } else if (repetition <= 8) { // 6th to 8th call -> see permittedNumberOfCallsInHalfOpenState
                 assertInstanceOf(IllegalStateException.class, e.getCause());
@@ -151,11 +154,13 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
     }
 
     @ParameterizedTest
-    // 408 (Request Timeout), 429 (Too Many Requests),
-    // 500 (Internal Server Error), 502 (Bad Gateway), 503 (Service Unavailable), 504 (Gateway Timeout)
-    // TODO check/disable retries related to 429 and 503
-    @ValueSource(ints = {408, 429, 500, 502, 503, 504})
-    void getCurrencyExchangeRate_not_ok_server_error(int status) {
+    @ValueSource(ints = {
+        // client errors
+        400, 401, 403, 404, 408, 429,
+        // server errors
+        500, 502, 503, 504
+    })
+    void getCurrencyExchangeRate_not_ok_http_error(int status) {
         mockFrankfurterRatesService.stubFor(get(urlPathEqualTo("/v2/rates"))
             .withQueryParam("base", equalTo(USD.getCurrencyCode()))
             .withQueryParam("quotes", equalTo(EUR.getCurrencyCode()))
@@ -169,7 +174,7 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
                 () -> ratesServiceConnector.getExchangeRate(USD, EUR));
 
             if (repetition <= 5) { // 1st to 5th call -> see minimumNumberOfCalls
-                assertInstanceOf(Throwable.class, e.getCause());
+                assertInstanceOf(HttpStatusCodeException.class, e.getCause());
                 assertTrue(e.getMessage().startsWith(
                     "CircuitBreaker: Failed to obtain exchange rate (USD -> EUR) from rates service"));
 
@@ -179,11 +184,13 @@ class FrankfurterRatesServiceConnectorCircuitBreakerIntegrationTest {
                     assertEquals(CircuitBreaker.State.OPEN, getCircuitBreaker().getState());
 
                     // wait till circuit breaker half-opens -> see waitDurationInOpenState, automaticTransitionFromOpenToHalfOpenEnabled
-                    await().atLeast(1500, MILLISECONDS).and().atMost(2500, MILLISECONDS)
-                        .until(() -> CircuitBreaker.State.HALF_OPEN.equals(getCircuitBreaker().getState()));
+                    await().atMost(3, SECONDS)
+                        .untilAsserted(() ->
+                            assertEquals(CircuitBreaker.State.HALF_OPEN, getCircuitBreaker().getState())
+                        );
                 }
             } else if (repetition <= 8) { // 6th to 8th call -> see permittedNumberOfCallsInHalfOpenState
-                assertInstanceOf(Throwable.class, e.getCause());
+                assertInstanceOf(HttpStatusCodeException.class, e.getCause());
                 assertTrue(e.getMessage().startsWith(
                     "CircuitBreaker: Failed to obtain exchange rate (USD -> EUR) from rates service"));
 

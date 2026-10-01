@@ -60,23 +60,24 @@ spring:
     enabled: true
     path: /h2-console
 
-resilience4j:
-  timelimiter:
-    configs:
-      default:
-        timeoutDuration: 5s
-  circuitbreaker:
-    instances:
-      cb-frankfurter-rates-service:
-        # for details see https://resilience4j.readme.io/docs/circuitbreaker
-        registerHealthIndicator: true
-        slidingWindowType: COUNT_BASED
-        slidingWindowSize: 10
-        minimumNumberOfCalls: 5
-        failureRateThreshold: 50
-        waitDurationInOpenState: 2s
-        automaticTransitionFromOpenToHalfOpenEnabled: true
-        permittedNumberOfCallsInHalfOpenState: 3
+resilience4j.circuitbreaker:
+  instances:
+    cb-frankfurter-rates-service:
+      # for details see https://resilience4j.readme.io/docs/circuitbreaker
+      registerHealthIndicator: true
+      slidingWindowType: COUNT_BASED
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 5
+      failureRateThreshold: 50
+      waitDurationInOpenState: 2s
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      permittedNumberOfCallsInHalfOpenState: 3
+
+resilience4j.timelimiter:
+  configs:
+    default:
+      timeoutDuration: 5s
+      cancelRunningFuture: true
 
 springdoc:
   swagger-ui:
