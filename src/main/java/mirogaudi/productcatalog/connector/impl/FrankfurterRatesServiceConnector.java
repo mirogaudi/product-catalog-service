@@ -32,7 +32,7 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
         value = RATES_CACHE_NAME,
         key = "#fromCurrency.currencyCode + '-' + #toCurrency.currencyCode"
     )
-    @CircuitBreaker(name = "cb-frankfurter-rates-service", fallbackMethod = "getExchangeRateFallback")
+    @CircuitBreaker(name = "cb-frankfurter", fallbackMethod = "getExchangeRateFallback")
     @Override
     public BigDecimal getExchangeRate(@NonNull Currency fromCurrency,
                                       @NonNull Currency toCurrency) {
