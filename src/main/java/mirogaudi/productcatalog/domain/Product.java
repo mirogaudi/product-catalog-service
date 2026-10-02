@@ -90,12 +90,12 @@ public class Product extends BaseEntity {
     }
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         return super.equals(o);
     }
 
     @Override
-    public final int hashCode() {
+    public int hashCode() {
         return name.hashCode();
     }
 
