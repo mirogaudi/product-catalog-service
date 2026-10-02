@@ -6,6 +6,7 @@ logging:
     root: info
     org.springframework: warn
     org.hibernate: info
+    io.github.resilience4j: debug
     mirogaudi.productcatalog: info
 
 spring:
