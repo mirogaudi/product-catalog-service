@@ -89,6 +89,7 @@ public class Product extends BaseEntity {
             .toList();
     }
 
+    @SuppressWarnings("PMD.UselessOverridingMethod")
     @Override
     public boolean equals(Object o) {
         return super.equals(o);

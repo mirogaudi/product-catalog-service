@@ -45,6 +45,7 @@ public class Category extends BaseEntity {
         return (parent != null) ? parent.getId() : null;
     }
 
+    @SuppressWarnings("PMD.UselessOverridingMethod")
     @Override
     public boolean equals(Object o) {
         return super.equals(o);
