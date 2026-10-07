@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
-import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -34,10 +33,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
-        Iterable<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAll();
         // initialize lazy relations if spring.jpa.open-in-view=false
         products.forEach(product -> Hibernate.initialize(product.getCategories()));
-        return StreamSupport.stream(products.spliterator(), false).toList();
+        return products;
     }
 
     @Override

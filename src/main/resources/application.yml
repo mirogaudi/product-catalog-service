@@ -41,6 +41,7 @@ spring:
         read-timeout: 2s
 
   jpa:
+    # disables OSIV antipattern
     open-in-view: false
     hibernate.ddl-auto: none
     properties:

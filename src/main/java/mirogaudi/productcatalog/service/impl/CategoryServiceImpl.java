@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -21,8 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findAll() {
-        return StreamSupport.stream(categoryRepository.findAll().spliterator(), false)
-            .toList();
+        return categoryRepository.findAll();
     }
 
     @Override
