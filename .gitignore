@@ -1,15 +1,4 @@
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-out/
-
-### Maven ###
-target/
-
-### Logs ###
+.idea/
+db/
 logs/
-
-### Other ###
-.sdkmanrc
+target/

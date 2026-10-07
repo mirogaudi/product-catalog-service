@@ -101,8 +101,10 @@ The BuildTime Profiler Extension is activated by default. To deactivate the prof
 # Firstly build artifact required by Docker with Maven Wrapper
 $ ./mvnw package -DskipTests
 # Secondly build with Docker
-$ docker build --build-arg APP_VERSION=1.0.0 -t mirogaudi/product-catalog-service:1.0.0 .
-$ docker tag mirogaudi/product-catalog-service:1.0.0 mirogaudi/product-catalog-service:latest
+$ docker build --build-arg APP_VERSION=1.0.0 \
+  -t mirogaudi/product-catalog-service:1.0.0 \
+  -t mirogaudi/product-catalog-service:latest \
+  .
 
 # Or build Docker image with Maven wrapper via Docker plugin
 $ ./mvnw package -Pdocker -DskipTests
@@ -130,7 +132,7 @@ $ ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 
 ```shell
 # Run with Docker
-$ docker run -it -d --rm --name product-catalog-service -p 8080:8080 -p 9000:9000 mirogaudi/product-catalog-service:latest
+$ docker run -it --rm --name product-catalog-service -p 8080:8080 -p 9000:9000 mirogaudi/product-catalog-service:latest
 ```
 
 #### Run in IDE
