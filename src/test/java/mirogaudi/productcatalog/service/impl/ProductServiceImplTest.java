@@ -50,24 +50,24 @@ class ProductServiceImplTest {
 
     @Test
     void findAll() {
-        when(productRepository.findAll()).thenReturn(List.of());
+        when(productRepository.findAllWithCategories()).thenReturn(List.of());
 
         var products = sut.findAll();
         assertTrue(products.isEmpty());
 
-        verify(productRepository).findAll();
+        verify(productRepository).findAllWithCategories();
     }
 
     @Test
     void find() {
         Long id = 1L;
-        Product expectedProduct = product();
-        when(productRepository.findById(id)).thenReturn(Optional.of(expectedProduct));
+        Product expectedProduct = product(id);
+        when(productRepository.findByIdWithCategories(id)).thenReturn(Optional.of(expectedProduct));
 
         Product product = sut.find(id);
         assertEquals(expectedProduct, product);
 
-        verify(productRepository).findById(id);
+        verify(productRepository).findByIdWithCategories(id);
     }
 
     @ParameterizedTest
@@ -319,12 +319,16 @@ class ProductServiceImplTest {
             () -> sut.delete(id));
     }
 
-    private Category category() {
-        return new Category();
+    private Category category(Long id) {
+        Category category = new Category();
+        category.setId(id);
+        return category;
     }
 
-    private Product product() {
-        return new Product();
+    private Product product(Long id) {
+        Product product = new Product();
+        product.setId(id);
+        return product;
     }
 
 }

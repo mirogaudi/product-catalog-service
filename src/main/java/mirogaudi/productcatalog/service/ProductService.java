@@ -33,7 +33,7 @@ public interface ProductService {
      * @param name             product name
      * @param originalPrice    product original price
      * @param originalCurrency product original currency
-     * @param categoryIds      a set of ids of categories
+     * @param categoryIds      a set of IDs of categories
      * @return created product
      */
     Product create(String name,
@@ -48,7 +48,7 @@ public interface ProductService {
      * @param name             product name
      * @param originalPrice    product original price
      * @param originalCurrency product original currency
-     * @param categoryIds      a set of ids of categories
+     * @param categoryIds      a set of IDs of categories
      * @return updated product
      */
     Product update(Long id,

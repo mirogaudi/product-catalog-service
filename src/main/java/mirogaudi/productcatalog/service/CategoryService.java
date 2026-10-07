@@ -3,6 +3,7 @@ package mirogaudi.productcatalog.service;
 import mirogaudi.productcatalog.domain.Category;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service for CRUD operations with a category.
@@ -15,6 +16,13 @@ public interface CategoryService {
      * @return a list of categories
      */
     List<Category> findAll();
+
+    /**
+     * Finds categories by their IDs.
+     *
+     * @return a list of categories
+     */
+    List<Category> findAllById(Set<Long> ids);
 
     /**
      * Finds a category.

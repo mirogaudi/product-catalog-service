@@ -5,13 +5,16 @@ import mirogaudi.productcatalog.repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,18 +35,61 @@ class CategoryServiceImplTest {
 
     @Test
     void findAll() {
-        when(categoryRepository.findAll()).thenReturn(List.of());
+        List<Category> expectedCategories = List.of(category(1L), category(2L));
+        when(categoryRepository.findAll()).thenReturn(expectedCategories);
 
-        var categories = sut.findAll();
-        assertTrue(categories.isEmpty());
+        List<Category> categories = sut.findAll();
+        assertEquals(expectedCategories, categories);
 
         verify(categoryRepository).findAll();
     }
 
     @Test
+    void findAllById_all_found() {
+        Set<Long> ids = Set.of(1L, 2L);
+
+        when(categoryRepository.findAllById(ids)).thenReturn(List.of(category(1L), category(2L)));
+
+        List<Category> categories = sut.findAllById(ids);
+        assertEquals(2, categories.size());
+
+        verify(categoryRepository).findAllById(ids);
+    }
+
+    @Test
+    void findAllById_not_all_found() {
+        Set<Long> ids = Set.of(1L, 2L, 3L);
+
+        when(categoryRepository.findAllById(ids)).thenReturn(List.of(category(1L), category(2L)));
+
+        List<Category> categories = sut.findAllById(ids);
+        assertEquals(2, categories.size());
+
+        verify(categoryRepository).findAllById(ids);
+    }
+
+    @ParameterizedTest
+    @NullSource
+    void findAllById_null_ids(Set<Long> ids) {
+        assertThrows(IllegalArgumentException.class,
+            () -> sut.findAllById(ids));
+    }
+
+    @ParameterizedTest
+    @EmptySource
+    void findAllById_empty_ids(Set<Long> ids) {
+        when(categoryRepository.findAllById(ids)).thenReturn(Collections.emptyList());
+
+        List<Category> categories = sut.findAllById(ids);
+        assertTrue(categories.isEmpty());
+
+        verify(categoryRepository).findAllById(ids);
+    }
+
+    @Test
     void find() {
         Long id = 1L;
-        Category expectedCategory = category();
+        Category expectedCategory = category(id);
 
         when(categoryRepository.findById(id)).thenReturn(Optional.of(expectedCategory));
 
@@ -63,10 +109,10 @@ class CategoryServiceImplTest {
     @Test
     void create() {
         Long parentId = 1L;
-        Category parentCategory = category();
+        Category parentCategory = category(parentId);
         when(categoryRepository.findById(parentId)).thenReturn(Optional.of(parentCategory));
 
-        Category expectedCategory = category();
+        Category expectedCategory = category(2L);
         when(categoryRepository.save(any())).thenReturn(expectedCategory);
 
         Category createdCategory = sut.create("name", parentId);
@@ -77,7 +123,7 @@ class CategoryServiceImplTest {
 
     @Test
     void create_null_parentId() {
-        Category expectedCategory = category();
+        Category expectedCategory = category(1L);
         when(categoryRepository.save(any())).thenReturn(expectedCategory);
 
         Category createdCategory = sut.create("name", null);
@@ -105,14 +151,14 @@ class CategoryServiceImplTest {
     @Test
     void update() {
         Long id = 2L;
-        Category category = category();
+        Category category = category(id);
         when(categoryRepository.findById(id)).thenReturn(Optional.of(category));
 
         Long parentId = 1L;
-        Category parentCategory = category();
+        Category parentCategory = category(parentId);
         when(categoryRepository.findById(parentId)).thenReturn(Optional.of(parentCategory));
 
-        Category expectedCategory = category();
+        Category expectedCategory = category(id);
         when(categoryRepository.save(any())).thenReturn(expectedCategory);
 
         Category updatedCategory = sut.update(id, "name", parentId);
@@ -147,7 +193,7 @@ class CategoryServiceImplTest {
     @Test
     void update_invalid_parentId() {
         Long id = 2L;
-        when(categoryRepository.findById(id)).thenReturn(Optional.of(category()));
+        when(categoryRepository.findById(id)).thenReturn(Optional.of(category(id)));
 
         Long parentId = 1L;
         when(categoryRepository.findById(parentId)).thenReturn(Optional.empty());
@@ -193,8 +239,10 @@ class CategoryServiceImplTest {
             () -> sut.delete(id));
     }
 
-    private Category category() {
-        return new Category();
+    private Category category(Long id) {
+        Category category = new Category();
+        category.setId(id);
+        return category;
     }
 
 }

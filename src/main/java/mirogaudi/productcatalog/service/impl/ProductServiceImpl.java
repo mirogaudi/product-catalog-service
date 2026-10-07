@@ -8,16 +8,13 @@ import mirogaudi.productcatalog.repository.ProductRepository;
 import mirogaudi.productcatalog.service.CategoryService;
 import mirogaudi.productcatalog.service.CurrencyExchangeService;
 import mirogaudi.productcatalog.service.ProductService;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -33,18 +30,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
-        List<Product> products = productRepository.findAll();
-        // initialize lazy relations if spring.jpa.open-in-view=false
-        products.forEach(product -> Hibernate.initialize(product.getCategories()));
-        return products;
+        return productRepository.findAllWithCategories();
     }
 
     @Override
     public Product find(@NonNull Long id) {
-        Optional<Product> productOptional = productRepository.findById(id);
-        // initialize lazy relations if spring.jpa.open-in-view=false
-        productOptional.ifPresent(product -> Hibernate.initialize(product.getCategories()));
-        return productOptional.orElse(null);
+        return productRepository.findByIdWithCategories(id).orElse(null);
     }
 
     @Override
@@ -109,14 +100,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private List<Category> findCategories(Set<Long> categoryIds) {
-        List<Category> categories = new ArrayList<>();
+        List<Category> categories = categoryService.findAllById(categoryIds);
 
-        categoryIds.forEach(id -> {
-            Category category = categoryService.find(id);
-            Assert.state(category != null, String.format(
-                "Category with id '%d' not found", id));
-            categories.add(category);
-        });
+        Assert.state(categories.size() == categoryIds.size(), String.format(
+            "Not all categories were found. Expected: %s, found: %s",
+            categoryIds, categories.stream().map(Category::getId).toList()));
 
         return categories;
     }
