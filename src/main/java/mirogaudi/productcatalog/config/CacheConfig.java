@@ -45,7 +45,6 @@ public class CacheConfig {
         }
     }
 
-    // TODO add test!
     @Scheduled(
         cron = "${pcs.cache.rates-cache.evict.cron}",
         zone = "${pcs.cache.rates-cache.evict.zone}"
