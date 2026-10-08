@@ -104,13 +104,15 @@ public class ProductServiceImpl implements ProductService {
 
         Assert.state(categories.size() == categoryIds.size(), String.format(
             "Not all categories were found. Expected: %s, found: %s",
-            categoryIds, categories.stream().map(Category::getId).toList()));
+            categoryIds.stream().sorted().toList(),
+            categories.stream().map(Category::getId).sorted().toList()));
 
         return categories;
     }
 
     @Override
     public void delete(@NonNull Long id) {
+        // in real project consider to use getReferenceById(id)!
         Assert.state(productRepository.existsById(id), String.format(
             "Product with id '%d' does not exist", id));
 

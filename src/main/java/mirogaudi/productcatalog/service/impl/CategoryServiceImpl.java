@@ -73,6 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void delete(@NonNull Long id) {
+        // in real project consider to use getReferenceById(id)!
         Assert.state(categoryRepository.existsById(id), String.format(
             "Category with id '%d' does not exist", id));
 

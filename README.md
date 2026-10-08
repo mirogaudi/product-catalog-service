@@ -269,13 +269,9 @@ $ ./mvnw versions:<goal> -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)
 ## TODO:
 
 - clean up:
-    - test evictRatesCache
-    - test db with integration testing
-    - test/fix n+1 JPA problem
-    - check if all transactions are valid and using proxy classes
-    - use Java Records with Spring Data JPA
     - use Rest Assured for integration testing
-    - use lightweight base docker image alternative to eclipse-temurin:25.0.3_9-jdk
+    - test evictRatesCache
+    - use Java Records with Spring Data JPA
+    - test db with integration testing
 - implement:
     - add PATCH call to update price
-    - add price history
