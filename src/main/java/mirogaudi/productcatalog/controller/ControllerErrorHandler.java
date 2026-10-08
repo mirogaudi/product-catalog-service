@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -29,9 +30,10 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class ControllerErrorHandler {
 
     @ExceptionHandler({
-        MethodArgumentTypeMismatchException.class,
+        ConstraintViolationException.class,
         MethodArgumentNotValidException.class,
-        ConstraintViolationException.class
+        MethodArgumentTypeMismatchException.class,
+        MissingServletRequestParameterException.class
     })
     public ResponseEntity<Error> requestErrorHandler(Exception e) {
         return errorResponseEntity(BAD_REQUEST, e);

@@ -81,6 +81,9 @@ public class ProductServiceImpl implements ProductService {
                          Currency originalCurrency,
                          Set<Long> categoryIds) {
         product.setName(name);
+
+        Assert.isTrue(!categoryIds.isEmpty(), "At least one category id is required");
+
         product.setCategories(findCategories(categoryIds));
 
         product.setOriginalPrice(originalPrice);

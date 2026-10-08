@@ -12,15 +12,21 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.List;
 import java.util.Set;
 
 import static java.math.BigDecimal.TEN;
 import static mirogaudi.productcatalog.testhelper.Currencies.EUR;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anySet;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -32,9 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProductController.class)
 class ProductControllerTest {
-
-    private static final Long CATEGORY_ID = 1L;
-    private static final Category CATEGORY = Category.builder().id(CATEGORY_ID).name("category").build();
 
     private static final String API_PRODUCTS = "/api/v1/products";
 
@@ -50,8 +53,9 @@ class ProductControllerTest {
     }
 
     @Test
-    void findAllProducts() throws Exception {
-        Product product = product(1L, "product", CATEGORY);
+    void getProducts() throws Exception {
+        Category category = category(2L);
+        Product product = product(1L, "product", category);
 
         given(productService.findAll()).willReturn(List.of(product));
 
@@ -59,43 +63,52 @@ class ProductControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(1)))
-            .andExpect(jsonPath("$[0].id").value(product.getId()))
+            .andExpect(jsonPath("$[0].id", is(product.getId().intValue())))
             .andExpect(jsonPath("$[0].name", is(product.getName())))
             .andExpect(jsonPath("$[0].categoryIds", hasSize(1)))
-            .andExpect(jsonPath("$[0].categoryIds[0]").value(CATEGORY.getId()));
+            .andExpect(jsonPath("$[0].categoryIds", hasItems(category.getId().intValue())));
+
+        verify(productService).findAll();
     }
 
     @Test
     void getProduct_ok() throws Exception {
-        Product product = product(1L, "product", CATEGORY);
+        Category category = category(2L);
+        Product product = product(1L, "product", category);
 
         given(productService.find(product.getId())).willReturn(product);
 
         mockMvc.perform(get(API_PRODUCTS + "/" + product.getId())
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(product.getId()))
+            .andExpect(jsonPath("$.id", is(product.getId().intValue())))
             .andExpect(jsonPath("$.name", is(product.getName())))
             .andExpect(jsonPath("$.categoryIds", hasSize(1)))
-            .andExpect(jsonPath("$.categoryIds[0]").value(CATEGORY.getId()));
+            .andExpect(jsonPath("$.categoryIds", hasItems(category.getId().intValue())));
+
+        verify(productService).find(product.getId());
     }
 
     @Test
     void getProduct_notFound() throws Exception {
-        Product product = product(100L, "not existing product", CATEGORY);
+        var nonExistingProductId = -123L;
 
-        given(productService.find(product.getId())).willReturn(null);
+        given(productService.find(nonExistingProductId)).willReturn(null);
 
-        mockMvc.perform(get(API_PRODUCTS + "/" + product.getId())
+        mockMvc.perform(get(API_PRODUCTS + "/" + nonExistingProductId)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
+
+        verify(productService).find(nonExistingProductId);
     }
 
     @Test
     void createProduct() throws Exception {
-        Product product = product(1L, "product", CATEGORY);
+        Category category1 = category(2L);
+        Category category2 = category(3L);
+        Set<Long> categoryIds = Set.of(category1.getId(), category2.getId());
+        Product product = product(1L, "product", category1, category2);
 
-        var categoryIds = Set.of(CATEGORY.getId());
         given(productService.create(
             product.getName(),
             product.getOriginalPrice(),
@@ -108,12 +121,12 @@ class ProductControllerTest {
                 .param("name", product.getName())
                 .param("originalPrice", product.getOriginalPrice().toString())
                 .param("originalCurrency", product.getOriginalCurrency())
-                .param("categoryId", CATEGORY_ID.toString()))
+                .param("categoryId", category1.getId().toString(), category2.getId().toString()))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").value(product.getId()))
+            .andExpect(jsonPath("$.id", is(product.getId().intValue())))
             .andExpect(jsonPath("$.name", is(product.getName())))
-            .andExpect(jsonPath("$.categoryIds", hasSize(1)))
-            .andExpect(jsonPath("$.categoryIds[0]").value(CATEGORY.getId()));
+            .andExpect(jsonPath("$.categoryIds", hasSize(2)))
+            .andExpect(jsonPath("$.categoryIds", hasItems(category1.getId().intValue(), category2.getId().intValue())));
 
         verify(productService).create(
             product.getName(),
@@ -124,10 +137,66 @@ class ProductControllerTest {
     }
 
     @Test
-    void createProduct_badGateway() throws Exception {
-        Product product = product(1L, "product", CATEGORY);
+    void createProduct_nameTooShort() throws Exception {
+        String tooShortName = "ab";
 
-        var categoryIds = Set.of(CATEGORY.getId());
+        mockMvc.perform(post(API_PRODUCTS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", tooShortName)
+                .param("originalPrice", TEN.toString())
+                .param("originalCurrency", EUR.getCurrencyCode())
+                .param("categoryId", "1"))
+            .andExpect(status().isBadRequest());
+
+        verify(productService, never())
+            .create(anyString(), any(BigDecimal.class), any(Currency.class), anySet());
+    }
+
+    @Test
+    void createProduct_noOriginalPrice() throws Exception {
+        mockMvc.perform(post(API_PRODUCTS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", "product")
+                .param("originalCurrency", EUR.getCurrencyCode())
+                .param("categoryId", "1"))
+            .andExpect(status().isBadRequest());
+
+        verify(productService, never())
+            .create(anyString(), any(BigDecimal.class), any(Currency.class), anySet());
+    }
+
+    @Test
+    void createProduct_noOriginalCurrency() throws Exception {
+        mockMvc.perform(post(API_PRODUCTS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", "product")
+                .param("originalPrice", TEN.toString())
+                .param("categoryId", "1"))
+            .andExpect(status().isBadRequest());
+
+        verify(productService, never())
+            .create(anyString(), any(BigDecimal.class), any(Currency.class), anySet());
+    }
+
+    @Test
+    void createProduct_noCategoryId() throws Exception {
+        mockMvc.perform(post(API_PRODUCTS)
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", "product")
+                .param("originalPrice", TEN.toString())
+                .param("originalCurrency", EUR.getCurrencyCode()))
+            .andExpect(status().isBadRequest());
+
+        verify(productService, never())
+            .create(anyString(), any(BigDecimal.class), any(Currency.class), anySet());
+    }
+
+    @Test
+    void createProduct_badGateway() throws Exception {
+        Category category = category(2L);
+        Set<Long> categoryIds = Set.of(category.getId());
+        Product product = product(1L, "product", category);
+
         given(productService.create(
             product.getName(),
             product.getOriginalPrice(),
@@ -140,15 +209,23 @@ class ProductControllerTest {
                 .param("name", product.getName())
                 .param("originalPrice", product.getOriginalPrice().toString())
                 .param("originalCurrency", product.getOriginalCurrency())
-                .param("categoryId", CATEGORY_ID.toString()))
+                .param("categoryId", category.getId().toString()))
             .andExpect(status().isBadGateway());
+
+        verify(productService).create(
+            product.getName(),
+            product.getOriginalPrice(),
+            Currency.getInstance(product.getOriginalCurrency()),
+            categoryIds
+        );
     }
 
     @Test
     void createProduct_internalServerError() throws Exception {
-        Product product = product(1L, "product", CATEGORY);
+        Category category = category(2L);
+        Set<Long> categoryIds = Set.of(category.getId());
+        Product product = product(1L, "product", category);
 
-        var categoryIds = Set.of(CATEGORY.getId());
         given(productService.create(
             product.getName(),
             product.getOriginalPrice(),
@@ -161,15 +238,24 @@ class ProductControllerTest {
                 .param("name", product.getName())
                 .param("originalPrice", product.getOriginalPrice().toString())
                 .param("originalCurrency", product.getOriginalCurrency())
-                .param("categoryId", CATEGORY_ID.toString()))
+                .param("categoryId", category.getId().toString()))
             .andExpect(status().isInternalServerError());
+
+        verify(productService).create(
+            product.getName(),
+            product.getOriginalPrice(),
+            Currency.getInstance(product.getOriginalCurrency()),
+            categoryIds
+        );
     }
 
     @Test
     void updateProduct() throws Exception {
-        Product product = product(1L, "product", CATEGORY);
+        Category category1 = category(2L);
+        Category category2 = category(3L);
+        Set<Long> categoryIds = Set.of(category1.getId(), category2.getId());
+        Product product = product(2L, "updated product", category1, category2);
 
-        var categoryIds = Set.of(CATEGORY.getId());
         given(productService.update(
             product.getId(),
             product.getName(),
@@ -183,12 +269,12 @@ class ProductControllerTest {
                 .param("name", product.getName())
                 .param("originalPrice", product.getOriginalPrice().toString())
                 .param("originalCurrency", product.getOriginalCurrency())
-                .param("categoryId", CATEGORY_ID.toString()))
+                .param("categoryId", category1.getId().toString(), category2.getId().toString()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(product.getId()))
+            .andExpect(jsonPath("$.id", is(product.getId().intValue())))
             .andExpect(jsonPath("$.name", is(product.getName())))
-            .andExpect(jsonPath("$.categoryIds", hasSize(1)))
-            .andExpect(jsonPath("$.categoryIds[0]").value(CATEGORY.getId()));
+            .andExpect(jsonPath("$.categoryIds", hasSize(2)))
+            .andExpect(jsonPath("$.categoryIds", hasItems(category1.getId().intValue(), category2.getId().intValue())));
 
         verify(productService).update(
             product.getId(),
@@ -200,13 +286,75 @@ class ProductControllerTest {
     }
 
     @Test
-    void deleteProduct() throws Exception {
-        Product product = product(1L, "product", CATEGORY);
+    void updateProduct_nameTooShort() throws Exception {
+        String tooShortName = "ab";
 
-        mockMvc.perform(delete(API_PRODUCTS + "/" + product.getId())
+        mockMvc.perform(put(API_PRODUCTS + "/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", tooShortName)
+                .param("originalPrice", TEN.toString())
+                .param("originalCurrency", EUR.getCurrencyCode())
+                .param("categoryId", "1"))
+            .andExpect(status().isBadRequest());
+
+        verify(productService, never())
+            .create(anyString(), any(BigDecimal.class), any(Currency.class), anySet());
+    }
+
+    @Test
+    void updateProduct_noOriginalPrice() throws Exception {
+        mockMvc.perform(put(API_PRODUCTS + "/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", "product")
+                .param("originalCurrency", EUR.getCurrencyCode())
+                .param("categoryId", "1"))
+            .andExpect(status().isBadRequest());
+
+        verify(productService, never())
+            .create(anyString(), any(BigDecimal.class), any(Currency.class), anySet());
+    }
+
+    @Test
+    void updateProduct_noOriginalCurrency() throws Exception {
+        mockMvc.perform(put(API_PRODUCTS + "/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", "product")
+                .param("originalPrice", TEN.toString())
+                .param("categoryId", "1"))
+            .andExpect(status().isBadRequest());
+
+        verify(productService, never())
+            .create(anyString(), any(BigDecimal.class), any(Currency.class), anySet());
+    }
+
+    @Test
+    void updateProduct_noCategoryId() throws Exception {
+        mockMvc.perform(put(API_PRODUCTS + "/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", "product")
+                .param("originalPrice", TEN.toString())
+                .param("originalCurrency", EUR.getCurrencyCode()))
+            .andExpect(status().isBadRequest());
+
+        verify(productService, never())
+            .create(anyString(), any(BigDecimal.class), any(Currency.class), anySet());
+    }
+
+    @Test
+    void deleteProduct() throws Exception {
+        var productId = 1L;
+
+        mockMvc.perform(delete(API_PRODUCTS + "/" + productId)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
-        verify(productService).delete(product.getId());
+
+        verify(productService).delete(productId);
+    }
+
+    private static Category category(Long id) {
+        return Category.builder()
+            .id(id)
+            .build();
     }
 
     private static Product product(Long id, String name, Category... categories) {

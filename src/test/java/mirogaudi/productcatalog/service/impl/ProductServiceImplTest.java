@@ -8,6 +8,7 @@ import mirogaudi.productcatalog.service.CurrencyExchangeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
@@ -15,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
@@ -90,30 +90,31 @@ class ProductServiceImplTest {
         when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(ONE);
 
         Product expectedProduct = product(1L);
-        when(productRepository.save(any())).thenReturn(expectedProduct);
+        when(productRepository.save(any(Product.class))).thenReturn(expectedProduct);
 
         Product createdProduct = sut.create("name", originalPrice, USD, categoryIds);
         assertEquals(expectedProduct, createdProduct);
 
         verify(currencyExchangeService).convert(originalPrice, USD, EUR);
-        verify(productRepository).save(any());
+        verify(productRepository).save(any(Product.class));
     }
 
     @Test
     void create_null_converted_price() {
         when(baseCurrency.get()).thenReturn(EUR);
 
+        Long categoryId = 2L;
+        Set<Long> categoryIds = Set.of(categoryId);
+        when(categoryService.findAllById(categoryIds)).thenReturn(List.of(category(categoryId)));
+
         BigDecimal originalPrice = TEN;
         when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(null);
 
-        Set<Long> categories = Set.of();
-        when(categoryService.findAllById(categories)).thenReturn(Collections.emptyList());
-
         assertThrows(IllegalStateException.class,
-            () -> sut.create("name", originalPrice, USD, categories));
+            () -> sut.create("name", originalPrice, USD, categoryIds));
 
         verify(currencyExchangeService).convert(originalPrice, USD, EUR);
-        verify(productRepository, never()).save(any());
+        verify(productRepository, never()).save(any(Product.class));
     }
 
     @ParameterizedTest
@@ -161,8 +162,15 @@ class ProductServiceImplTest {
             () -> sut.create("name", TEN, USD, categoryIds));
     }
 
+    @ParameterizedTest
+    @EmptySource
+    void create_empty_categoryIds(Set<Long> categoryIds) {
+        assertThrows(IllegalArgumentException.class,
+            () -> sut.create("name", TEN, USD, categoryIds));
+    }
+
     @Test
-    void create_invalid_categoryIds() {
+    void create_nonexistent_categoryIds() {
         Set<Long> categoryIds = Set.of(1L, 2L, 3L, 4L);
         when(categoryService.findAllById(categoryIds)).thenReturn(List.of(category(2L), category(4L)));
 
@@ -187,13 +195,13 @@ class ProductServiceImplTest {
         when(currencyExchangeService.convert(originalPrice, EUR, EUR)).thenReturn(TEN);
 
         Product expectedProduct = product(id);
-        when(productRepository.save(any())).thenReturn(expectedProduct);
+        when(productRepository.save(any(Product.class))).thenReturn(expectedProduct);
 
         Product updatedProduct = sut.update(id, "name", originalPrice, EUR, categoryIds);
         assertEquals(expectedProduct, updatedProduct);
 
         verify(currencyExchangeService).convert(originalPrice, EUR, EUR);
-        verify(productRepository).save(any());
+        verify(productRepository).save(any(Product.class));
     }
 
     @Test
@@ -204,17 +212,18 @@ class ProductServiceImplTest {
         Product product = product(id);
         when(productRepository.findByIdWithCategories(id)).thenReturn(Optional.of(product));
 
+        Long categoryId = 2L;
+        Set<Long> categoryIds = Set.of(categoryId);
+        when(categoryService.findAllById(categoryIds)).thenReturn(List.of(category(categoryId)));
+
         BigDecimal originalPrice = TEN;
         when(currencyExchangeService.convert(originalPrice, USD, EUR)).thenReturn(null);
 
-        Set<Long> categories = Set.of();
-        when(categoryService.findAllById(categories)).thenReturn(Collections.emptyList());
-
         assertThrows(IllegalStateException.class,
-            () -> sut.update(id, "name", originalPrice, USD, categories));
+            () -> sut.update(id, "name", originalPrice, USD, categoryIds));
 
         verify(currencyExchangeService).convert(originalPrice, USD, EUR);
-        verify(productRepository, never()).save(any());
+        verify(productRepository, never()).save(any(Product.class));
     }
 
     @ParameterizedTest

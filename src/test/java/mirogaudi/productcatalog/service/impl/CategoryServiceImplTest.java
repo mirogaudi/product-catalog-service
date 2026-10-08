@@ -113,23 +113,23 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(parentId)).thenReturn(Optional.of(parentCategory));
 
         Category expectedCategory = category(2L);
-        when(categoryRepository.save(any())).thenReturn(expectedCategory);
+        when(categoryRepository.save(any(Category.class))).thenReturn(expectedCategory);
 
         Category createdCategory = sut.create("name", parentId);
         assertEquals(expectedCategory, createdCategory);
 
-        verify(categoryRepository).save(any());
+        verify(categoryRepository).save(any(Category.class));
     }
 
     @Test
     void create_null_parentId() {
         Category expectedCategory = category(1L);
-        when(categoryRepository.save(any())).thenReturn(expectedCategory);
+        when(categoryRepository.save(any(Category.class))).thenReturn(expectedCategory);
 
         Category createdCategory = sut.create("name", null);
         assertEquals(expectedCategory, createdCategory);
 
-        verify(categoryRepository).save(any());
+        verify(categoryRepository).save(any(Category.class));
     }
 
     @ParameterizedTest
@@ -159,12 +159,12 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(parentId)).thenReturn(Optional.of(parentCategory));
 
         Category expectedCategory = category(id);
-        when(categoryRepository.save(any())).thenReturn(expectedCategory);
+        when(categoryRepository.save(any(Category.class))).thenReturn(expectedCategory);
 
         Category updatedCategory = sut.update(id, "name", parentId);
         assertEquals(expectedCategory, updatedCategory);
 
-        verify(categoryRepository).save(any());
+        verify(categoryRepository).save(any(Category.class));
     }
 
     @ParameterizedTest

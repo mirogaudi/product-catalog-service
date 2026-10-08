@@ -18,7 +18,9 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
+import static org.hamcrest.Matchers.nullValue;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
@@ -47,7 +49,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    void findAllCategories() throws Exception {
+    void getCategories() throws Exception {
         Category topCategory = category(1L, "topCategory", null);
         Category subCategory = category(2L, "subCategory", topCategory);
 
@@ -57,9 +59,11 @@ class CategoryControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(1)))
-            .andExpect(jsonPath("$[0].id").value(subCategory.getId()))
+            .andExpect(jsonPath("$[0].id", is(subCategory.getId().intValue())))
             .andExpect(jsonPath("$[0].name", is(subCategory.getName())))
-            .andExpect(jsonPath("$[0].parentId").value(topCategory.getId()));
+            .andExpect(jsonPath("$[0].parentId", is(topCategory.getId().intValue())));
+
+        verify(categoryService).findAll();
     }
 
     @Test
@@ -71,57 +75,24 @@ class CategoryControllerTest {
         mockMvc.perform(get(API_CATEGORIES + "/" + category.getId())
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(category.getId()))
+            .andExpect(jsonPath("$.id", is(category.getId().intValue())))
             .andExpect(jsonPath("$.name", is(category.getName())))
-            .andExpect(jsonPath("$.parentId").isEmpty());
+            .andExpect(jsonPath("$.parentId", nullValue()));
+
+        verify(categoryService).find(category.getId());
     }
 
     @Test
     void getCategory_notFound() throws Exception {
-        Category category = category(100L, "not existing category", null);
+        var nonExistingCategoryId = -123L;
 
-        given(categoryService.find(category.getId())).willReturn(null);
+        given(categoryService.find(nonExistingCategoryId)).willReturn(null);
 
-        mockMvc.perform(get(API_CATEGORIES + "/" + category.getId())
+        mockMvc.perform(get(API_CATEGORIES + "/" + nonExistingCategoryId)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
-    }
 
-    @Test
-    void getCategory_badRequest() throws Exception {
-        var id = "abc";
-
-        mockMvc.perform(get(API_CATEGORIES + "/" + id)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isBadRequest());
-
-        verify(categoryService, never()).find(any());
-    }
-
-    @ParameterizedTest
-    @ValueSource(classes = {
-        ConcurrencyFailureException.class,
-        DataIntegrityViolationException.class
-    })
-    void getCategory_conflict(Class<? extends Throwable> clazz) throws Exception {
-        var id = 1L;
-
-        given(categoryService.find(id)).willThrow(clazz);
-
-        mockMvc.perform(get(API_CATEGORIES + "/" + id)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isConflict());
-    }
-
-    @Test
-    void getCategory_internalServerError() throws Exception {
-        var id = 1L;
-
-        given(categoryService.find(id)).willThrow(IllegalStateException.class);
-
-        mockMvc.perform(get(API_CATEGORIES + "/" + id)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isInternalServerError());
+        verify(categoryService).find(nonExistingCategoryId);
     }
 
     @Test
@@ -134,9 +105,40 @@ class CategoryControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("name", category.getName()))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").value(category.getId()))
+            .andExpect(jsonPath("$.id", is(category.getId().intValue())))
             .andExpect(jsonPath("$.name", is(category.getName())))
-            .andExpect(jsonPath("$.parentId").isEmpty());
+            .andExpect(jsonPath("$.parentId", nullValue()));
+
+        verify(categoryService).create(category.getName(), null);
+    }
+
+    @Test
+    void createCategory_nameTooShort() throws Exception {
+        String tooShortName = "ab";
+
+        mockMvc.perform(post(API_CATEGORIES)
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", tooShortName))
+            .andExpect(status().isBadRequest());
+
+        verify(categoryService, never()).create(anyString(), anyLong());
+    }
+
+    @ParameterizedTest
+    @ValueSource(classes = {
+        ConcurrencyFailureException.class,
+        DataIntegrityViolationException.class
+    })
+    void createCategory_conflict(Class<? extends Throwable> clazz) throws Exception {
+        Category category = category(1L, "category", null);
+
+        given(categoryService.create(category.getName(), null)).willThrow(clazz);
+
+        mockMvc.perform(post(API_CATEGORIES)
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("name", category.getName()))
+            .andExpect(status().isConflict());
+
         verify(categoryService).create(category.getName(), null);
     }
 
@@ -150,31 +152,34 @@ class CategoryControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("name", category.getName()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(category.getId()))
+            .andExpect(jsonPath("$.id", is(category.getId().intValue())))
             .andExpect(jsonPath("$.name", is(category.getName())))
-            .andExpect(jsonPath("$.parentId").isEmpty());
+            .andExpect(jsonPath("$.parentId", nullValue()));
+
         verify(categoryService).update(category.getId(), category.getName(), null);
     }
 
     @Test
-    void updateCategory_badRequest() throws Exception {
-        var id = 1L;
-        var invalidName = "c";
+    void updateCategory_nameTooShort() throws Exception {
+        String tooShortName = "ab";
 
-        mockMvc.perform(put(API_CATEGORIES + "/" + id)
+        mockMvc.perform(put(API_CATEGORIES + "/" + 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("name", invalidName))
+                .param("name", tooShortName))
             .andExpect(status().isBadRequest());
+
+        verify(categoryService, never()).update(anyLong(), anyString(), anyLong());
     }
 
     @Test
     void deleteCategory() throws Exception {
-        Category category = category(1L, "category", null);
+        var categoryId = 1L;
 
-        mockMvc.perform(delete(API_CATEGORIES + "/" + category.getId())
+        mockMvc.perform(delete(API_CATEGORIES + "/" + categoryId)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
-        verify(categoryService).delete(category.getId());
+
+        verify(categoryService).delete(categoryId);
     }
 
     static Category category(Long id, String name, Category parent) {

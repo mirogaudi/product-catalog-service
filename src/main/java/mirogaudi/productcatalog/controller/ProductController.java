@@ -3,6 +3,7 @@ package mirogaudi.productcatalog.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public List<Product> findAllProducts() {
+    public List<Product> getProducts() {
         return productService.findAll();
     }
 
@@ -69,7 +70,7 @@ public class ProductController {
         @RequestParam String originalCurrency,
 
         @Parameter(description = "Product category ID")
-        @RequestParam Long... categoryId
+        @RequestParam @NotEmpty Long... categoryId
     ) {
         Product createdProduct = productService.create(
             name,
@@ -102,7 +103,7 @@ public class ProductController {
         @RequestParam String originalCurrency,
 
         @Parameter(description = "Product category ID")
-        @RequestParam Long... categoryId
+        @RequestParam @NotEmpty Long... categoryId
     ) {
         return ResponseEntity.ok(productService.update(
             id, name,
