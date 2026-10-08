@@ -67,7 +67,6 @@ class FrankfurterRatesServiceConnectorResilienceIntegrationTest {
     @Autowired
     private FrankfurterRatesServiceConnector ratesServiceConnector;
 
-
     @BeforeEach
     void setUp() {
         getCircuitBreaker().reset();

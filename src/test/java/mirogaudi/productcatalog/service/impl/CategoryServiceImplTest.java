@@ -239,10 +239,10 @@ class CategoryServiceImplTest {
             () -> sut.delete(id));
     }
 
-    private Category category(Long id) {
-        Category category = new Category();
-        category.setId(id);
-        return category;
+    private static Category category(Long id) {
+        return Category.builder()
+            .id(id)
+            .build();
     }
 
 }

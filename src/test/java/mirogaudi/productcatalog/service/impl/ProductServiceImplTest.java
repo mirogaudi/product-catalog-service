@@ -323,16 +323,16 @@ class ProductServiceImplTest {
             () -> sut.delete(id));
     }
 
-    private Category category(Long id) {
-        Category category = new Category();
-        category.setId(id);
-        return category;
+    private static Category category(Long id) {
+        return Category.builder()
+            .id(id)
+            .build();
     }
 
-    private Product product(Long id) {
-        Product product = new Product();
-        product.setId(id);
-        return product;
+    private static Product product(Long id) {
+        return Product.builder()
+            .id(id)
+            .build();
     }
 
 }
