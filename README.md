@@ -269,7 +269,6 @@ $ ./mvnw versions:<goal> -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)
 ## TODO:
 
 - clean up:
-    - use Rest Assured for integration testing
     - use Java Records with Spring Data JPA
     - test db with integration testing
 - implement:
