@@ -33,7 +33,7 @@
         <java.version>25</java.version>
 
         <require-java.version>[${java.version},)</require-java.version>
-        <require-maven.version>[4.0.0-rc-7,)</require-maven.version>
+        <require-maven.version>[4.0.0-rc,)</require-maven.version>
 
         <resilience4j.version>2.4.0</resilience4j.version>
 
