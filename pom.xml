@@ -51,7 +51,7 @@
 
         <checkstyle-plugin.version>3.6.0</checkstyle-plugin.version>
         <pmd-plugin.version>3.28.0</pmd-plugin.version>
-        <spotbugs-plugin.version>4.10.4.1</spotbugs-plugin.version>
+        <spotbugs-plugin.version>4.10.5.0</spotbugs-plugin.version>
 
         <surefire-plugin.version>3.6.0</surefire-plugin.version>
         <jxr-plugin.version>3.6.0</jxr-plugin.version>
