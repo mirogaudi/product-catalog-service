@@ -1,6 +1,7 @@
 package mirogaudi.productcatalog.connector.impl;
 
 import com.github.benmanes.caffeine.cache.stats.CacheStats;
+import com.github.tomakehurst.wiremock.WireMockServer;
 import mirogaudi.productcatalog.ProductCatalogServiceApplication;
 import mirogaudi.productcatalog.config.CacheConfig;
 import mirogaudi.productcatalog.testhelper.Currencies;
@@ -16,12 +17,20 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+import org.wiremock.spring.ConfigureWireMock;
+import org.wiremock.spring.EnableWireMock;
+import org.wiremock.spring.InjectWireMock;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.Currency;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static mirogaudi.productcatalog.config.CacheConfig.RATES_CACHE_NAME;
 import static mirogaudi.productcatalog.testhelper.Currencies.EUR;
 import static mirogaudi.productcatalog.testhelper.Currencies.USD;
@@ -35,7 +44,14 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest(classes = {ProductCatalogServiceApplication.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@EnableWireMock({
+    @ConfigureWireMock(name = "mock-frankfurter",
+        baseUrlProperties = "spring.http.serviceclient.frankfurter.base-url")
+})
 class FrankfurterRatesServiceConnectorCacheIntegrationTest {
+
+    @InjectWireMock("mock-frankfurter")
+    static WireMockServer mockFrankfurterRatesService;
 
     @Autowired
     private CacheManager cacheManager;
@@ -45,6 +61,9 @@ class FrankfurterRatesServiceConnectorCacheIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        mockFrankfurterRatesService.resetAll();
+        stubRates(USD, EUR, BigDecimal.ONE);
+
         Optional.ofNullable(getRatesCache())
             .map(Cache::invalidate);
     }
@@ -81,10 +100,6 @@ class FrankfurterRatesServiceConnectorCacheIntegrationTest {
         assertEquals(2, stats.hitCount());
     }
 
-    private Cache getRatesCache() {
-        return cacheManager.getCache(RATES_CACHE_NAME);
-    }
-
     @Nested
     class CacheEviction {
 
@@ -93,12 +108,20 @@ class FrankfurterRatesServiceConnectorCacheIntegrationTest {
 
         @Test
         void evictRatesCache_clears_allEntries() {
+            Currency cny = Currencies.getCurrency("CNY");
+            Currency krw = Currencies.getCurrency("KRW");
+            Currency jpy = Currencies.getCurrency("JPY");
+
+            stubRates(cny, EUR, BigDecimal.ONE);
+            stubRates(krw, EUR, BigDecimal.TWO);
+            stubRates(jpy, EUR, BigDecimal.TEN);
+
+            ratesServiceConnector.getExchangeRate(cny, EUR);
+            ratesServiceConnector.getExchangeRate(krw, EUR);
+            ratesServiceConnector.getExchangeRate(jpy, EUR);
+
             Cache ratesCache = getRatesCache();
             assertNotNull(ratesCache);
-
-            ratesServiceConnector.getExchangeRate(Currencies.getCurrency("CNY"), EUR);
-            ratesServiceConnector.getExchangeRate(Currencies.getCurrency("KRW"), EUR);
-            ratesServiceConnector.getExchangeRate(Currencies.getCurrency("JPY"), EUR);
 
             assertNotNull(ratesCache.get("CNY-EUR"));
             assertNotNull(ratesCache.get("KRW-EUR"));
@@ -119,10 +142,11 @@ class FrankfurterRatesServiceConnectorCacheIntegrationTest {
 
             @Test
             void evictRatesCache_triggered_scheduled() {
+                ratesServiceConnector.getExchangeRate(USD, EUR);
+
                 Cache ratesCache = getRatesCache();
                 assertNotNull(ratesCache);
 
-                ratesServiceConnector.getExchangeRate(USD, EUR);
                 assertNotNull(ratesCache.get("USD-EUR"));
 
                 await()
@@ -133,5 +157,26 @@ class FrankfurterRatesServiceConnectorCacheIntegrationTest {
                     });
             }
         }
+    }
+
+    private static void stubRates(Currency fromCurrency, Currency toCurrency, BigDecimal rate) {
+        mockFrankfurterRatesService.stubFor(get(urlPathEqualTo("/v2/rates"))
+            .withQueryParam("base", equalTo(fromCurrency.getCurrencyCode()))
+            .withQueryParam("quotes", equalTo(toCurrency.getCurrencyCode()))
+            .willReturn(okJson("""
+                [
+                  {
+                    "date": "2026-07-07",
+                    "base": "%s",
+                    "quote": "%s",
+                    "rate": %s
+                  }
+                ]
+                """.formatted(fromCurrency.getCurrencyCode(), toCurrency.getCurrencyCode(), rate.toPlainString())
+            )));
+    }
+
+    private Cache getRatesCache() {
+        return cacheManager.getCache(RATES_CACHE_NAME);
     }
 }
