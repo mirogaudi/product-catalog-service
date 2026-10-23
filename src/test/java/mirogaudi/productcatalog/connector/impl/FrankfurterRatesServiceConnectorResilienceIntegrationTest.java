@@ -45,13 +45,12 @@ import static org.mockito.Mockito.verify;
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @TestPropertySource(properties = {
-    // replace the upstream service base URL with the wiremock URL
-    "spring.http.serviceclient.frankfurter.base-url=http://localhost:7777",
     // disable caching
     "pcs.cache.enabled=false"
 })
 @EnableWireMock({
-    @ConfigureWireMock(name = "mock-frankfurter", port = 7777) // set wiremock port
+    @ConfigureWireMock(name = "mock-frankfurter",
+        baseUrlProperties = "spring.http.serviceclient.frankfurter.base-url")
 })
 class FrankfurterRatesServiceConnectorResilienceIntegrationTest {
 
@@ -69,6 +68,8 @@ class FrankfurterRatesServiceConnectorResilienceIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        mockFrankfurterRatesService.resetAll();
+
         getCircuitBreaker().reset();
     }
 
