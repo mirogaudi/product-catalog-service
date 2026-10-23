@@ -302,7 +302,8 @@ To ignore case-insensitive `alpha`, `beta`, `dev`, `milestone` and `release cand
 For example:
 
 ```shell
-./mvnw versions:display-dependency-updates -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?'
+./mvnw versions:display-dependency-updates \
+  -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?'
 ```
 
 ## TODO:
