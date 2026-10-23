@@ -29,6 +29,8 @@ Application is a demo of a product catalog having simplified logic.
 - Docker
 - JUnit Jupiter
 - Mockito
+- RestAssured
+- WireMock
 - Checkstyle, PMD, SpotBugs
 - JaCoCo
 - CycloneDX SBOM
@@ -82,12 +84,16 @@ See application specific configuration in `pcs:` section of [application.yml](sr
 
 ### Maven build
 
-```shell
-# Build with Maven wrapper running unit tests
-$ ./mvnw package
+Build with Maven (wrapper), running unit tests:
 
-# Build with Maven wrapper running unit and integration tests
-$ ./mvnw verify -Pintegration-test
+```shell
+./mvnw package
+```
+
+Build with Maven, running unit and integration tests:
+
+```shell
+./mvnw verify -Pintegration-test
 ```
 
 #### Maven BuildTime Profiler Extension
@@ -96,18 +102,25 @@ The BuildTime Profiler Extension is activated by default. To deactivate the prof
 
 ### Docker build
 
+To build and tag a Docker image, first build the artifact with Maven:
+
 ```shell
-# Build and tag Docker image with Docker
-# Firstly build artifact required by Docker with Maven Wrapper
-$ ./mvnw package -DskipTests
-# Secondly build with Docker
-$ docker build --build-arg APP_VERSION=1.0.0 \
+./mvnw package -DskipTests
+```
+
+Then build and tag the image with Docker:
+
+```shell
+docker build --build-arg APP_VERSION=1.0.0 \
   -t mirogaudi/product-catalog-service:1.0.0 \
   -t mirogaudi/product-catalog-service:latest \
   .
+```
 
-# Or build Docker image with Maven wrapper via Docker plugin
-$ ./mvnw package -Pdocker -DskipTests
+Or build and tag a Docker image directly with Maven via the Docker plugin:
+
+```shell
+./mvnw package -Pdocker -DskipTests
 ```
 
 ### Run
@@ -115,24 +128,27 @@ $ ./mvnw package -Pdocker -DskipTests
 #### Run with Java
 
 ```shell
-# Run with Java
-$ java -jar target/product-catalog-service-1.0.0.jar
+java -jar target/product-catalog-service-1.0.0.jar
 ```
 
 #### Run with Maven
 
+Run with Maven via Spring Boot plugin:
+
 ```shell
-# Run with Maven wrapper (via Spring Boot plugin)
-$ ./mvnw spring-boot:run
-# Run with 'dev' profile
-$ ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+./mvnw spring-boot:run
+```
+
+With `dev` profile:
+
+```shell
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 #### Run with Docker
 
 ```shell
-# Run with Docker
-$ docker run -it --rm --name product-catalog-service -p 8080:8080 -p 9000:9000 mirogaudi/product-catalog-service:latest
+docker run -it --rm --name product-catalog-service -p 8080:8080 -p 9000:9000 mirogaudi/product-catalog-service:latest
 ```
 
 #### Run in IDE
@@ -166,48 +182,55 @@ Code style is set using [.editorconfig](.editorconfig) file.
 
 ### Static code analysis
 
+Build with Maven, running static code analysis:
+
 ```shell
-# Build performing static code analysis
-$ ./mvnw verify -Pcheckstyle,pmd,spotbugs -DskipTests
+./mvnw verify -Pcheckstyle,pmd,spotbugs -DskipTests
 ```
 
 #### Checkstyle
 
 Project uses the Sun Microsystems definition of Checkstyle configuration (`sun_checks.xml`) shipped with the Checkstyle Plugin. Custom Checkstyle suppressions are defined in [checkstyle_suppressions.xml](./checkstyle_suppressions.xml).
 
+Build with Maven, running Checkstyle analysis:
+
 ```shell
-# Build checking with Checkstyle
-$ ./mvnw validate -Pcheckstyle -DskipTests
+./mvnw validate -Pcheckstyle -DskipTests
 ```
 
 #### PMD
 
+Build with Maven, running PMD analysis:
+
 ```shell
-# Build checking with PMD
-$ ./mvnw verify -Ppmd -DskipTests
+./mvnw verify -Ppmd -DskipTests
 ```
 
 #### SpotBugs
 
+Build with Maven, running SpotBugs analysis:
+
 ```shell
-# Build checking with SpotBugs
-$ ./mvnw verify -Pspotbugs -DskipTests
+./mvnw verify -Pspotbugs -DskipTests
 ```
 
 ### Code coverage
 
+Build with Maven, generating JaCoCo code coverage report (based on unit and integration tests)
+and checking code coverage metrics:
+
 ```shell
-# Build generating JaCoCo code coverage report (unit and integration tests) and checking code coverage metrics
-$ ./mvnw verify -Pintegration-test -Pcode-coverage
+./mvnw verify -Pintegration-test -Pcode-coverage
 ```
 
 ### Software Bill of Materials (SBOM)
 
 #### CycloneDX SBOM
 
+Build with Maven, generating CycloneDX SBOM
+
 ```shell
-# Build generating CycloneDX SBOM
-$ ./mvnw verify -Psbom -DskipTests
+./mvnw verify -Psbom -DskipTests
 ```
 
 Generated SBOM can then be viewed:
@@ -221,9 +244,10 @@ Generated SBOM can then be viewed:
 
 #### OWASP
 
+Build with Maven, generating OWASP dependency vulnerability report:
+
 ```shell
-# Build generating OWASP dependency vulnerability report
-$ ./mvnw verify -Powasp -DskipTests
+./mvnw verify -Powasp -DskipTests
 ```
 
 #### Snyk
@@ -238,32 +262,47 @@ Dependencies are to be updated automatically with Renovate/Dependabot or could b
 
 #### Update Maven Wrapper
 
+Replace `4.0.0-rc-7` with the desired Maven version.
+
 ```shell
-# Update Maven wrapper to use Maven a.b.c 
-$ ./mvnw wrapper:wrapper -Dmaven=<a.b.c>
+./mvnw wrapper:wrapper -Dmaven=4.0.0-rc-7
 ```
 
-#### Check for new versions with `versions-maven-plugin`
+#### Check for dependency updates
+
+Check for dependency updates with `versions-maven-plugin`.
+
+Check for Maven plugin updates:
 
 ```shell
-# Check for Maven plugins updates
-$ ./mvnw versions:display-plugin-updates
-
-# Check for Maven parent updates
-$ ./mvnw versions:display-parent-updates
-
-# Check for Maven property-linked dependencies updates
-$ ./mvnw versions:display-property-updates
-
-# Check for Maven dependencies updates
-$ ./mvnw versions:display-dependency-updates
+./mvnw versions:display-plugin-updates -D
 ```
 
-To ignore case-insensitive `alpha`, `beta`, `dev`, `milestone` and `release candidate` versions in checks above add the following D-parameter:
-`maven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?'`
+Check for Maven parent updates:
 
 ```shell
-$ ./mvnw versions:<goal> -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?'
+./mvnw versions:display-parent-updates
+```
+
+Check for Maven property-linked dependency updates:
+
+```shell
+./mvnw versions:display-property-updates
+```
+
+Check for Maven dependency updates:
+
+```shell
+./mvnw versions:display-dependency-updates
+```
+
+To ignore case-insensitive `alpha`, `beta`, `dev`, `milestone` and `release candidate` versions use by checks above the following D-parameter:
+`maven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?'`.
+
+For example:
+
+```shell
+./mvnw versions:display-dependency-updates -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)([-.]?\d+)?'
 ```
 
 ## TODO:
@@ -271,5 +310,6 @@ $ ./mvnw versions:<goal> -Dmaven.version.ignore='(?i).*[-.](alpha|beta|dev|m|rc)
 - clean up:
     - use Java Records with Spring Data JPA
     - test db with integration testing
+      - test ProductRepository
 - implement:
     - add PATCH call to update price
