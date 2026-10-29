@@ -55,7 +55,7 @@
 
         <surefire-plugin.version>3.6.0</surefire-plugin.version>
         <jxr-plugin.version>3.6.0</jxr-plugin.version>
-        <jacoco-plugin.version>0.8.15</jacoco-plugin.version>
+        <jacoco-plugin.version>0.8.16</jacoco-plugin.version>
 
         <cyclonedx-maven-plugin.version>2.9.3</cyclonedx-maven-plugin.version>
         <owasp-dependency-check-plugin.version>13.0.0</owasp-dependency-check-plugin.version>
