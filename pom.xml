@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TODO (Maven 4): Use modelVersion 4.1.0 as soon as renovate supports it! -->
-<!--<project xmlns="http://maven.apache.org/POM/4.1.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.1.0 http://maven.apache.org/xsd/maven-4.1.0.xsd">
-    <modelVersion>4.1.0</modelVersion>-->
+<!-- TODO (Maven 4): Use modelVersion 4.1.0 as soon as renovate supports it.
+    renovate issue: https://github.com/renovatebot/renovate/discussions/41734
+    to enable run: 'mvnup apply -m 4.1.0' -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
