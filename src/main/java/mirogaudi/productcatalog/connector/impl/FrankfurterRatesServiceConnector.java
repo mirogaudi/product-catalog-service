@@ -31,7 +31,8 @@ public class FrankfurterRatesServiceConnector implements RatesServiceConnector {
 
     @Cacheable(
         value = RATES_CACHE_NAME,
-        key = "#fromCurrency.currencyCode + '-' + #toCurrency.currencyCode"
+        key = "#fromCurrency.currencyCode + '-' + #toCurrency.currencyCode",
+        sync = true
     )
     @Retry(name = "retry-frankfurter")
     @CircuitBreaker(name = "cb-frankfurter", fallbackMethod = "getExchangeRateFallback")
