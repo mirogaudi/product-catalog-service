@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
@@ -29,16 +28,23 @@ public class ProductServiceImpl implements ProductService {
     private final CurrencyExchangeService currencyExchangeService;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Product> findAll() {
         return productRepository.findAllWithCategories();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Product find(@NonNull Long id) {
+        return findByIdWithCategories(id);
+    }
+
+    private Product findByIdWithCategories(@NonNull Long id) {
         return productRepository.findByIdWithCategories(id).orElse(null);
     }
 
     @Override
+    @Transactional
     public Product create(@NonNull String name,
                           @NonNull BigDecimal originalPrice,
                           @NonNull Currency originalCurrency,
@@ -56,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public Product update(@NonNull Long id,
                           @NonNull String name,
                           @NonNull BigDecimal originalPrice,
@@ -63,7 +70,8 @@ public class ProductServiceImpl implements ProductService {
                           @NonNull Set<Long> categoryIds) {
         Assert.isTrue(originalPrice.signum() > 0, "Price must be positive");
 
-        Product product = find(id);
+        Product product = findByIdWithCategories(id);
+
         Assert.state(product != null, String.format(
             "Product with id '%d' not found", id));
 
@@ -114,6 +122,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void delete(@NonNull Long id) {
         // in real project consider to use getReferenceById(id)!
         Assert.state(productRepository.existsById(id), String.format(

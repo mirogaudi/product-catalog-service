@@ -42,6 +42,7 @@ public class Category extends BaseEntity {
     @JsonGetter
     @ToString.Include
     public Long getParentId() {
+        // TODO check for possible LazyInitializationException
         return (parent != null) ? parent.getId() : null;
     }
 
@@ -51,6 +52,7 @@ public class Category extends BaseEntity {
         return super.equals(o);
     }
 
+    @SuppressWarnings("PMD.UselessOverridingMethod")
     @Override
     public int hashCode() {
         return super.hashCode();

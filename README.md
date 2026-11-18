@@ -52,7 +52,8 @@ Application is a demo of a product catalog having simplified logic.
 ### Functionality
 
 - Application implements CRUD operations for Categories and Products
-- Category and Product services are `@Transactional` to avoid race condition
+- Category and Product services use method-level `@Transactional` with read-only hints for read methods
+- Race conditions are prevented by `@Version` optimistic locking on entities and `sync = true` on cacheable methods
 - Application gets currency exchange rates from Frankfurter [https://frankfurter.dev](https://frankfurter.dev)
     - Frankfurter REST API is called via Spring declarative `@HttpExchange` HTTP service client and decorated with Resilience4j `CircuitBreaker`
 - Rates are cached with `Caffeine` during a period of their validity
@@ -311,6 +312,6 @@ For example:
 - clean up:
     - use Java Records with Spring Data JPA
     - test db with integration testing
-      - test ProductRepository
+        - test ProductRepository
 - implement:
     - add PATCH call to update price

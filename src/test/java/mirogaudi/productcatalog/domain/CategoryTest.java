@@ -8,10 +8,6 @@ class CategoryTest {
 
     @Test
     void testHashCode() {
-        Category entity = new Category();
-        String name = "name";
-        entity.setName(name);
-
-        assertEquals(name.hashCode(), entity.hashCode());
+        assertEquals(Category.class.hashCode(), new Category().hashCode());
     }
 }

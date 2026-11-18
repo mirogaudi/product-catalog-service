@@ -8,10 +8,6 @@ class ProductTest {
 
     @Test
     void testHashCode() {
-        Product entity = new Product();
-        String name = "name";
-        entity.setName(name);
-
-        assertEquals(name.hashCode(), entity.hashCode());
+        assertEquals(Product.class.hashCode(), new Product().hashCode());
     }
 }

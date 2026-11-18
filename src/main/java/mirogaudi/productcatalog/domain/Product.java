@@ -81,6 +81,7 @@ public class Product extends BaseEntity {
     @JsonGetter
     @ToString.Include
     public List<Long> getCategoryIds() {
+        // TODO check for possible LazyInitializationException
         return categories.stream()
             .map(Category::getId)
             .sorted()
@@ -93,6 +94,7 @@ public class Product extends BaseEntity {
         return super.equals(o);
     }
 
+    @SuppressWarnings("PMD.UselessOverridingMethod")
     @Override
     public int hashCode() {
         return super.hashCode();

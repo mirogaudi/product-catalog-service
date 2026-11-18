@@ -13,28 +13,35 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Category> findAllById(@NonNull Set<Long> ids) {
         return categoryRepository.findAllById(ids);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Category find(@NonNull Long id) {
+        return findById(id);
+    }
+
+    private Category findById(@NonNull Long id) {
         return categoryRepository.findById(id).orElse(null);
     }
 
     @Override
+    @Transactional
     public Category create(@NonNull String name,
                            Long parentId) {
         Category category = new Category();
@@ -43,10 +50,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public Category update(@NonNull Long id,
                            @NonNull String name,
                            Long parentId) {
-        Category category = find(id);
+        Category category = findById(id);
+
         Assert.state(category != null, String.format(
             "Category with id '%d' not found", id));
 
@@ -62,7 +71,9 @@ public class CategoryServiceImpl implements CategoryService {
         if (parentId != null) {
             Assert.isTrue(!parentId.equals(category.getId()), String.format(
                 "Parent category id '%d' is invalid: category can not be a parent of itself", parentId));
-            parent = find(parentId);
+
+            parent = findById(parentId);
+
             Assert.state(parent != null, String.format(
                 "Parent category with id '%d' not found", parentId));
         }
@@ -72,7 +83,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void delete(@NonNull Long id) {
+        // TODO Delete doesn't check for children or linked products. Fix it!
+
         // in real project consider to use getReferenceById(id)!
         Assert.state(categoryRepository.existsById(id), String.format(
             "Category with id '%d' does not exist", id));
