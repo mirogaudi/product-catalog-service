@@ -16,7 +16,7 @@ management:
     circuitbreakers.enabled: true
 
   endpoint.sbom:
-    # to generate SBOM just build with maven using "sbom" profile
+    # to generate SBOM just build with maven using `sbom` profile
     application.location: optional:classpath:META-INF/sbom/application.cdx.json
 
 logging:
@@ -39,6 +39,11 @@ spring:
         base-url: https://api.frankfurter.dev
         connect-timeout: 2s
         read-timeout: 2s
+
+  threads:
+    virtual:
+      enabled: true
+      name-prefix: pcs-vt-
 
   jpa:
     # disables OSIV antipattern
