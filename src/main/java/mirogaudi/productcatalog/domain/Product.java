@@ -9,7 +9,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -72,7 +71,6 @@ public class Product extends BaseEntity {
         joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
     @NotNull
-    @NotEmpty
     @Builder.Default
     @JsonIgnore
     private List<Category> categories = new ArrayList<>();
@@ -97,7 +95,7 @@ public class Product extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return super.hashCode();
     }
 
 }
