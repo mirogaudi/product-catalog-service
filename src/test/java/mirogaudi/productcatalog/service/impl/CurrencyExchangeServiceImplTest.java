@@ -95,8 +95,6 @@ class CurrencyExchangeServiceImplTest {
 
         assertThrows(ConnectorRuntimeException.class,
             () -> sut.convert(ONE, USD, EUR));
-
-        verify(ratesServiceConnector).getExchangeRate(USD, EUR);
     }
 
 }

@@ -44,7 +44,9 @@ class ProductRepositoryIntegrationTest {
         assertTrue(productOptional.isPresent());
 
         Product product = productOptional.get();
+
         product.getCategories().forEach(category ->
+            // eager load
             assertFalse(HibernateProxy.class.isAssignableFrom(category.getClass()))
         );
     }
@@ -65,6 +67,36 @@ class ProductRepositoryIntegrationTest {
         Product otherProduct = Product.builder().id(id).build();
 
         assertEquals(product, otherProduct);
+    }
+
+    @Test
+    void findAllWithCategories() {
+        List<Product> products = productRepository.findAllWithCategories();
+
+        assertEquals(3, products.size());
+
+        products.forEach(product ->
+            product.getCategories().forEach(category ->
+                // eager load
+                assertFalse(HibernateProxy.class.isAssignableFrom(category.getClass()))
+            )
+        );
+    }
+
+    @Test
+    void findByIdWithCategories() {
+        Optional<Product> productOptional = productRepository.findByIdWithCategories(1L);
+        assertTrue(productOptional.isPresent());
+
+        Product product = productOptional.get();
+        assertEquals("MacBook", product.getName());
+
+        assertFalse(product.getCategories().isEmpty());
+
+        product.getCategories().forEach(category ->
+            // eager load
+            assertFalse(HibernateProxy.class.isAssignableFrom(category.getClass()))
+        );
     }
 
     @Test

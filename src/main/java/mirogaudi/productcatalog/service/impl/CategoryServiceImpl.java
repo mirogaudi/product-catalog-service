@@ -85,8 +85,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void delete(@NonNull Long id) {
-        // TODO Delete doesn't check for children or linked products. Fix it!
-
         // in real project consider to use getReferenceById(id)!
         Assert.state(categoryRepository.existsById(id), String.format(
             "Category with id '%d' does not exist", id));

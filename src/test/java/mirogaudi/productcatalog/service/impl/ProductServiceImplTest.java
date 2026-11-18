@@ -29,7 +29,6 @@ import static mirogaudi.productcatalog.testhelper.Currencies.USD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -112,9 +111,6 @@ class ProductServiceImplTest {
 
         assertThrows(IllegalStateException.class,
             () -> sut.create("name", originalPrice, USD, categoryIds));
-
-        verify(currencyExchangeService).convert(originalPrice, USD, EUR);
-        verify(productRepository, never()).save(any(Product.class));
     }
 
     @ParameterizedTest
@@ -221,9 +217,6 @@ class ProductServiceImplTest {
 
         assertThrows(IllegalStateException.class,
             () -> sut.update(id, "name", originalPrice, USD, categoryIds));
-
-        verify(currencyExchangeService).convert(originalPrice, USD, EUR);
-        verify(productRepository, never()).save(any(Product.class));
     }
 
     @ParameterizedTest

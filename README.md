@@ -312,6 +312,5 @@ For example:
 - clean up:
     - use Java Records with Spring Data JPA
     - test db with integration testing
-        - test ProductRepository
 - implement:
     - add PATCH call to update price

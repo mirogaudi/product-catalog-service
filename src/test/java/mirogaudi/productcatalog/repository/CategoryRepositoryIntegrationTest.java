@@ -36,6 +36,8 @@ class CategoryRepositoryIntegrationTest {
 
         Category subCategory = subCategoryOptional.get();
         assertNotNull(subCategory.getParent());
+
+        // lazy load
         assertTrue(HibernateProxy.class.isAssignableFrom(subCategory.getParent().getClass()));
     }
 
