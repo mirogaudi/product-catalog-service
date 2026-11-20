@@ -12,7 +12,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
      * Property path: {@code parent.id}
      *
      * @param parentId the parent category ID
-     * @return true if a category with this parent exists
+     * @return true if a category having parent category exists
      */
     boolean existsByParent_Id(Long parentId);
 }

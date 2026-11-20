@@ -87,4 +87,9 @@ class CategoryRepositoryIntegrationTest {
         assertFalse(categoryRepository.existsByParent_Id(3L));
     }
 
+    @Test
+    void existsByParent_Id_non_existent_category() {
+        assertFalse(categoryRepository.existsByParent_Id(Long.MAX_VALUE));
+    }
+
 }

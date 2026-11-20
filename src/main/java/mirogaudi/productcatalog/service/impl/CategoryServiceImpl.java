@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import mirogaudi.productcatalog.domain.Category;
 import mirogaudi.productcatalog.repository.CategoryRepository;
+import mirogaudi.productcatalog.repository.ProductRepository;
 import mirogaudi.productcatalog.service.CategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.Set;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -91,6 +93,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         Assert.state(!categoryRepository.existsByParent_Id(id), String.format(
             "Category with id '%d' has child category(ies) and can not be deleted", id));
+
+        Assert.state(!productRepository.existsByCategories_Id(id), String.format(
+            "Category with id '%d' has linked product(s) and can not be deleted", id));
 
         categoryRepository.deleteById(id);
     }

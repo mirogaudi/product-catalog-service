@@ -122,4 +122,26 @@ class ProductRepositoryIntegrationTest {
         );
     }
 
+    @Test
+    void findByIdWithCategories_non_existent_product() {
+        assertTrue(productRepository.findByIdWithCategories(Long.MAX_VALUE).isEmpty());
+    }
+
+    @Test
+    void existsByCategories_Id_has_linked_products() {
+        // "Apple" (id=4) has linked products: MacBook, iPad
+        assertTrue(productRepository.existsByCategories_Id(4L));
+    }
+
+    @Test
+    void existsByCategories_Id_no_linked_products() {
+        // "Computers" (id=1) has no directly linked products
+        assertFalse(productRepository.existsByCategories_Id(1L));
+    }
+
+    @Test
+    void existsByCategories_Id_non_existent_category() {
+        assertFalse(productRepository.existsByCategories_Id(Long.MAX_VALUE));
+    }
+
 }
