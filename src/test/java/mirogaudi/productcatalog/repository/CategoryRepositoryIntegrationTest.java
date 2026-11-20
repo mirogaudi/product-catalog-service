@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase.Replace.NONE;
@@ -72,6 +73,18 @@ class CategoryRepositoryIntegrationTest {
         categoryRepository.save(category);
 
         assertTrue(set.contains(category));
+    }
+
+    @Test
+    void existsByParent_Id_has_children() {
+        // "Computers" (id=1) has child "Portable computers" (id=2)
+        assertTrue(categoryRepository.existsByParent_Id(1L));
+    }
+
+    @Test
+    void existsByParent_Id_no_children() {
+        // "Tablets" (id=3) has no children
+        assertFalse(categoryRepository.existsByParent_Id(3L));
     }
 
 }

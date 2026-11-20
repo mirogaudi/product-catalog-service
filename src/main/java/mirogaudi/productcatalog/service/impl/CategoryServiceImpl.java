@@ -89,6 +89,9 @@ public class CategoryServiceImpl implements CategoryService {
         Assert.state(categoryRepository.existsById(id), String.format(
             "Category with id '%d' does not exist", id));
 
+        Assert.state(!categoryRepository.existsByParent_Id(id), String.format(
+            "Category with id '%d' has child category(ies) and can not be deleted", id));
+
         categoryRepository.deleteById(id);
     }
 

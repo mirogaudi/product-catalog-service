@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -146,6 +147,8 @@ class CategoryServiceImplTest {
 
         assertThrows(IllegalStateException.class,
             () -> sut.create("name", parentId));
+
+        verify(categoryRepository, never()).save(any(Category.class));
     }
 
     @Test
@@ -188,6 +191,8 @@ class CategoryServiceImplTest {
 
         assertThrows(IllegalStateException.class,
             () -> sut.update(id, "name", 1L));
+
+        verify(categoryRepository, never()).save(any(Category.class));
     }
 
     @Test
@@ -200,6 +205,8 @@ class CategoryServiceImplTest {
 
         assertThrows(IllegalStateException.class,
             () -> sut.update(id, "name", parentId));
+
+        verify(categoryRepository, never()).save(any(Category.class));
     }
 
     @Test
@@ -211,12 +218,15 @@ class CategoryServiceImplTest {
 
         assertThrows(IllegalArgumentException.class,
             () -> sut.update(id, "name", id));
+
+        verify(categoryRepository, never()).save(any(Category.class));
     }
 
     @Test
     void delete() {
         Long id = 1L;
         when(categoryRepository.existsById(id)).thenReturn(true);
+        when(categoryRepository.existsByParent_Id(id)).thenReturn(false);
 
         sut.delete(id);
 
@@ -237,6 +247,20 @@ class CategoryServiceImplTest {
 
         assertThrows(IllegalStateException.class,
             () -> sut.delete(id));
+
+        verify(categoryRepository, never()).deleteById(any(Long.class));
+    }
+
+    @Test
+    void delete_has_children() {
+        Long id = 1L;
+        when(categoryRepository.existsById(id)).thenReturn(true);
+        when(categoryRepository.existsByParent_Id(id)).thenReturn(true);
+
+        assertThrows(IllegalStateException.class,
+            () -> sut.delete(id));
+
+        verify(categoryRepository, never()).deleteById(any(Long.class));
     }
 
     private static Category category(Long id) {

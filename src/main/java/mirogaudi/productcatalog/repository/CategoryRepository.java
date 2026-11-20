@@ -6,4 +6,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+    /**
+     * Check if a category having given parent ID exists.
+     * Property path: {@code parent.id}
+     *
+     * @param parentId the parent category ID
+     * @return true if a category with this parent exists
+     */
+    boolean existsByParent_Id(Long parentId);
 }
