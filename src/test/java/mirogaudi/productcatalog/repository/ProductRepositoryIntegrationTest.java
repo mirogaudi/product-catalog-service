@@ -70,6 +70,29 @@ class ProductRepositoryIntegrationTest {
     }
 
     @Test
+    void hashCodeConsistent() {
+        Optional<Product> productOptional = productRepository.findById(1L);
+        assertTrue(productOptional.isPresent());
+
+        Product product = productOptional.get();
+        product.setId(100L);
+        product.setName(product.getName() + "'");
+        product.setOriginalPrice(ONE);
+        product.setPrice(ONE);
+        product.setOriginalCurrency(EUR.getCurrencyCode());
+        product.setCurrency(EUR.getCurrencyCode());
+
+        Optional<Category> categoryOptional = categoryRepository.findById(1L);
+        categoryOptional.ifPresent(category -> product.setCategories(new ArrayList<>(List.of(category))));
+
+        Set<Product> set = Set.of(product);
+
+        productRepository.save(product);
+
+        assertTrue(set.contains(product));
+    }
+
+    @Test
     void findAllWithCategories() {
         List<Product> products = productRepository.findAllWithCategories();
 
@@ -97,29 +120,6 @@ class ProductRepositoryIntegrationTest {
             // eager load
             assertFalse(HibernateProxy.class.isAssignableFrom(category.getClass()))
         );
-    }
-
-    @Test
-    void hashCodeConsistent() {
-        Optional<Product> productOptional = productRepository.findById(1L);
-        assertTrue(productOptional.isPresent());
-
-        Product product = productOptional.get();
-        product.setId(100L);
-        product.setName(product.getName() + "'");
-        product.setOriginalPrice(ONE);
-        product.setPrice(ONE);
-        product.setOriginalCurrency(EUR.getCurrencyCode());
-        product.setCurrency(EUR.getCurrencyCode());
-
-        Optional<Category> categoryOptional = categoryRepository.findById(1L);
-        categoryOptional.ifPresent(category -> product.setCategories(new ArrayList<>(List.of(category))));
-
-        Set<Product> set = Set.of(product);
-
-        productRepository.save(product);
-
-        assertTrue(set.contains(product));
     }
 
 }

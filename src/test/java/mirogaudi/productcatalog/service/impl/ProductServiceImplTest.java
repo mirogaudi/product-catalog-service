@@ -29,6 +29,7 @@ import static mirogaudi.productcatalog.testhelper.Currencies.USD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -111,6 +112,8 @@ class ProductServiceImplTest {
 
         assertThrows(IllegalStateException.class,
             () -> sut.create("name", originalPrice, USD, categoryIds));
+
+        verify(productRepository, never()).save(any(Product.class));
     }
 
     @ParameterizedTest
@@ -173,6 +176,8 @@ class ProductServiceImplTest {
         IllegalStateException e = assertThrows(IllegalStateException.class,
             () -> sut.create("name", ONE, EUR, categoryIds));
         assertEquals("Not all categories were found. Expected: [1, 2, 3, 4], found: [2, 4]", e.getMessage());
+
+        verify(productRepository, never()).save(any(Product.class));
     }
 
     @Test
@@ -217,6 +222,8 @@ class ProductServiceImplTest {
 
         assertThrows(IllegalStateException.class,
             () -> sut.update(id, "name", originalPrice, USD, categoryIds));
+
+        verify(productRepository, never()).save(any(Product.class));
     }
 
     @ParameterizedTest
@@ -237,6 +244,8 @@ class ProductServiceImplTest {
 
         assertThrows(IllegalStateException.class,
             () -> sut.update(id, "name", ONE, EUR, categoryIds));
+
+        verify(productRepository, never()).save(any(Product.class));
     }
 
     @ParameterizedTest
@@ -297,6 +306,8 @@ class ProductServiceImplTest {
             () -> sut.update(id, "name", ONE, EUR, categoryIds));
 
         assertEquals("Not all categories were found. Expected: [1, 2, 3, 4], found: [2, 4]", e.getMessage());
+
+        verify(productRepository, never()).save(any(Product.class));
     }
 
     @Test
@@ -323,6 +334,8 @@ class ProductServiceImplTest {
 
         assertThrows(IllegalStateException.class,
             () -> sut.delete(id));
+
+        verify(productRepository, never()).save(any(Product.class));
     }
 
     private static Category category(Long id) {
