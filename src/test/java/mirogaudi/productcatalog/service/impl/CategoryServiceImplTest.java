@@ -2,6 +2,7 @@ package mirogaudi.productcatalog.service.impl;
 
 import mirogaudi.productcatalog.domain.Category;
 import mirogaudi.productcatalog.repository.CategoryRepository;
+import mirogaudi.productcatalog.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,6 +31,9 @@ class CategoryServiceImplTest {
 
     @Mock
     private CategoryRepository categoryRepository;
+
+    @Mock
+    private ProductRepository productRepository;
 
     @InjectMocks
     private CategoryServiceImpl sut;
@@ -227,6 +231,7 @@ class CategoryServiceImplTest {
         Long id = 1L;
         when(categoryRepository.existsById(id)).thenReturn(true);
         when(categoryRepository.existsByParent_Id(id)).thenReturn(false);
+        when(productRepository.existsByCategories_Id(id)).thenReturn(false);
 
         sut.delete(id);
 
@@ -256,6 +261,19 @@ class CategoryServiceImplTest {
         Long id = 1L;
         when(categoryRepository.existsById(id)).thenReturn(true);
         when(categoryRepository.existsByParent_Id(id)).thenReturn(true);
+
+        assertThrows(IllegalStateException.class,
+            () -> sut.delete(id));
+
+        verify(categoryRepository, never()).deleteById(any(Long.class));
+    }
+
+    @Test
+    void delete_has_linked_products() {
+        Long id = 1L;
+        when(categoryRepository.existsById(id)).thenReturn(true);
+        when(categoryRepository.existsByParent_Id(id)).thenReturn(false);
+        when(productRepository.existsByCategories_Id(id)).thenReturn(true);
 
         assertThrows(IllegalStateException.class,
             () -> sut.delete(id));
